@@ -1,0 +1,49 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+# cpanel - find-latest-version                  Copyright(c) 2019 cPanel, L.L.C.
+#                                                           All rights Reserved.
+# copyright@cpanel.net                                         http://cpanel.net
+# This code is subject to the cPanel license. Unauthorized copying is prohibited
+
+package ea_repo_name_goes_here::find_latest_version;
+
+use strict;
+use warnings;
+
+use lib "../ea-tools/lib/ea4_tool";    # assumes ea-tools is checked out next to this repo
+use ea4_tool::util ();
+
+ea4_tool::util::find_latest_version(\&_get_required, \&_add_sum) if !caller();
+
+###############
+#### helpers ##
+###############
+
+sub _get_required {
+   my ($http) = @_;
+
+   my ( $version, $url, $name );
+
+   my $res  = $http->get("https://repo.example.org/releases");
+   # get $version, $url, $name from $res (and possibly multiple HTTP calls)
+   # die if there is a problem determining any of those values
+
+   return ( $version, $url, $name );
+}
+
+sub _add_sum {
+    my ($http, $hr) = @_;
+
+    # Optional: Set $hr->{tarball}{sum}{hex} and $hr->{tarball}{sum}{type} (sha256, sha1, md5, anythign Digest.pm can handle)
+    #           die if there is a problem determining either of those values
+    # otherwise this is a no-op
+
+    return;
+}
+
+__END__
+
+=encoding utf-8
+
+=head1 README
+
+… explain nuances of fetching the latest-info for this repo here for future us …
