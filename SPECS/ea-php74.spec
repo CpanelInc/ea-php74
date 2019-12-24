@@ -176,8 +176,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch107: 0009-Add-support-for-use-of-the-system-timezone-database-.patch
 Patch108: 0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch
 
-Patch400: 0011-0020-PLESK-sig-block-reexec.patch
-Patch401: 0012-0021-PLESK-avoid-child-ignorance.patch
 Patch402: 0013-0022-PLESK-missed-kill.patch
 
 BuildRequires: bzip2-devel, %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel >= %{ea_libcurl_ver}, %{db_devel}
@@ -949,8 +947,6 @@ inside them.
 %patch108 -p1 -b .autoconfheader
 %endif
 
-%patch400 -p1 -b .sigblock
-%patch401 -p1 -b .avoidchildignorance
 %patch402 -p1 -b .missedkill
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
