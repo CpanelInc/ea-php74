@@ -1,0 +1,41 @@
+From 0a33cc3a5fcb2e2310585492607b6ba41cc5e658 Mon Sep 17 00:00:00 2001
+From: Jacob Perkins <jacob.perkins@cpanel.net>
+Date: Mon, 13 Jun 2016 22:35:54 -0500
+Subject: [PATCH 05/13] Ensure that php.d is not scanned when PHPRC is set
+
+Since EasyApache 4 is built with the configuration
+option 'with-config-file-scan-dir', this ensured that php.d was
+read, allowing module configurations to be loaded. It resulted
+in customer configurations not being overridden with any
+situations where PHPRC is used (primarily suPHP). This patch
+provides EasyApache 3 compatible behaviors when using
+suPHP_ConfigPath, specifically by not scanning php.d when
+PHPRC is set. (EA-4422)
+---
+ main/php_ini.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/main/php_ini.c b/main/php_ini.c
+index d5d920a..f5b0514 100644
+--- a/main/php_ini.c
++++ b/main/php_ini.c
+@@ -652,7 +652,15 @@ int php_init_config(void)
+ 	php_ini_scanned_path_len = (int)strlen(php_ini_scanned_path);
+ 
+ 	/* Scan and parse any .ini files found in scan path if path not empty. */
+-	if (!sapi_module.php_ini_ignore && php_ini_scanned_path_len) {
++
++    /* But only do this if PHPRC is undefined.  This way the ini files defined
++     * in the php.d directory do not override the user's custom settings.
++     *
++     * We don't leverage .user.ini due to EA3 backwards-compatibility.
++     *
++     * Case: EA-4422
++     */
++    if (!getenv("PHPRC") && !sapi_module.php_ini_ignore && php_ini_scanned_path_len) {
+ 		struct dirent **namelist;
+ 		int ndir, i;
+ 		zend_stat_t sb;
+-- 
+2.21.0
+

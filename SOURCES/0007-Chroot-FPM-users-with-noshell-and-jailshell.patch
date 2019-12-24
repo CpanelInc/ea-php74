@@ -1,0 +1,116 @@
+From 73d92beb69f0f75182b931fb58af58c3d941566d Mon Sep 17 00:00:00 2001
+From: Matt Dees <matt@cpanel.net>
+Date: Fri, 19 Aug 2016 10:10:41 -0500
+Subject: [PATCH 07/13] Chroot FPM users with noshell and jailshell
+
+Case CPANEL-7016: This change will cause PHP-FPM to jail FPM users
+if their shells are set to noshell or jailshell no matter what.
+---
+ sapi/fpm/fpm/fpm_conf.c |  3 +-
+ sapi/fpm/fpm/fpm_unix.c | 69 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+), 1 deletion(-)
+
+diff --git a/sapi/fpm/fpm/fpm_conf.c b/sapi/fpm/fpm/fpm_conf.c
+index 7a05286..5e2985d 100644
+--- a/sapi/fpm/fpm/fpm_conf.c
++++ b/sapi/fpm/fpm/fpm_conf.c
+@@ -1029,7 +1029,8 @@ static int fpm_conf_process_all_pools() /* {{{ */
+ 
+ 				spprintf(&buf, 0, "%s/%s", wp->config->chroot, wp->config->chdir);
+ 
+-				if (!fpm_conf_is_dir(buf)) {
++				// CPCASE HB-1712: skip directory check if virtfs is in use
++				if ( strstr( wp->config->chroot, "/virtfs/" ) == NULL && !fpm_conf_is_dir(buf)) {
+ 					zlog(ZLOG_ERROR, "[pool %s] the chdir path '%s' within the chroot path '%s' ('%s') does not exist or is not a directory", wp->config->name, wp->config->chdir, wp->config->chroot, buf);
+ 					efree(buf);
+ 					return -1;
+diff --git a/sapi/fpm/fpm/fpm_unix.c b/sapi/fpm/fpm/fpm_unix.c
+index 6490a7b..8b20424 100644
+--- a/sapi/fpm/fpm/fpm_unix.c
++++ b/sapi/fpm/fpm/fpm_unix.c
+@@ -10,6 +10,7 @@
+ #include <sys/types.h>
+ #include <pwd.h>
+ #include <grp.h>
++#include <sys/stat.h>
+ 
+ #ifdef HAVE_PRCTL
+ #include <sys/prctl.h>
+@@ -349,6 +350,74 @@ int fpm_unix_init_child(struct fpm_worker_pool_s *wp) /* {{{ */
+ 		}
+ 	}
+ 
++	// START CASE CPANEL-7016
++	// Jail PHP-FPM if the user is using noshell or jailshell no matter what
++
++	char *jail_toggle_file = "/var/cpanel/feature_toggles/apachefpmjail";
++
++	struct stat sb;
++	struct passwd* pwd;
++	pwd = getpwnam(wp->config->user);
++	if ( stat(jail_toggle_file, &sb) == 0 && pwd != NULL ) {
++		zlog(ZLOG_DEBUG, "[pool %s] got to getpwnam(%s)", wp->config->name, wp->config->user);
++		zlog(ZLOG_DEBUG, "[pool %s] getpwnam vars pw_shell: %s pw_dir: %s ", wp->config->name, pwd->pw_shell, pwd->pw_dir);
++
++		if ( strcmp( pwd->pw_shell, "/usr/local/cpanel/bin/noshell" ) == 0 || strcmp( pwd->pw_shell, "/usr/local/cpanel/bin/jailshell" ) == 0 ) {
++			zlog(ZLOG_DEBUG, "[pool %s] Was able to check the pool", wp->config->name);
++			char *virtfs_home = (char*) emalloc( strlen("/home/virtfs/") + strlen( wp->config->user ) + 2);
++			strcpy(virtfs_home, "/home/virtfs/" );
++			zlog(ZLOG_DEBUG, "[pool %s] allocated the string (%s)", wp->config->name, virtfs_home);
++			strcat(virtfs_home, wp->config->user);
++			strcat(virtfs_home, "/");
++			zlog(ZLOG_DEBUG, "[pool %s] built the vitfs path(%s)", wp->config->name, virtfs_home);
++
++			wp->config->chdir = strdup(pwd->pw_dir);
++			wp->config->chroot = strdup(virtfs_home);
++			efree( virtfs_home );
++			zlog(ZLOG_DEBUG, "[pool %s] set variables %s %s", wp->config->name, wp->config->chroot,  wp->config->chdir );
++		}
++
++		zlog(ZLOG_DEBUG, "[pool %s] Made it past the strcmp on pwd->pw_shell", wp->config->name);
++
++		if ( wp->config->chroot && strstr( wp->config->chroot, "/virtfs/" ) ) {
++		   zlog(ZLOG_DEBUG, "[pool %s] chroot matches virtfs: %s", wp->config->name, wp->config->chroot);
++
++		   char *check_directory = emalloc( strlen( wp->config->chroot ) + strlen("/opt/cpanel") + 1);
++		   strcpy(check_directory, wp->config->chroot);
++		   strcat(check_directory, "/opt/cpanel");
++
++		   if ( !(stat(check_directory, &sb) == 0 && S_ISDIR(sb.st_mode) ) ) {
++		       zlog(ZLOG_DEBUG, "[pool %s] directory does not exist %s", wp->config->name, check_directory);
++
++		       char *jail_command = emalloc(strlen("/usr/local/cpanel/bin/jailmount ")+strlen(wp->config->user)+1);
++		       strcpy(jail_command, "/usr/local/cpanel/bin/jailmount ");
++		       strcat(jail_command, wp->config->user);
++
++		       if ( 0 != system( jail_command ) ) {
++		           zlog(ZLOG_DEBUG, "[pool %s] /usr/local/cpanel/bin/jailmount returned a non-0 exit status for user(%s) %s", wp->config->name, wp->config->user, jail_command);
++		           efree( jail_command );
++		           efree( check_directory );
++		           return -1;
++		       }
++		       else {
++		           zlog(ZLOG_DEBUG, "[pool %s] /usr/local/cpanel/bin/jailmount returned a zero exit status for user(%s) %s", wp->config->name, wp->config->user, jail_command);
++		       }
++		       efree( jail_command );
++		   }
++		   else {
++		       zlog(ZLOG_DEBUG, "[pool %s] directory exists %s", wp->config->name, check_directory);
++		   }
++		}
++		else {
++		   zlog(ZLOG_DEBUG, "[pool %s] chroot does not match virtfs: %s", wp->config->name, wp->config->chroot);
++		}
++	}
++	else if (pwd == NULL) {
++		// This condition should never be hit due to earlier checks, but adding it for safety's sake
++		zlog(ZLOG_SYSERROR, "[pool %s] Unable to perform getpwnam on user: %s", wp->config->name, wp->config->user);
++	}
++	// END CASE CPANEL-7016
++
+ 	if (is_root && wp->config->chroot && *wp->config->chroot) {
+ 		if (0 > chroot(wp->config->chroot)) {
+ 			zlog(ZLOG_SYSERROR, "[pool %s] failed to chroot(%s)",  wp->config->name, wp->config->chroot);
+-- 
+2.21.0
+

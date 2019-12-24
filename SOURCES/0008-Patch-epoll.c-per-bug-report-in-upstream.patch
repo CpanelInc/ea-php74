@@ -1,0 +1,31 @@
+From 81d8b2438aeb28239c9cc12d156dc0dcd0241d17 Mon Sep 17 00:00:00 2001
+From: Cory McIntire <cory@cpanel.net>
+Date: Fri, 2 Mar 2018 11:12:27 -0600
+Subject: [PATCH 08/13] Patch epoll.c per bug report in upstream.
+
+Case HB-3061-70: Patch epoll.c per bug report in upstream.
+---
+ sapi/fpm/fpm/events/epoll.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/sapi/fpm/fpm/events/epoll.c b/sapi/fpm/fpm/events/epoll.c
+index e4a3300..86a416c 100644
+--- a/sapi/fpm/fpm/events/epoll.c
++++ b/sapi/fpm/fpm/events/epoll.c
+@@ -142,7 +142,12 @@ static int fpm_event_epoll_wait(struct fpm_event_queue_s *queue, unsigned long i
+ 		}
+ 
+ 		/* fire the event */
+-		fpm_event_fire((struct fpm_event_s *)epollfds[i].data.ptr);
++        /* XXX - JIRA EA-????
++           Ignore EPOLLUP that is causing EBADF on unreadable FD's
++           https://bugs.php.net/bug.php?id=65398
++                */
++        if (epollfds[i].events != EPOLLHUP)
++            fpm_event_fire((struct fpm_event_s *)epollfds[i].data.ptr);
+ 
+ 		/* sanity check */
+ 		if (fpm_globals.parent_pid != getpid()) {
+-- 
+2.21.0
+

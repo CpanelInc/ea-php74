@@ -1,0 +1,41 @@
+From 455250c6b8fd8caa431eb24a429401cbdcb09d8c Mon Sep 17 00:00:00 2001
+From: Kurt Newman <kurt.newman@cpanel.net>
+Date: Fri, 11 Dec 2015 12:18:01 -0600
+Subject: [PATCH 04/13] Removed ZTS support
+
+Case EA-3788: This patch removes threaded support in PHP for the
+following reasons:
+ 1. Most of the 3rd party extensions we deliver aren't compatible
+    with a threaded MPM and/or PHP.
+ 2. The PHP devs would rather see users using the fastcgi or fpm
+    implementations, instead of a threaded PHP.
+    http://php.net/manual/en/faq.installation.php#faq.installation.apache2
+---
+ sapi/apache2handler/config.m4 | 11 -----------
+ 1 file changed, 11 deletions(-)
+
+diff --git a/sapi/apache2handler/config.m4 b/sapi/apache2handler/config.m4
+index 44dee3f..52321e9 100644
+--- a/sapi/apache2handler/config.m4
++++ b/sapi/apache2handler/config.m4
+@@ -107,17 +107,6 @@ if test "$PHP_APXS2" != "no"; then
+     ;;
+   esac
+ 
+-  if test "$APACHE_VERSION" -lt 2004001; then
+-    APXS_MPM=`$APXS -q MPM_NAME`
+-    if test "$APXS_MPM" != "prefork" && test "$APXS_MPM" != "peruser" && test "$APXS_MPM" != "itk"; then
+-      PHP_BUILD_THREAD_SAFE
+-    fi
+-  else
+-    APACHE_THREADED_MPM=`$APXS_HTTPD -V | grep 'threaded:.*yes'`
+-    if test -n "$APACHE_THREADED_MPM"; then
+-      PHP_BUILD_THREAD_SAFE
+-    fi
+-  fi
+   AC_MSG_RESULT(yes)
+   PHP_SUBST(APXS)
+ else
+-- 
+2.21.0
+

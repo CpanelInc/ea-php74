@@ -1,0 +1,49 @@
+From 3de067453502b7f4abe07bbdc0939d39aff40e3d Mon Sep 17 00:00:00 2001
+From: Cory McIntire <cory@cpanel.net>
+Date: Fri, 2 Mar 2018 11:03:30 -0600
+Subject: [PATCH 02/13] Prevent PEAR package from bringing in devel
+
+Source: https://bugzilla.redhat.com/show_bug.cgi?id=657812
+---
+ scripts/phpize.in | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/scripts/phpize.in b/scripts/phpize.in
+index 74e8bc3..f9620c7 100644
+--- a/scripts/phpize.in
++++ b/scripts/phpize.in
+@@ -162,6 +162,15 @@ phpize_autotools()
+   $PHP_AUTOHEADER || exit 1
+ }
+ 
++phpize_check_headers()
++{
++  if test ! -f $includedir/main/php.h; then
++    echo "Can't find PHP headers in $includedir"
++    echo "The php-devel package is required for use of this command."
++    exit 1
++  fi
++}
++
+ # Main script
+ 
+ case "$1" in
+@@ -180,12 +189,15 @@ case "$1" in
+ 
+   # Version
+   --version|-v)
++    phpize_check_headers
+     phpize_print_api_numbers
+     exit 0
+   ;;
+ 
+   # Default
+   *)
++     phpize_check_headers
++
+      phpize_check_configm4 0
+ 
+      phpize_check_build_files
+-- 
+2.21.0
+
