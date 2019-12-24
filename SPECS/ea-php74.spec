@@ -1122,7 +1122,7 @@ EXTENSION_DIR=%{_libdir}/php/modules; export EXTENSION_DIR
 # Set PEAR_INSTALLDIR to ensure that the hard-coded include_path
 # includes the PEAR directory even though pear is packaged
 # separately.
-PEAR_INSTALLDIR=%{_datadir}/pear; export PEAR_INSTALLDIR
+# PEAR_INSTALLDIR=%{_datadir}/pear; export PEAR_INSTALLDIR
 
 # Shell function to configure and build a PHP tree.
 build() {
