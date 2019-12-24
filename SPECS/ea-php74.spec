@@ -160,10 +160,6 @@ Source11: php-fpm.init
 Source50: 10-opcache.ini
 Source51: opcache-default.blacklist
 
-# Allow us to configure imap and recode at same time, but adjust conflicts
-# to prevent usage at same time.
-Patch7: 0001-Modify-recode-to-allow-IMAP-and-recode-to-be-simulta.patch
-
 # Prevent pear package from dragging in devel, which drags in a lot of
 # stuff for a production machine: https://bugzilla.redhat.com/show_bug.cgi?id=657812
 Patch43: 0002-Prevent-PEAR-package-from-bringing-in-devel.patch
@@ -940,7 +936,6 @@ inside them.
 
 %setup -q -n php-%{version}
 
-%patch7 -p1 -b .recode
 %patch43 -p1 -b .phpize
 %patch100 -p1 -b .cpanelmailheader
 %patch101 -p1 -b .disablezts
