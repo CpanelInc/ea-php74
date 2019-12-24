@@ -967,7 +967,6 @@ cp Zend/LICENSE Zend/ZEND_LICENSE
 cp TSRM/LICENSE TSRM_LICENSE
 cp sapi/fpm/LICENSE fpm_LICENSE
 cp ext/mbstring/libmbfl/LICENSE libmbfl_LICENSE
-cp ext/mbstring/oniguruma/COPYING oniguruma_COPYING
 cp ext/mbstring/ucgendat/OPENLDAP_LICENSE ucgendat_LICENSE
 cp ext/fileinfo/libmagic/LICENSE libmagic_LICENSE
 cp ext/bcmath/libbcmath/COPYING.LIB libbcmath_COPYING
@@ -1775,7 +1774,6 @@ fi
 %files mbstring -f files.mbstring
 %defattr(-,root,root,-)
 %doc libmbfl_LICENSE
-%doc oniguruma_COPYING
 %doc ucgendat_LICENSE
 %files gd -f files.gd
 %defattr(-,root,root,-)
