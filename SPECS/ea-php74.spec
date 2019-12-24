@@ -135,7 +135,7 @@ Summary:  PHP DSO
 %endif
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
-Version:  7.4.13
+Version:  7.4.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
 %define release_prefix 1
 Release:  %{release_prefix}%{?dist}.cpanel
@@ -1820,72 +1820,5 @@ fi
 
 
 %changelog
-* Wed Dec 18 2019 Cory McIntire <cory@cpanel.net> - 7.4.13-1
-- EA-8798: Update scl-php74 from v7.4.12 to v7.4.13
-
-* Fri Nov 22 2019 Tim Mullin <tim@cpanel.net> - 7.4.12-2
-- EA-8762: Update litespeed from upstream to 7.6
-
-* Thu Nov 21 2019 Cory McIntire <cory@cpanel.net> - 7.4.12-1
-- EA-8761: Update scl-php74 from v7.4.11 to v7.4.12
-
-* Thu Oct 24 2019 Cory McIntire <cory@cpanel.net> - 7.4.11-1
-- EA-8719: Update scl-php74 from v7.4.10 to v7.4.11
-
-* Fri Sep 27 2019 Cory McIntire <cory@cpanel.net> - 7.4.10-1
-- EA-8672: Update scl-php74 from v7.4.9 to v7.4.10
-
-* Thu Sep 12 2019 Tim Mullin <tim@cpanel.net> - 7.4.9-2
-- EA-8549: Build php-fpm with pcntl
-
-* Tue Sep 03 2019 Cory McIntire <cory@cpanel.net> - 7.4.9-1
-- EA-8636: Update scl-php74 from v7.4.8 to v7.4.9
-
-* Thu Aug 01 2019 Cory McIntire <cory@cpanel.net> - 7.4.8-1
-- EA-8594: Update scl-php74 from v7.4.7 to v7.4.8
-
-* Mon Jul 22 2019 Cory McIntire <cory@cpanel.net> - 7.4.7-3
-- EA-8576: Update litespeed from upstream to 7.5
-
-* Mon Jul 08 2019 Cory McIntire <cory@cpanel.net> - 7.4.7-2
-- EA-8558: Update litespeed from upstream to 7.4.2
-
-* Fri Jul 05 2019 Cory McIntire <cory@cpanel.net> - 7.4.7-1
-- EA-8561: Update scl-php74 from v7.4.6 to v7.4.7
-
-* Fri Jun 21 2019 Tim Mullin <tim@cpanel.net> - 7.4.6-2
-- EA-8538: Update litespeed from upstream to 7.4
-
-* Fri May 31 2019 Cory McIntire <cory@cpanel.net> - 7.4.6-1
-- EA-8515: Update scl-php74 from v7.4.5 to v7.4.6
-
-* Tue May 07 2019 Julian Brown <julian.brown@cpanel.net> - 7.4.5-2
-- ZC-5061: Add PLESK patches for FPM signal management
-
-* Thu May 02 2019 Cory McIntire <cory@cpanel.net> - 7.4.5-1
-- EA-8428: Update scl-php74 from v7.4.4 to v7.4.5
-
-* Thu Apr 25 2019 Daniel Muey <dan@cpanel.net> - 7.4.4-4
-- ZC-5036: Add find-latest-version (assumes PHP is checked out next ro ea-tools)
-
-* Mon Apr 22 2019 Tim Mullin <tim@cpanel.net> - 7.4.4-3
-- EA-8342: Update litespeed to new upstream update of 7.4
-
-* Tue Apr 16 2019 Tim Mullin <tim@cpanel.net> - 7.4.4-2
-- EA-8342: Update litespeed to 7.4
-
-* Thu Apr 04 2019 Cory McIntire <cory@cpanel.net> - 7.4.4-1
-- Updated to version 7.4.4 via update_pkg.pl (EA-8324)
-
-* Mon Mar 11 2019 Cory McIntire <cory@cpanel.net> - 7.4.3-2
-- EA-8280: Update opcache.blacklist filename location to match PHP version.
-
-* Thu Mar 07 2019 Cory McIntire <cory@cpanel.net> - 7.4.3-1
-- Updated to version 7.4.3 via update_pkg.pl (EA-8275)
-- Added patch for phpize to handle autotools on C6
-
-* Tue Mar 05 2019 Cory McIntire <cory@cpanel.net> - 7.4.2-2
-- EA-8226: Update PHP 7.4 build process to use scl autoconf
-
-* Thu Feb 07 2019 Dan Muey <dan@cpanel.net> - 7.4.2-1
+* Tue Dec 24 2019 Dan Muey <dan@cpanel.net> - 7.4.1-1
 - ZC-4640: Initial packaging
