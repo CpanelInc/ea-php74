@@ -14,8 +14,8 @@
 %scl_package php
 
 # API/ABI check
-%global apiver      20180741
-%global zendver     20180741
+%global apiver      20190902
+%global zendver     20190902
 %global pdover      20170320
 
 # Adds -z now to the linker flags
