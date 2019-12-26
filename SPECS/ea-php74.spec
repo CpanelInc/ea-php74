@@ -1101,6 +1101,7 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2
 ln -sf ../configure
 %configure \
     --cache-file=../config.cache \
@@ -1131,7 +1132,7 @@ ln -sf ../configure
     --enable-sockets \
     --with-kerberos \
     --enable-shmop \
-    --with-libxml-dir=/opt/cpanel/ea-libxml2 \
+    --with-libxml \
     --with-system-tzdata \
     --with-mhash \
 %if %{with_dtrace}
