@@ -1114,7 +1114,6 @@ ln -sf ../configure
     --without-pear \
     --with-bz2 \
     --with-freetype \
-    --with-png \
     --with-xpm \
     --without-gdbm \
     --with-gettext \
