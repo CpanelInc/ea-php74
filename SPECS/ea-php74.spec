@@ -1104,6 +1104,8 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2:%{_root_prefix}:/usr
 export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include
 export LIBXML_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
+export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
+export CURL_LIBS=-L/opt/cpanel/libcurl/%{_lib}
 ln -sf ../configure
 %configure \
     --cache-file=../config.cache \
