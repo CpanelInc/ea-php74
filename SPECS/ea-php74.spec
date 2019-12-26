@@ -1154,7 +1154,6 @@ pushd build-cgi
 build --libdir=%{_libdir}/php \
       --enable-pcntl \
       --enable-opcache \
-      --disable-opcache-file \
       --enable-phpdbg \
       --with-imap=shared,%{_prefix} \
       --with-imap-ssl \
