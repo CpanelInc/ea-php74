@@ -91,11 +91,9 @@
 %if 0%{?fedora} || 0%{?rhel} >= 6
 %global with_libedit   1
 %global with_enchant   1
-%global with_recode    1
 %else
 %global with_libedit   0
 %global with_enchant   0
-%global with_recode    0
 %endif
 %if 0%{?fedora} >= 27 || 0%{?rhel} >= 8
 %global with_pcre      1
@@ -534,7 +532,6 @@ Requires: %{?scl_prefix}libc-client%{?_isa}
 Requires: ea-openssl >= %{ea_openssl_ver}
 BuildRequires: krb5-devel%{?_isa}, ea-openssl >= %{ea_openssl_ver}, ea-openssl-devel >= %{ea_openssl_ver}
 BuildRequires: %{?scl_prefix}libc-client-devel%{?_isa}
-Conflicts: %{?scl_prefix}php-recode = %{version}-%{release}
 
 %description imap
 The %{?scl_prefix}php-imap module will add IMAP (Internet Message Access Protocol)
@@ -867,21 +864,6 @@ BuildRequires: aspell-devel >= 0.50.0
 %description pspell
 The %{?scl_prefix}php-pspell package contains a dynamic shared object that will add
 support for using the pspell library to PHP.
-
-%if %{with_recode}
-%package recode
-Summary: A module for PHP applications for using the recode library
-Group: System Environment/Libraries
-# All files licensed under PHP version 3.01
-License: PHP
-Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
-BuildRequires: recode-devel
-Conflicts: %{?scl_prefix}php-imap = %{version}-%{release}
-
-%description recode
-The %{?scl_prefix}php-recode package contains a dynamic shared object that will add
-support for using the recode library to PHP.
-%endif
 
 %package intl
 Summary: Internationalization extension for PHP applications
@@ -1258,9 +1240,6 @@ build --libdir=%{_libdir}/php \
 %if %{with_enchant}
       --with-enchant=shared,%{_root_prefix} \
 %endif
-%if %{with_recode}
-      --with-recode=shared,%{_root_prefix} \
-%endif
       --enable-fileinfo=shared
 popd
 
@@ -1482,9 +1461,6 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
     phar fileinfo intl \
 %if %{with_tidy}
     tidy \
-%endif
-%if %{with_recode}
-    recode \
 %endif
 %if %{with_zip}
     zip \
@@ -1786,9 +1762,6 @@ fi
 %files pspell -f files.pspell
 %files intl -f files.intl
 %files process -f files.process
-%if %{with_recode}
-%files recode -f files.recode
-%endif
 %if %{with_interbase}
 %files interbase -f files.interbase
 %endif
