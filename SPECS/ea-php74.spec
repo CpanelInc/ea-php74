@@ -1101,7 +1101,7 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
-PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2:%{_root_prefix}:/usr
 ln -sf ../configure
 %configure \
     --cache-file=../config.cache \
@@ -1113,14 +1113,13 @@ ln -sf ../configure
     --with-pic \
     --without-pear \
     --with-bz2 \
-    --with-freetype-dir=%{_root_prefix} \
-    --with-png-dir=%{_root_prefix} \
-    --with-xpm-dir=%{_root_prefix} \
-    --enable-gd-native-ttf \
+    --with-freetype \
+    --with-png \
+    --with-xpm \
     --without-gdbm \
     --with-gettext \
     --with-iconv \
-    --with-jpeg-dir=%{_root_prefix} \
+    --with-jpeg \
     --with-openssl=/opt/cpanel/ea-openssl --with-openssl-dir=/opt/cpanel/ea-openssl \
 %if %{with_pcre}
     --with-pcre-regex=%{_root_prefix} \
@@ -1160,9 +1159,9 @@ build --libdir=%{_libdir}/php \
       --enable-mbstring=shared \
       --enable-mbregex \
 %if %{with_webp}
-      --with-webp-dir=/usr \
+      --with-webp \
 %endif
-      --with-gd=shared \
+      --enable-gd=shared \
       --with-gmp=shared \
       --enable-calendar=shared \
       --enable-bcmath=shared \
