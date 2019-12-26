@@ -1122,7 +1122,6 @@ ln -sf ../configure
     --without-gdbm \
     --with-gettext \
     --with-iconv \
-    --with-jpeg \
     --with-openssl=/opt/cpanel/ea-openssl --with-openssl-dir=/opt/cpanel/ea-openssl \
 %if %{with_pcre}
     --with-pcre-regex=%{_root_prefix} \
