@@ -115,7 +115,6 @@
 %global with_systemd 1
 %endif
 
-%global with_libzip  0
 %global with_zip     1
 
 %if 0%{?fedora} < 18 && 0%{?rhel} < 7
@@ -203,9 +202,6 @@ Provides:      Provides: bundled(pcre2) = 10.32
 %endif
 BuildRequires: bzip2, perl, libtool >= 1.4.3, gcc-c++
 BuildRequires: libtool-ltdl-devel
-%if %{with_libzip}
-BuildRequires: libzip-devel >= 0.11
-%endif
 %if %{with_dtrace}
 BuildRequires: python
 BuildRequires: systemtap-sdt-devel
@@ -898,10 +894,6 @@ Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
-%if %{with_libzip}
-# 0.11.1 required, but 1.0.1 is bundled
-BuildRequires: pkgconfig(libzip) >= 1.0.1
-%endif
 
 %description zip
 The %{?scl_prefix}php-zip package delivers a module which will allow PHP scripts
@@ -1214,11 +1206,7 @@ build --libdir=%{_libdir}/php \
 %endif
       --enable-json=shared \
 %if %{with_zip}
-      --without-libzip \
       --enable-zip=shared \
-%endif
-%if %{with_libzip}
-      --with-libzip \
 %endif
       --without-readline \
 %if %{with_libedit}
