@@ -737,7 +737,6 @@ License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-dom = %{version}-%{release}, %{?scl_prefix}php-dom%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-domxml = %{version}-%{release}, %{?scl_prefix}php-domxml%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-wddx = %{version}-%{release}, %{?scl_prefix}php-wddx%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-xmlreader = %{version}-%{release}, %{?scl_prefix}php-xmlreader%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-xmlwriter = %{version}-%{release}, %{?scl_prefix}php-xmlwriter%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-xsl = %{version}-%{release}, %{?scl_prefix}php-xsl%{?_isa} = %{version}-%{release}
@@ -1122,7 +1121,7 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # Always static:
 # date, filter, libxml, reflection, spl: not supported
 # hash: for PHAR_SIG_SHA256 and PHAR_SIG_SHA512
-# session: dep on hash, used by soap and wddx
+# session: dep on hash, used by soap
 # pcre: used by filter, zip
 # pcntl, readline: only used by CLI sapi
 # openssl: for PHAR_SIG_OPENSSL
@@ -1216,7 +1215,6 @@ build --libdir=%{_libdir}/php \
       --with-pgsql=shared \
       --enable-simplexml=shared \
       --enable-xml=shared \
-      --enable-wddx=shared \
       --with-snmp=shared,%{_root_prefix} \
       --enable-soap=shared \
       --with-xsl=shared,%{_root_prefix} \
@@ -1271,7 +1269,7 @@ without_shared="--without-gd \
       --disable-opcache \
       --disable-xmlreader --disable-xmlwriter \
       --without-sqlite3 --disable-phar --disable-fileinfo \
-      --disable-json --without-pspell --disable-wddx \
+      --disable-json --without-pspell \
       --without-curl --disable-posix --disable-xml \
       --disable-simplexml --disable-exif --without-gettext \
       --without-iconv --disable-ftp --without-bz2 --disable-ctype \
@@ -1491,7 +1489,7 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
 %if %{with_zip}
     zip \
 %endif
-    pspell curl wddx xml \
+    pspell curl xml \
     posix shmop sysvshm sysvsem sysvmsg
 do
     # for extension load order
@@ -1499,7 +1497,7 @@ do
       opcache)
         # Zend extensions
         ini=10-${mod}.ini;;
-      pdo_*|mysqli|wddx|xmlreader|xmlrpc)
+      pdo_*|mysqli|xmlreader|xmlrpc)
         # Extensions with dependencies on 20-*
         ini=30-${mod}.ini;;
       *)
@@ -1526,7 +1524,7 @@ EOF
 done
 
 # The dom, xsl and xml* modules are all packaged in php-xml
-cat files.dom files.xsl files.xml{reader,writer} files.wddx \
+cat files.dom files.xsl files.xml{reader,writer} \
     files.simplexml >> files.xml
 
 # mysqlnd
