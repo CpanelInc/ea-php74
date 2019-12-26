@@ -1106,6 +1106,9 @@ export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include
 export LIBXML_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
 export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
 export CURL_LIBS=-L/opt/cpanel/libcurl/%{_lib}
+export KERBEROS_CFLAGS=-I/usr/include
+export KERBEROS_LIBS=-L/usr/%{_lib}
+
 ln -sf ../configure
 %configure \
     --cache-file=../config.cache \
