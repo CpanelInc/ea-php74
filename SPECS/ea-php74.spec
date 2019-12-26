@@ -1162,7 +1162,7 @@ build --libdir=%{_libdir}/php \
       --with-imap=shared,%{_prefix} \
       --with-imap-ssl \
       --enable-mbstring=shared \
-      --enable-mbregex \
+      --disable-mbregex \
 %if %{with_webp}
       --with-webp \
 %endif
