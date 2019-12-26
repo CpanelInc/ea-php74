@@ -1206,7 +1206,7 @@ build --libdir=%{_libdir}/php \
 %endif
       --enable-json=shared \
 %if %{with_zip}
-      --enable-zip=shared \
+      --with-zip=shared \
 %endif
       --without-readline \
 %if %{with_libedit}
