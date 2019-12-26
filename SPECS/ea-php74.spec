@@ -894,6 +894,7 @@ Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
+BuildRequires: libzip-devel
 
 %description zip
 The %{?scl_prefix}php-zip package delivers a module which will allow PHP scripts
@@ -1110,6 +1111,8 @@ export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
 export CURL_LIBS=-L/opt/cpanel/libcurl/%{_lib}
 export KERBEROS_CFLAGS=-I/usr/include
 export KERBEROS_LIBS=-L/usr/%{_lib}
+export LIBZIP_CFLAGS=-I/usr/include
+export LIBZIP_LIBS=-L/usr/%{_lib}
 
 ln -sf ../configure
 %configure \
