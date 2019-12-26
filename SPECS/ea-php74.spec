@@ -1131,6 +1131,7 @@ ln -sf ../configure
     --enable-exif \
     --enable-ftp \
     --enable-sockets \
+    --with-kerberos \
     --enable-shmop \
     --with-libxml \
     --with-system-tzdata \
