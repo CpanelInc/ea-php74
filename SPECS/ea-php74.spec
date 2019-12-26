@@ -1224,7 +1224,6 @@ build --libdir=%{_libdir}/php \
       --enable-posix=shared \
       --with-unixODBC=shared,%{_root_prefix} \
       --enable-intl=shared \
-      --with-icu-dir=%{_root_prefix} \
 %if %{with_enchant}
       --with-enchant=shared,%{_root_prefix} \
 %endif
