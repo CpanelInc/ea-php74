@@ -84,8 +84,10 @@
 %global with_tidy 0
 %endif
 %if 0%{?fedora} >= 11 || 0%{?rhel} > 6
+%global with_intl   1
 %global with_sqlite3   1
 %else
+%global with_intl   0
 %global with_sqlite3   0
 %endif
 %if 0%{?fedora} || 0%{?rhel} >= 6
@@ -861,17 +863,19 @@ BuildRequires: aspell-devel >= 0.50.0
 The %{?scl_prefix}php-pspell package contains a dynamic shared object that will add
 support for using the pspell library to PHP.
 
+%if %{with_intl}
 %package intl
 Summary: Internationalization extension for PHP applications
 Group: System Environment/Libraries
 # All files licensed under PHP version 3.01
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
-BuildRequires: libicu-devel >= 4.0
+BuildRequires: libicu-devel >= 50.1
 
 %description intl
 The %{?scl_prefix}php-intl package contains a dynamic shared object that will add
 support for using the ICU library to PHP.
+%endif
 
 %if %{with_enchant}
 %package enchant
@@ -1232,7 +1236,9 @@ build --libdir=%{_libdir}/php \
       --enable-shmop=shared \
       --enable-posix=shared \
       --with-unixODBC=shared,%{_root_prefix} \
+%if %{with_intl}
       --enable-intl=shared \
+%endif
 %if %{with_enchant}
       --with-enchant=shared,%{_root_prefix} \
 %endif
@@ -1454,7 +1460,10 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
 %if %{with_enchant}
     enchant \
 %endif
-    phar fileinfo intl \
+    phar fileinfo \
+%if %{with_intl}
+    intl \
+%endif
 %if %{with_tidy}
     tidy \
 %endif
@@ -1756,7 +1765,9 @@ fi
 %files tidy -f files.tidy
 %endif
 %files pspell -f files.pspell
+%if %{with_intl}
 %files intl -f files.intl
+%endif
 %files process -f files.process
 %if %{with_interbase}
 %files interbase -f files.interbase
