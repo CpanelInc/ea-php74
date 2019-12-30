@@ -180,6 +180,7 @@ BuildRequires: pam-devel
 Requires: ea-openssl >= %{ea_openssl_ver}
 Requires: ea-libxml2
 BuildRequires: ea-libxml2 ea-libxml2-devel
+BuildRequires: sqlite3 > 3.7.4
 BuildRequires: libstdc++-devel, ea-openssl >= %{ea_openssl_ver}, ea-openssl-devel >= %{ea_openssl_ver}, scl-utils-build
 # For Argon2 support
 BuildRequires: ea-libargon2-devel
