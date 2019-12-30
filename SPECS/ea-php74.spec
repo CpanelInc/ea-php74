@@ -178,7 +178,6 @@ Patch402: 0013-0022-PLESK-missed-kill.patch
 BuildRequires: bzip2-devel, %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel >= %{ea_libcurl_ver}, %{db_devel}
 BuildRequires: pam-devel
 Requires: ea-openssl >= %{ea_openssl_ver}
-BuildRequires: sqlite3 > 3.7.4
 BuildRequires: libstdc++-devel, ea-openssl >= %{ea_openssl_ver}, ea-openssl-devel >= %{ea_openssl_ver}, scl-utils-build
 # For Argon2 support
 BuildRequires: ea-libargon2-devel
