@@ -83,7 +83,7 @@
 %else
 %global with_tidy 0
 %endif
-%if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
+%if 0%{?fedora} >= 11 || 0%{?rhel} > 6
 %global with_sqlite3   1
 %else
 %global with_sqlite3   0
@@ -184,7 +184,7 @@ BuildRequires: ea-libargon2-devel
 Requires: ea-libargon2
 %if %{with_sqlite3}
 # For SQLite3 extension
-BuildRequires: sqlite-devel >= 3.6.0
+BuildRequires: sqlite-devel >= 3.7.5
 %else
 # Enough for pdo_sqlite
 BuildRequires: sqlite-devel >= 3.0.0
