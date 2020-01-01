@@ -1615,7 +1615,7 @@ fi
 %{_mandir}/man1/phar.1*
 %{_mandir}/man1/phar.phar.1*
 %{_mandir}/man1/phpize.1*
-%doc sapi/cgi/README* sapi/cli/README
+
 #{?scl: %{_root_bindir}/%{?scl_prefix}php}
 #{?scl: %{_root_bindir}/%{?scl_prefix}phar}
 
