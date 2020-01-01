@@ -185,11 +185,7 @@ BuildRequires: libstdc++-devel, ea-openssl >= %{ea_openssl_ver}, ea-openssl-deve
 BuildRequires: ea-libargon2-devel
 Requires: ea-libargon2
 %if %{with_sqlite3}
-# For SQLite3 extension
 BuildRequires: sqlite-devel >= 3.7.5
-%else
-# Enough for pdo_sqlite
-BuildRequires: sqlite-devel >= 3.0.0
 %endif
 BuildRequires: zlib-devel, smtpdaemon
 %if %{with_libedit}
@@ -562,8 +558,8 @@ Provides: %{?scl_prefix}php-pdo-abi = %{pdover}%{isasuffix}
 Provides: %{?scl_prefix}php(pdo-abi) = %{pdover}%{isasuffix}
 %if %{with_sqlite3}
 Provides: %{?scl_prefix}php-sqlite3 = %{version}-%{release}, %{?scl_prefix}php-sqlite3%{?_isa} = %{version}-%{release}
-%endif
 Provides: %{?scl_prefix}php-pdo_sqlite = %{version}-%{release}, %{?scl_prefix}php-pdo_sqlite%{?_isa} = %{version}-%{release}
+%endif
 
 %description pdo
 The %{?scl_prefix}php-pdo package contains a dynamic shared object that will add
@@ -1214,11 +1210,12 @@ build --libdir=%{_libdir}/php \
       --with-pdo-odbc=shared,unixODBC,%{_root_prefix} \
       --with-pdo-mysql=shared,mysqlnd \
       --with-pdo-pgsql=shared,%{_root_prefix} \
-      --with-pdo-sqlite=shared,%{_root_prefix} \
 %if %{with_sqlite3}
+      --with-pdo-sqlite=shared,%{_root_prefix} \
       --with-sqlite3=shared,%{_root_prefix} \
 %else
       --without-sqlite3 \
+      --without-pdo-sqlite \
 %endif
       --enable-json=shared \
 %if %{with_zip}
@@ -1453,9 +1450,9 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
     mbstring gd dom xsl soap bcmath dba xmlreader xmlwriter \
     simplexml bz2 calendar ctype exif ftp gettext gmp iconv \
     sockets tokenizer opcache \
-    pdo pdo_pgsql pdo_odbc pdo_sqlite json \
+    pdo pdo_pgsql pdo_odbc json \
 %if %{with_sqlite3}
-    sqlite3 \
+    pdo_sqlite sqlite3 \
 %endif
 %if %{with_interbase}
     interbase pdo_firebird \
@@ -1526,10 +1523,8 @@ cat files.pdo_firebird >> files.interbase
 # sysv* packaged in php-process
 cat files.shmop files.sysv* > files.process
 
-# Package sqlite3 and pdo_sqlite with pdo; isolating the sqlite dependency
-# isn't useful at this time since rpm itself requires sqlite.
-cat files.pdo_sqlite >> files.pdo
 %if %{with_sqlite3}
+cat files.pdo_sqlite >> files.pdo
 cat files.sqlite3 >> files.pdo
 %endif
 # Package json and phar in -common.
