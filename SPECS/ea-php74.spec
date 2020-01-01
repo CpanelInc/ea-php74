@@ -177,12 +177,6 @@ Patch108: 0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch
 
 Patch402: 0013-0022-PLESK-missed-kill.patch
 
-%if %{with_systemd}
-BuildRequires: systemd-libs
-BuildRequires: systemd-devel
-BuildRequires: systemd-units
-%endif
-
 BuildRequires: bzip2-devel, %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel >= %{ea_libcurl_ver}, %{db_devel}
 BuildRequires: pam-devel
 Requires: ea-openssl11 >= %{ea_openssl_ver}
