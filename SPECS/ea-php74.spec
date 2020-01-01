@@ -46,7 +46,7 @@
 %global mysql_sock %(mysql_config --socket  2>/dev/null || echo /var/lib/mysql/mysql.sock)
 
 # Build for LiteSpeed Web Server (LSAPI)
-%global with_lsws     1
+%global with_lsws     0
 
 # Regression tests take a long time, you can skip 'em with this
 %{!?runselftest: %{expand: %%global runselftest 1}}
