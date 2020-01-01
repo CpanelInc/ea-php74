@@ -1058,7 +1058,7 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
-
+export PKG_CONFIG_PATH=/usr/%{_lib}/pkgconfig
 export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
 export CURL_LIBS=-L/opt/cpanel/libcurl/%{_lib}
 export KERBEROS_CFLAGS=-I/usr/include
