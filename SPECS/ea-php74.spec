@@ -351,7 +351,6 @@ Provides: %{?scl_prefix}php-mhash = %{version}-%{release}, %{?scl_prefix}php-mha
 Provides: %{?scl_prefix}php-json = %{version}-%{release}, %{?scl_prefix}php-json%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-pecl-json = %{version}-%{release}, %{?scl_prefix}php-pecl-json%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-pecl(json) = %{version}-%{release}, %{?scl_prefix}php-pecl(json)%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-libxml = %{version}-%{release}, %{?scl_prefix}php-libxml%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-openssl = %{version}-%{release}, %{?scl_prefix}php-openssl%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-phar = %{version}-%{release}, %{?scl_prefix}php-phar%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-pcre = %{version}-%{release}, %{?scl_prefix}php-pcre%{?_isa} = %{version}-%{release}
@@ -655,18 +654,6 @@ HTML-embeddable scripting language. If you need ODBC support for PHP
 applications, you will need to install this package and the php
 package.
 
-%package soap
-Summary: A module for PHP applications that use the SOAP protocol
-Group: Development/Languages
-# All files licensed under PHP version 3.01
-License: PHP
-Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
-BuildRequires: ea-libxml2-devel
-
-%description soap
-The %{?scl_prefix}php-soap package contains a dynamic shared object that will add
-support to PHP for using the SOAP web services protocol.
-
 %package sockets
 Summary: A module for PHP applications that need low-level access to sockets
 Group: Development/Languages
@@ -719,38 +706,6 @@ The %{?scl_prefix}php-snmp package contains a dynamic shared object that will ad
 support for querying SNMP devices to PHP.  PHP is an HTML-embeddable
 scripting language. If you need SNMP support for PHP applications, you
 will need to install this package and the php package.
-
-%package xml
-Summary: A module for PHP applications which use XML
-Group: Development/Languages
-# All files licensed under PHP version 3.01
-License: PHP
-Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-dom = %{version}-%{release}, %{?scl_prefix}php-dom%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-domxml = %{version}-%{release}, %{?scl_prefix}php-domxml%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-xmlreader = %{version}-%{release}, %{?scl_prefix}php-xmlreader%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-xmlwriter = %{version}-%{release}, %{?scl_prefix}php-xmlwriter%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-xsl = %{version}-%{release}, %{?scl_prefix}php-xsl%{?_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}php-simplexml = %{version}-%{release}, %{?scl_prefix}php-simplexml%{?_isa} = %{version}-%{release}
-BuildRequires: libxslt-devel >= 1.0.18-1, ea-libxml2-devel >= 2.4.14-1
-Requires: ea-libxml2 >= 2.4.14-1
-
-%description xml
-The %{?scl_prefix}php-xml package contains dynamic shared objects which add support
-to PHP for manipulating XML documents using the DOM tree,
-and performing XSL transformations on XML documents.
-
-%package xmlrpc
-Summary: A module for PHP applications which use the XML-RPC protocol
-Group: Development/Languages
-# All files licensed under PHP version 3.01, except
-# libXMLRPC is licensed under BSD
-License: PHP and BSD
-Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
-
-%description xmlrpc
-The %{?scl_prefix}php-xmlrpc package contains a dynamic shared object that will add
-support for the XML-RPC protocol to PHP.
 
 %package mbstring
 Summary: A module for PHP applications which need multi-byte string handling
@@ -1103,11 +1058,6 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # zlib: used by image
 
 
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl/%{_lib}/pkgconfig
-export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
-export LIBXML_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
-export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include
-export XSL_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
 export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
 export CURL_LIBS=-L/opt/cpanel/libcurl/%{_lib}
 export KERBEROS_CFLAGS=-I/usr/include
@@ -1144,7 +1094,7 @@ ln -sf ../configure
     --enable-sockets \
     --with-kerberos \
     --enable-shmop \
-    --with-libxml \
+    --without-libxml \
     --with-system-tzdata \
     --with-mhash \
 %if %{with_dtrace}
@@ -1188,7 +1138,7 @@ build --libdir=%{_libdir}/php \
       --with-iconv=shared \
       --enable-sockets=shared \
       --enable-tokenizer=shared \
-      --with-xmlrpc=shared \
+      --without-xmlrpc \
       --with-ldap=shared --with-ldap-sasl \
       --enable-mysqlnd=shared \
       --with-mysqli=shared,mysqlnd \
@@ -1197,14 +1147,14 @@ build --libdir=%{_libdir}/php \
       --with-interbase=shared,%{_libdir}/firebird \
       --with-pdo-firebird=shared,%{_libdir}/firebird \
 %endif
-      --enable-dom=shared \
+      --disable-dom \
       --with-pgsql=shared \
-      --enable-simplexml=shared \
-      --enable-xml=shared \
+      --disable-simplexml \
+      --disable-xml \
       --with-snmp=shared,%{_root_prefix} \
-      --enable-soap=shared \
-      --with-xsl=shared,%{_root_prefix} \
-      --enable-xmlreader=shared --enable-xmlwriter=shared \
+      --disable-soap \
+      --without-xsl \
+      --disable-xmlreader --disable-xmlwriter \
       --with-curl=shared,%{libcurl_prefix} \
       --enable-pdo=shared \
       --with-pdo-odbc=shared,unixODBC,%{_root_prefix} \
@@ -1445,10 +1395,10 @@ install -m 644 %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/php-fpm
 %endif
 
 # Generate files lists and stub .ini files for each subpackage
-for mod in pgsql odbc ldap snmp xmlrpc imap \
+for mod in pgsql odbc ldap snmp imap \
     mysqlnd mysqli pdo_mysql \
-    mbstring gd dom xsl soap bcmath dba xmlreader xmlwriter \
-    simplexml bz2 calendar ctype exif ftp gettext gmp iconv \
+    mbstring gd bcmath dba \
+    bz2 calendar ctype exif ftp gettext gmp iconv \
     sockets tokenizer opcache \
     pdo pdo_pgsql pdo_odbc json \
 %if %{with_sqlite3}
@@ -1470,7 +1420,7 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
 %if %{with_zip}
     zip \
 %endif
-    pspell curl xml \
+    pspell curl \
     posix shmop sysvshm sysvsem sysvmsg
 do
     # for extension load order
@@ -1478,7 +1428,7 @@ do
       opcache)
         # Zend extensions
         ini=10-${mod}.ini;;
-      pdo_*|mysqli|xmlreader|xmlrpc)
+      pdo_*|mysqli)
         # Extensions with dependencies on 20-*
         ini=30-${mod}.ini;;
       *)
@@ -1503,10 +1453,6 @@ EOF
 %config(noreplace) %attr(644,root,root) %{_sysconfdir}/php.d/${ini}
 EOF
 done
-
-# The dom, xsl and xml* modules are all packaged in php-xml
-cat files.dom files.xsl files.xml{reader,writer} \
-    files.simplexml >> files.xml
 
 # mysqlnd
 cat files.mysqli \
@@ -1745,14 +1691,11 @@ fi
 %files imap -f files.imap
 %files ldap -f files.ldap
 %files snmp -f files.snmp
-%files xml -f files.xml
-%files xmlrpc -f files.xmlrpc
 %files mbstring -f files.mbstring
 %defattr(-,root,root,-)
 %doc libmbfl_LICENSE
 %files gd -f files.gd
 %defattr(-,root,root,-)
-%files soap -f files.soap
 %files bcmath -f files.bcmath
 %defattr(-,root,root,-)
 %license libbcmath_LICENSE
