@@ -1594,7 +1594,7 @@ fi
 
 %files common -f files.common
 %defattr(-,root,root)
-%doc CODING_STANDARDS CREDITS EXTENSIONS LICENSE NEWS README*
+%doc CODING_STANDARDS.md EXTENSIONS LICENSE NEWS README*
 %doc Zend/ZEND_* TSRM_LICENSE
 %doc libmagic_LICENSE
 %doc php.ini-*
