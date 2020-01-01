@@ -49,7 +49,8 @@
 %global with_lsws     0
 
 # Regression tests take a long time, you can skip 'em with this
-%{!?runselftest: %{expand: %%global runselftest 1}}
+# %{!?runselftest: %{expand: %%global runselftest 1}}
+%global runselftest 0
 
 # Use the arch-specific mysql_config binary to avoid mismatch with the
 # arch detection heuristic used by bindir/mysql_config.
