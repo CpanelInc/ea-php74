@@ -1103,7 +1103,7 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # zlib: used by image
 
 
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl/%{_lib}/pkgconfig
 export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export LIBXML_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include
@@ -1133,7 +1133,7 @@ ln -sf ../configure
     --without-gdbm \
     --with-gettext \
     --with-iconv \
-    --with-openssl=/opt/cpanel/ea-openssl --with-openssl-dir=/opt/cpanel/ea-openssl \
+    --with-openssl \
 %if %{with_pcre}
     --with-pcre-regex=%{_root_prefix} \
 %endif
