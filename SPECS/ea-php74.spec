@@ -1118,6 +1118,8 @@ export KERBEROS_CFLAGS=-I/usr/include
 export KERBEROS_LIBS=-L/usr/%{_lib}
 export LIBZIP_CFLAGS=-I/usr/include
 export LIBZIP_LIBS=-L/usr/%{_lib}
+export SASL_CFLAGS=-I/usr/include
+export SASL_LIBS=-L/usr/%{_lib}
 
 ln -sf ../configure
 %configure \
