@@ -294,6 +294,7 @@ Requires: ea-apache24-mod_proxy_fcgi
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
 %if %{with_systemd}
+BuildRequires: systemd-libs
 BuildRequires: systemd-devel
 BuildRequires: systemd-units
 Requires: systemd-units
