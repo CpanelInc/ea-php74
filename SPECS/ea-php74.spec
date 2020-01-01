@@ -303,6 +303,10 @@ Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
 BuildRequires: systemd-libs
 BuildRequires: systemd-devel
 BuildRequires: systemd-units
+Requires: systemd-libs
+Requires(post): systemd-libs
+Requires(preun): systemd-libs
+Requires(postun): systemd-libs
 Requires: systemd-units
 Requires(post): systemd-units
 Requires(preun): systemd-units
