@@ -1,0 +1,26 @@
+From 42c7038207f01e90fc6e259316ea9aa7246999ce Mon Sep 17 00:00:00 2001
+From: Daniel Muey <dan@cpanel.net>
+Date: Thu, 2 Jan 2020 08:08:42 -0600
+Subject: [PATCH] Patch fpm sapi config to look for the package that a. exists
+ and b. owns the `sd-daemon` header file
+
+---
+ sapi/fpm/config.m4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sapi/fpm/config.m4 b/sapi/fpm/config.m4
+index ad89c1bb..6a36ecd8 100644
+--- a/sapi/fpm/config.m4
++++ b/sapi/fpm/config.m4
+@@ -549,7 +549,7 @@ if test "$PHP_FPM" != "no"; then
+     [no])
+ 
+   if test "$PHP_FPM_SYSTEMD" != "no" ; then
+-    PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 209])
++    PKG_CHECK_MODULES([SYSTEMD], [systemd-devel >= 209])
+ 
+     AC_CHECK_HEADERS(systemd/sd-daemon.h, [HAVE_SD_DAEMON_H="yes"], [HAVE_SD_DAEMON_H="no"])
+     if test $HAVE_SD_DAEMON_H = "no"; then
+-- 
+2.24.0
+

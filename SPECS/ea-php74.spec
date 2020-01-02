@@ -160,6 +160,8 @@ Source11: php-fpm.init
 Source50: 10-opcache.ini
 Source51: opcache-default.blacklist
 
+Patch42: 0001-Patch-fpm-sapi-config-to-look-for-the-package-that-a.patch
+
 # Prevent pear package from dragging in devel, which drags in a lot of
 # stuff for a production machine: https://bugzilla.redhat.com/show_bug.cgi?id=657812
 Patch43: 0002-Prevent-PEAR-package-from-bringing-in-devel.patch
@@ -295,18 +297,13 @@ Requires: ea-apache24-mod_proxy_fcgi
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
 %if %{with_systemd}
-BuildRequires: systemd-libs
-BuildRequires: systemd-devel
-BuildRequires: systemd-units
-Requires: systemd-devel
-Requires: systemd-libs
-Requires(post): systemd-libs
-Requires(preun): systemd-libs
-Requires(postun): systemd-libs
-Requires: systemd-units
-Requires(post): systemd-units
-Requires(preun): systemd-units
-Requires(postun): systemd-units
+BuildRequires: systemd-libs >= 209
+BuildRequires: systemd-devel >= 209
+BuildRequires: systemd-units >= 209
+Requires: systemd-units >= 209
+Requires(post): systemd-units >= 209
+Requires(preun): systemd-units >= 209
+Requires(postun): systemd-units >= 209
 # This is actually needed for the %%triggerun script but Requires(triggerun)
 # is not valid.  We can use %%post because this particular %%triggerun script
 # should fire just after this package is installed.
@@ -870,6 +867,7 @@ inside them.
 
 %setup -q -n php-%{version}
 
+%patch42 -p1 -b .systemdpackage
 %patch43 -p1 -b .phpize
 %patch100 -p1 -b .cpanelmailheader
 %patch101 -p1 -b .disablezts
