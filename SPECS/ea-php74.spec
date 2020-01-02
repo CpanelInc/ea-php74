@@ -297,13 +297,13 @@ Requires: ea-apache24-mod_proxy_fcgi
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
 %if %{with_systemd}
-BuildRequires: systemd-libs >= 209
-BuildRequires: systemd-devel >= 209
-BuildRequires: systemd-units >= 209
-Requires: systemd-units >= 209
-Requires(post): systemd-units >= 209
-Requires(preun): systemd-units >= 209
-Requires(postun): systemd-units >= 209
+BuildRequires: systemd-libs >= 208
+BuildRequires: systemd-devel >= 208
+BuildRequires: systemd-units >= 208
+Requires: systemd-units >= 208
+Requires(post): systemd-units >= 208
+Requires(preun): systemd-units >= 208
+Requires(postun): systemd-units >= 208
 # This is actually needed for the %%triggerun script but Requires(triggerun)
 # is not valid.  We can use %%post because this particular %%triggerun script
 # should fire just after this package is installed.

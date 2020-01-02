@@ -17,7 +17,7 @@ index ad89c1bb..6a36ecd8 100644
  
    if test "$PHP_FPM_SYSTEMD" != "no" ; then
 -    PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 209])
-+    PKG_CHECK_MODULES([SYSTEMD], [systemd-devel >= 209])
++    PKG_CHECK_MODULES([SYSTEMD], [systemd-devel >= 208])
  
      AC_CHECK_HEADERS(systemd/sd-daemon.h, [HAVE_SD_DAEMON_H="yes"], [HAVE_SD_DAEMON_H="no"])
      if test $HAVE_SD_DAEMON_H = "no"; then
