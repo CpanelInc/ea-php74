@@ -160,7 +160,7 @@ Source11: php-fpm.init
 Source50: 10-opcache.ini
 Source51: opcache-default.blacklist
 
-Patch42: 0001-Patch-fpm-sapi-config-to-look-for-the-package-that-a.patch
+Patch42: 0001-Remove-faulty-systemd-check-from-fpm-sapi-config.patch
 
 # Prevent pear package from dragging in devel, which drags in a lot of
 # stuff for a production machine: https://bugzilla.redhat.com/show_bug.cgi?id=657812
@@ -297,13 +297,13 @@ Requires: ea-apache24-mod_proxy_fcgi
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
 %if %{with_systemd}
-BuildRequires: systemd-libs >= 208
-BuildRequires: systemd-devel >= 208
-BuildRequires: systemd-units >= 208
-Requires: systemd-units >= 208
-Requires(post): systemd-units >= 208
-Requires(preun): systemd-units >= 208
-Requires(postun): systemd-units >= 208
+BuildRequires: systemd-libs
+BuildRequires: systemd-devel
+BuildRequires: systemd-units
+Requires: systemd-units
+Requires(post): systemd-units
+Requires(preun): systemd-units
+Requires(postun): systemd-units
 # This is actually needed for the %%triggerun script but Requires(triggerun)
 # is not valid.  We can use %%post because this particular %%triggerun script
 # should fire just after this package is installed.
