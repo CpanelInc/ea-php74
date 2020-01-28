@@ -1200,7 +1200,7 @@ build --libdir=%{_libdir}/php \
       --enable-fileinfo=shared
 popd
 
-without_shared="--without-gd \
+without_shared="--disable-gd \
       --disable-dom --disable-dba --without-unixODBC \
       --disable-opcache \
       --disable-xmlreader --disable-xmlwriter \
@@ -1219,7 +1219,7 @@ pushd build-apache
 build --with-apxs2=%{_httpd_apxs} \
       --libdir=%{_libdir}/php \
 %if %{with_lsws}
-      --with-litespeed \
+      --enable-litespeed \
 %endif
       --without-mysqli \
       --disable-pdo \
