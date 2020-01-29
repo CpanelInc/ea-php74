@@ -160,7 +160,7 @@ Source11: php-fpm.init
 Source50: 10-opcache.ini
 Source51: opcache-default.blacklist
 
-Patch42: 0001-Remove-faulty-systemd-check-from-fpm-sapi-config.patch
+Patch42: 0001-EA4-OBS-ready.patch
 
 # Prevent pear package from dragging in devel, which drags in a lot of
 # stuff for a production machine: https://bugzilla.redhat.com/show_bug.cgi?id=657812
@@ -180,6 +180,7 @@ Patch108: 0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch
 
 Patch402: 0013-0022-PLESK-missed-kill.patch
 
+BuildRequires: ea-libxml2-devel
 BuildRequires: bzip2-devel, %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel >= %{ea_libcurl_ver}, %{db_devel}
 BuildRequires: pam-devel
 Requires: ea-openssl11 >= %{ea_openssl_ver}
@@ -736,8 +737,8 @@ Provides: %{?scl_prefix}php-xmlreader = %{version}-%{release}, %{?scl_prefix}php
 Provides: %{?scl_prefix}php-xmlwriter = %{version}-%{release}, %{?scl_prefix}php-xmlwriter%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-xsl = %{version}-%{release}, %{?scl_prefix}php-xsl%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-simplexml = %{version}-%{release}, %{?scl_prefix}php-simplexml%{?_isa} = %{version}-%{release}
-BuildRequires: libxslt-devel >= 1.0.18-1, ea-libxml2-devel >= 2.4.14-1
-Requires: ea-libxml2 >= 2.4.14-1
+BuildRequires: libxslt-devel >= 1.0.18-1, ea-libxml2-devel
+Requires: ea-libxml2
 
 %description xml
 The %{?scl_prefix}php-xml package contains dynamic shared objects which add support
@@ -1107,7 +1108,9 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
-export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl/%{_lib}/pkgconfig
+export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig
+export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
+export LIBXML_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export XSL_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
 export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
