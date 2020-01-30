@@ -1110,9 +1110,9 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 
 export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig
 export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
-export LIBXML_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
+export LIBXML_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
-export XSL_LIBS=-L/opt/cpanel/ea-libxml2/%{_lib}
+export XSL_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
 export CURL_LIBS=-L/opt/cpanel/libcurl/%{_lib}
 export KERBEROS_CFLAGS=-I/usr/include
