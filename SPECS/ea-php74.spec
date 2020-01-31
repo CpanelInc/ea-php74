@@ -1121,6 +1121,9 @@ export LIBZIP_CFLAGS=-I/usr/include
 export LIBZIP_LIBS=-L/usr/%{_lib}
 export SASL_CFLAGS=-I/usr/include
 export SASL_LIBS=-L/usr/%{_lib}
+%if %{with_systemd}
+export SYSTEMD_LIBS=-lsystemd
+%endif
 
 ln -sf ../configure
 %configure \
