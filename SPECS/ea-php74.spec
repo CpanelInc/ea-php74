@@ -899,7 +899,7 @@ Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
-BuildRequires: pkgconfig(libzip) >= 0.9
+BuildRequires: libzip-devel >= 0.9
 
 %description zip
 The %{?scl_prefix}php-zip package delivers a module which will allow PHP scripts
