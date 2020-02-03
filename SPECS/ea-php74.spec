@@ -118,7 +118,7 @@
 %global with_systemd 1
 %endif
 
-%global with_zip     1
+%global with_zip     0
 
 %if 0%{?fedora} < 18 && 0%{?rhel} < 7
 %global db_devel  db4-devel
@@ -899,7 +899,7 @@ Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
-BuildRequires: libzip-devel >= 0.9
+BuildRequires: libzip-devel
 
 %description zip
 The %{?scl_prefix}php-zip package delivers a module which will allow PHP scripts
