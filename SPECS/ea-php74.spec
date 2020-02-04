@@ -118,7 +118,7 @@
 %global with_systemd 1
 %endif
 
-%global with_zip     0
+%global with_zip     1
 
 %if 0%{?fedora} < 18 && 0%{?rhel} < 7
 %global db_devel  db4-devel
@@ -898,8 +898,9 @@ Summary: A module for PHP applications that need to handle .zip files
 Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
+Requires: ea-libzip
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
-BuildRequires: libzip-devel
+BuildRequires: ea-libzip-devel
 
 %description zip
 The %{?scl_prefix}php-zip package delivers a module which will allow PHP scripts
@@ -1121,6 +1122,11 @@ export SASL_CFLAGS=-I/usr/include
 export SASL_LIBS=-L/usr/%{_lib}
 %if %{with_systemd}
 export SYSTEMD_LIBS=-lsystemd
+%endif
+
+%if %{with_zip}
+export LIBZIP_CFLAGS=-I/opt/cpanel/libzip/include
+export LIBZIP_LIBS="-L/opt/cpanel/libzip/lib64 -lzip"
 %endif
 
 ln -sf ../configure
