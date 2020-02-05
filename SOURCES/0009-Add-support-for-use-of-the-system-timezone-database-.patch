@@ -1,7 +1,7 @@
-From 5b15664195920187aa520f893dc609c69e958ba0 Mon Sep 17 00:00:00 2001
+From db224a4a837dae21dd9f1c32e3ba7af919120474 Mon Sep 17 00:00:00 2001
 From: Daniel Muey <dan@cpanel.net>
 Date: Thu, 7 Feb 2019 12:22:33 -0600
-Subject: [PATCH 09/13] Add support for use of the system timezone database,
+Subject: [PATCH 09/11] Add support for use of the system timezone database,
  rather than embedding a copy. Discussed upstream but was not desired.
 
 History:
@@ -34,10 +34,10 @@ r1: initial revision
  2 files changed, 545 insertions(+), 3 deletions(-)
 
 diff --git a/ext/date/config0.m4 b/ext/date/config0.m4
-index 6c9d614..5321cc9 100644
+index 20e4164..a612436 100644
 --- a/ext/date/config0.m4
 +++ b/ext/date/config0.m4
-@@ -9,6 +9,19 @@ io.h
+@@ -4,6 +4,19 @@ AC_CHECK_HEADERS([io.h])
  dnl Check for strtoll, atoll
  AC_CHECK_FUNCS(strtoll atoll)
  
@@ -661,5 +661,5 @@ index 020da31..9b39c6e 100644
  		*error_code = TIMELIB_ERROR_NO_SUCH_TIMEZONE;
  		tmp = NULL;
 -- 
-2.21.0
+2.24.1
 
