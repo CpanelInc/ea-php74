@@ -120,6 +120,14 @@
 
 %global with_zip     1
 
+%if %{with_zip}
+# Note I have this here even though there is a zip package, as the lib is
+# used internally
+Requires: ea-libzip
+BuildRequires: ea-libzip
+BuildRequires: ea-libzip-devel
+%endif
+
 %if 0%{?fedora} < 18 && 0%{?rhel} < 7
 %global db_devel  db4-devel
 %else
@@ -898,9 +906,7 @@ Summary: A module for PHP applications that need to handle .zip files
 Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
-Requires: ea-libzip
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
-BuildRequires: ea-libzip-devel
 
 %description zip
 The %{?scl_prefix}php-zip package delivers a module which will allow PHP scripts
@@ -1125,8 +1131,8 @@ export SYSTEMD_LIBS=-lsystemd
 %endif
 
 %if %{with_zip}
-export LIBZIP_CFLAGS=-I/opt/cpanel/libzip/include
-export LIBZIP_LIBS="-L/opt/cpanel/libzip/lib64 -lzip"
+export LIBZIP_CFLAGS=-I/opt/cpanel/ea-libzip/include
+export LIBZIP_LIBS="-L/opt/cpanel/ea-libzip/lib64 -lzip"
 %endif
 
 ln -sf ../configure
