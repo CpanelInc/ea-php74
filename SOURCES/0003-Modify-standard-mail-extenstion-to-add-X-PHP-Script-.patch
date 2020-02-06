@@ -1,7 +1,7 @@
-From 1817122e9577de005fd0387f8b791d9041570906 Mon Sep 17 00:00:00 2001
+From 600575b2da45305e6f6022c535b870b0157a95b6 Mon Sep 17 00:00:00 2001
 From: Cory McIntire <cory@cpanel.net>
 Date: Fri, 2 Mar 2018 11:06:08 -0600
-Subject: [PATCH 03/13] Modify standard mail extenstion to add X-PHP-Script
+Subject: [PATCH 03/11] Modify standard mail extenstion to add X-PHP-Script
  header
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 03/13] Modify standard mail extenstion to add X-PHP-Script
  1 file changed, 50 insertions(+)
 
 diff --git a/ext/standard/mail.c b/ext/standard/mail.c
-index ca6ca11..e40e267 100644
+index b27923a..3cb89b3 100644
 --- a/ext/standard/mail.c
 +++ b/ext/standard/mail.c
-@@ -537,6 +537,52 @@ PHPAPI int php_mail(char *to, char *subject, char *message, char *headers, char
+@@ -533,6 +533,52 @@ PHPAPI int php_mail(char *to, char *subject, char *message, char *headers, char
  		MAIL_RET(0);
  	}
  
@@ -65,7 +65,7 @@ index ca6ca11..e40e267 100644
  	if (!sendmail_path) {
  #ifdef PHP_WIN32
  		/* handle old style win smtp sending */
-@@ -600,6 +646,10 @@ PHPAPI int php_mail(char *to, char *subject, char *message, char *headers, char
+@@ -596,6 +642,10 @@ PHPAPI int php_mail(char *to, char *subject, char *message, char *headers, char
  #endif
  		fprintf(sendmail, "To: %s\n", to);
  		fprintf(sendmail, "Subject: %s\n", subject);
@@ -77,5 +77,5 @@ index ca6ca11..e40e267 100644
  			fprintf(sendmail, "%s\n", hdr);
  		}
 -- 
-2.21.0
+2.24.1
 

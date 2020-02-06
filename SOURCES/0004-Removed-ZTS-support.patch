@@ -1,7 +1,7 @@
-From 455250c6b8fd8caa431eb24a429401cbdcb09d8c Mon Sep 17 00:00:00 2001
+From f7613c83f7ffcbd1e9e6b4714a2b605eae355766 Mon Sep 17 00:00:00 2001
 From: Kurt Newman <kurt.newman@cpanel.net>
 Date: Fri, 11 Dec 2015 12:18:01 -0600
-Subject: [PATCH 04/13] Removed ZTS support
+Subject: [PATCH 04/11] Removed ZTS support
 
 Case EA-3788: This patch removes threaded support in PHP for the
 following reasons:
@@ -15,10 +15,10 @@ following reasons:
  1 file changed, 11 deletions(-)
 
 diff --git a/sapi/apache2handler/config.m4 b/sapi/apache2handler/config.m4
-index 44dee3f..52321e9 100644
+index 55c1617..38b1085 100644
 --- a/sapi/apache2handler/config.m4
 +++ b/sapi/apache2handler/config.m4
-@@ -107,17 +107,6 @@ if test "$PHP_APXS2" != "no"; then
+@@ -105,17 +105,6 @@ if test "$PHP_APXS2" != "no"; then
      ;;
    esac
  
@@ -37,5 +37,5 @@ index 44dee3f..52321e9 100644
    PHP_SUBST(APXS)
  else
 -- 
-2.21.0
+2.24.1
 

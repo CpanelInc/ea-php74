@@ -1,7 +1,7 @@
-From 73d92beb69f0f75182b931fb58af58c3d941566d Mon Sep 17 00:00:00 2001
+From 5fac7cd5fde77d1701f90542944e57cf65ee99fc Mon Sep 17 00:00:00 2001
 From: Matt Dees <matt@cpanel.net>
 Date: Fri, 19 Aug 2016 10:10:41 -0500
-Subject: [PATCH 07/13] Chroot FPM users with noshell and jailshell
+Subject: [PATCH 07/11] Chroot FPM users with noshell and jailshell
 
 Case CPANEL-7016: This change will cause PHP-FPM to jail FPM users
 if their shells are set to noshell or jailshell no matter what.
@@ -112,5 +112,5 @@ index 6490a7b..8b20424 100644
  		if (0 > chroot(wp->config->chroot)) {
  			zlog(ZLOG_SYSERROR, "[pool %s] failed to chroot(%s)",  wp->config->name, wp->config->chroot);
 -- 
-2.21.0
+2.24.1
 
