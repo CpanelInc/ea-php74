@@ -1128,7 +1128,7 @@ export KERBEROS_LIBS=-L/usr/%{_lib}
 export SASL_CFLAGS=-I/usr/include
 export SASL_LIBS=-L/usr/%{_lib}
 export OPENSSL_CFLAGS=-I/opt/cpanel/ea-openssl11/include
-export OPENSSL_LIBS="-L/opt/cpanel/ea-openssl11/lib -lssl -lcrypto"
+export OPENSSL_LIBS="-L/opt/cpanel/ea-openssl11/lib -lssl -lcrypto -lresolv"
 
 %if %{with_systemd}
 export SYSTEMD_LIBS=-lsystemd
