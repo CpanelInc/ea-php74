@@ -1724,7 +1724,6 @@ fi
 %dir %{_datadir}/fpm
 %{_datadir}/fpm/status.html
 %dir %{_sysconfdir}/sysconfig
-%dir %{_sbindir}
 %dir %{_mandir}/man8
 %dir %{_localstatedir}/log
 %dir %{_localstatedir}/run
