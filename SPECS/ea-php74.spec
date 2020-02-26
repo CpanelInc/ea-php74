@@ -1409,6 +1409,13 @@ install -m 755 build-apache/sapi/litespeed/php $RPM_BUILD_ROOT%{_bindir}/lsphp
 # Log
 install -d $RPM_BUILD_ROOT%{_localstatedir}/log/php-fpm
 install -d $RPM_BUILD_ROOT%{_localstatedir}/run/php-fpm
+
+# we need to do the following to compensate for the way
+# EA4 on OBS was built rather than EA4-Opensuse
+
+install -d $RPM_BUILD_ROOT/opt/cpanel/ea-php74/root/usr/var/log/php-fpm
+install -d $RPM_BUILD_ROOT/opt/cpanel/ea-php74/root/usr/var/run/php-fpm
+
 # Config
 install -m 755 -d $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.d
 install -m 644 %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.conf
@@ -1702,6 +1709,12 @@ fi
 %if %{with_fpm}
 %files fpm
 %defattr(-,root,root)
+# we need to do the following to compensate for the way
+# EA4 on OBS was built rather than EA4-Opensuse
+/opt/cpanel/ea-php74/root/usr/var/log
+/opt/cpanel/ea-php74/root/usr/var/run
+/opt/cpanel/ea-php74/root/usr/var/log/php-fpm
+/opt/cpanel/ea-php74/root/usr/var/run/php-fpm
 %doc php-fpm.conf.default
 %license fpm_LICENSE
 %config(noreplace) %{_sysconfdir}/php-fpm.conf
@@ -1800,7 +1813,6 @@ fi
 %if %{with_zip}
 %files zip -f files.zip
 %endif
-
 
 %changelog
 * Wed Feb 05 2020 Daniel Muey <dan@cpanel.net> - 7.4.2-1
