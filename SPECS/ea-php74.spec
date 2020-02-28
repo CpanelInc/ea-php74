@@ -1712,8 +1712,8 @@ fi
 %defattr(-,root,root)
 # we need to do the following to compensate for the way
 # EA4 on OBS was built rather than EA4-Opensuse
-%attr(770,nobody,root) /opt/cpanel/ea-php74/root/usr/var/log/php-fpm
-%attr(711,root,root) /opt/cpanel/ea-php74/root/usr/var/run/php-fpm
+%attr(770,nobody,root) %dir /opt/cpanel/ea-php74/root/usr/var/log/php-fpm
+%attr(711,root,root) %dir /opt/cpanel/ea-php74/root/usr/var/run/php-fpm
 %doc php-fpm.conf.default
 %license fpm_LICENSE
 %config(noreplace) %{_sysconfdir}/php-fpm.conf
