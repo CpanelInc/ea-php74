@@ -1411,11 +1411,11 @@ install -m 755 build-apache/sapi/litespeed/php $RPM_BUILD_ROOT%{_bindir}/lsphp
 # we need to do the following to compensate for the way
 # EA4 on OBS was built rather than EA4-Opensuse
 
-install -d $RPM_BUILD_ROOT/opt/cpanel/ea-php74/root/usr/var/log/php-fpm
-install -d $RPM_BUILD_ROOT/opt/cpanel/ea-php74/root/usr/var/run/php-fpm
+install -d $RPM_BUILD_ROOT/opt/cpanel/%{ns_name}-%{pkg}/root/usr/var/log/php-fpm
+install -d $RPM_BUILD_ROOT/opt/cpanel/%{ns_name}-%{pkg}/root/usr/var/run/php-fpm
 
-ln -sf /opt/cpanel/ea-php74/root/usr/var/log/php-fpm $RPM_BUILD_ROOT%{_localstatedir}/log/php-fpm
-ln -sf /opt/cpanel/ea-php74/root/usr/var/run/php-fpm $RPM_BUILD_ROOT%{_localstatedir}/run/php-fpm
+ln -sf /opt/cpanel/%{ns_name}-%{pkg}/root/usr/var/log/php-fpm $RPM_BUILD_ROOT%{_localstatedir}/log/php-fpm
+ln -sf /opt/cpanel/%{ns_name}-%{pkg}/root/usr/var/run/php-fpm $RPM_BUILD_ROOT%{_localstatedir}/run/php-fpm
 
 # Config
 install -m 755 -d $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.d
@@ -1685,8 +1685,8 @@ fi
 %defattr(-,root,root)
 %{_bindir}/php
 # Add the ea-php## symlinks
-/usr/bin/ea-php74
-/usr/local/bin/ea-php74
+/usr/bin/%{ns_name}-%{pkg}
+/usr/local/bin/%{ns_name}-%{pkg}
 %{_bindir}/php-cgi
 %{_bindir}/phar.phar
 %{_bindir}/phar
@@ -1712,8 +1712,8 @@ fi
 %defattr(-,root,root)
 # we need to do the following to compensate for the way
 # EA4 on OBS was built rather than EA4-Opensuse
-%attr(770,nobody,root) %dir /opt/cpanel/ea-php74/root/usr/var/log/php-fpm
-%attr(711,root,root) %dir /opt/cpanel/ea-php74/root/usr/var/run/php-fpm
+%attr(770,nobody,root) %dir /opt/cpanel/%{ns_name}-%{pkg}/root/usr/var/log/php-fpm
+%attr(711,root,root) %dir /opt/cpanel/%{ns_name}-%{pkg}/root/usr/var/run/php-fpm
 %doc php-fpm.conf.default
 %license fpm_LICENSE
 %config(noreplace) %{_sysconfdir}/php-fpm.conf
