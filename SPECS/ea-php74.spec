@@ -121,8 +121,6 @@
 %global with_zip     1
 
 %if %{with_zip}
-# Note I have this here even though there is a zip package, as the lib is
-# used internally
 Requires: ea-libzip
 BuildRequires: ea-libzip
 BuildRequires: ea-libzip-devel
@@ -145,7 +143,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.2
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -936,6 +934,7 @@ support for using the enchant library to PHP.
 Summary: A module for PHP applications that need to handle .zip files
 Group: Development/Languages
 License: PHP
+Requires: ea-libzip
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php-zip = %{version}-%{release}, %{?scl_prefix}php-zip%{?_isa} = %{version}-%{release}
@@ -1846,6 +1845,9 @@ fi
 %endif
 
 %changelog
+* Mon Mar 09 2020 Daniel Muey <dan@cpanel.net> - 7.4.2-2
+- ZC-6287: Add libzip to zip Requires for C6
+
 * Wed Feb 05 2020 Daniel Muey <dan@cpanel.net> - 7.4.2-1
 - EA-8867: Update ea-php74 from v7.4.1 to v7.4.2
 
