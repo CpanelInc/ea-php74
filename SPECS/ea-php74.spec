@@ -63,6 +63,13 @@
 %global with_embed     1
 %endif
 
+%if 0%{rhel} < 7
+BuildRequires: devtoolset-7-toolchain
+BuildRequires: devtoolset-7-libatomic-devel
+BuildRequires: devtoolset-7-gcc
+BuildRequires: devtoolset-7-gcc-c++
+%endif
+
 # PHP 7.0 switched to using libwebp with the bundled version of gd,
 # however it's only available in base repo using CentOS 7.  CentOS 6
 # provides it as apart of epel, a repo we don't readily depend on.
@@ -88,7 +95,7 @@
 %global with_intl   1
 %global with_sqlite3   1
 %else
-%global with_intl   0
+%global with_intl   1
 %global with_sqlite3   0
 %endif
 %if 0%{?fedora} || 0%{?rhel} >= 6
@@ -907,7 +914,7 @@ Group: System Environment/Libraries
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
-BuildRequires: libicu-devel >= 50.1
+BuildRequires: ea-libicu-devel >= 50.1
 
 %description intl
 The %{?scl_prefix}php-intl package contains a dynamic shared object that will add
@@ -1095,6 +1102,10 @@ sed -e 's:%{_root_sysconfdir}:%{_sysconfdir}:' \
 
 
 %build
+%if 0%{?rhel} < 7
+. /opt/rh/devtoolset-7/enable
+%endif
+
 # aclocal workaround - to be improved
 %if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
 cat `aclocal --print-ac-dir`/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >>aclocal.m4
@@ -1146,7 +1157,7 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
-export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl11/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig
+export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl11/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-libicu/lib64/pkgconfig
 export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export LIBXML_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
