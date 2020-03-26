@@ -150,7 +150,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.2
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1857,6 +1857,9 @@ fi
 %endif
 
 %changelog
+* Thu Mar 26 2020 Julian Brown <julian.brown@cpanel.net> - 7.4.2-3
+- ZC-6287: Add php_intl with ea-libicu for C6
+
 * Mon Mar 09 2020 Daniel Muey <dan@cpanel.net> - 7.4.2-2
 - ZC-6287: Add libzip to zip Requires for C6
 
