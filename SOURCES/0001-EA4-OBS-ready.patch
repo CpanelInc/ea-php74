@@ -1,4 +1,4 @@
-From de7b51de7a3987a19bee16efb291a18be00658ba Mon Sep 17 00:00:00 2001
+From 6f3279b76849193a23fba47dea7dd6bebc667e52 Mon Sep 17 00:00:00 2001
 From: Daniel Muey <dan@cpanel.net>
 Date: Tue, 28 Jan 2020 17:45:17 -0600
 Subject: [PATCH 01/11] EA4 OBS ready
@@ -11,10 +11,10 @@ Subject: [PATCH 01/11] EA4 OBS ready
  2 files changed, 4 deletions(-)
 
 diff --git a/build/php.m4 b/build/php.m4
-index e91ef98..2f69e11 100644
+index 7392876..3b0917c 100644
 --- a/build/php.m4
 +++ b/build/php.m4
-@@ -2032,8 +2032,6 @@ dnl
+@@ -2026,8 +2026,6 @@ dnl
  dnl Common setup macro for libxml.
  dnl
  AC_DEFUN([PHP_SETUP_LIBXML], [

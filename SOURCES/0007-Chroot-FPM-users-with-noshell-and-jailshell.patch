@@ -1,4 +1,4 @@
-From 5fac7cd5fde77d1701f90542944e57cf65ee99fc Mon Sep 17 00:00:00 2001
+From caae8d9bf7f65907c3fe4c8b44be2131f7e5efd9 Mon Sep 17 00:00:00 2001
 From: Matt Dees <matt@cpanel.net>
 Date: Fri, 19 Aug 2016 10:10:41 -0500
 Subject: [PATCH 07/11] Chroot FPM users with noshell and jailshell
@@ -25,7 +25,7 @@ index 7a05286..5e2985d 100644
  					efree(buf);
  					return -1;
 diff --git a/sapi/fpm/fpm/fpm_unix.c b/sapi/fpm/fpm/fpm_unix.c
-index 6490a7b..8b20424 100644
+index 1c28b1a..17335da 100644
 --- a/sapi/fpm/fpm/fpm_unix.c
 +++ b/sapi/fpm/fpm/fpm_unix.c
 @@ -10,6 +10,7 @@
@@ -36,7 +36,7 @@ index 6490a7b..8b20424 100644
  
  #ifdef HAVE_PRCTL
  #include <sys/prctl.h>
-@@ -349,6 +350,74 @@ int fpm_unix_init_child(struct fpm_worker_pool_s *wp) /* {{{ */
+@@ -357,6 +358,74 @@ int fpm_unix_init_child(struct fpm_worker_pool_s *wp) /* {{{ */
  		}
  	}
  
