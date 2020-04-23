@@ -150,7 +150,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.5
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1165,12 +1165,15 @@ export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export XSL_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
 export CURL_LIBS="-L/opt/cpanel/libcurl/%{_lib} -lcurl"
+export JPEG_CFLAGS=-I/usr/include
+export JPEG_LIBS="-L/usr/%{_lib} -ljpeg"
 export KERBEROS_CFLAGS=-I/usr/include
 export KERBEROS_LIBS=-L/usr/%{_lib}
 export SASL_CFLAGS=-I/usr/include
 export SASL_LIBS=-L/usr/%{_lib}
 export OPENSSL_CFLAGS=-I/opt/cpanel/ea-openssl11/include
 export OPENSSL_LIBS="-L/opt/cpanel/ea-openssl11/lib -lssl -lcrypto -lresolv"
+
 
 %if %{with_systemd}
 export SYSTEMD_LIBS=-lsystemd
@@ -1197,6 +1200,7 @@ ln -sf ../configure
     --without-gdbm \
     --with-gettext \
     --with-iconv \
+    --with-jpeg \
     --with-openssl \
 %if %{with_pcre}
     --with-pcre-regex=%{_root_prefix} \
@@ -1857,6 +1861,9 @@ fi
 %endif
 
 %changelog
+* Wed Apr 22 2020 Tim Mullin <tim@cpanel.net> - 7.4.5-2
+- EA-9014: Build ea-php74 with jpeg support
+
 * Thu Apr 16 2020 Cory McIntire <cory@cpanel.net> - 7.4.5-1
 - EA-9007: Update ea-php74 from v7.4.2 to v7.4.5
 
