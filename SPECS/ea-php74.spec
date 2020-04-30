@@ -150,7 +150,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.5
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -801,6 +801,8 @@ Group: Development/Languages
 License: PHP and LGPLv2 and BSD and OpenLDAP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
+BuildRequires: ea-oniguruma-devel
+Requires: ea-oniguruma-devel
 
 %description mbstring
 The %{?scl_prefix}php-mbstring package contains a dynamic shared object that will add
@@ -1158,7 +1160,8 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
-export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl11/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-libicu/lib/pkgconfig
+export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl11/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-libicu/lib/pkgconfig:/opt/cpanel/ea-oniguruma/%{_lib}/pkgconfig
+
 export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export LIBXML_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
@@ -1238,7 +1241,6 @@ build --libdir=%{_libdir}/php \
       --with-imap=shared,%{_prefix} \
       --with-imap-ssl \
       --enable-mbstring=shared \
-      --disable-mbregex \
 %if %{with_webp}
       --with-webp \
 %endif
@@ -1861,6 +1863,9 @@ fi
 %endif
 
 %changelog
+* Thu Apr 23 2020 Daniel Muey <dan@cpanel.net> - 7.4.5-3
+- ZC-6649: Re-enable multibyte regex for 7.4
+
 * Wed Apr 22 2020 Tim Mullin <tim@cpanel.net> - 7.4.5-2
 - EA-9014: Build ea-php74 with jpeg support
 
