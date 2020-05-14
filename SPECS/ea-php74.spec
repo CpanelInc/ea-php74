@@ -148,9 +148,9 @@ Summary:  PHP DSO
 %endif
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
-Version:  7.4.5
+Version:  7.4.6
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 3
+%define release_prefix 1
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1863,6 +1863,9 @@ fi
 %endif
 
 %changelog
+* Thu May 14 2020 Cory McIntire <cory@cpanel.net> - 7.4.6-1
+- EA-9070: Update ea-php74 from v7.4.5 to v7.4.6
+
 * Thu Apr 23 2020 Daniel Muey <dan@cpanel.net> - 7.4.5-3
 - ZC-6649: Re-enable multibyte regex for 7.4
 
