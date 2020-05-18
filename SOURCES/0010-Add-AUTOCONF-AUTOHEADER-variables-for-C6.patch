@@ -1,7 +1,7 @@
-From 489f6c28743934433552e99b855d61690217b89f Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Cory McIntire <cory@cpanel.net>
 Date: Fri, 8 Mar 2019 12:48:38 -0600
-Subject: [PATCH 10/11] Add AUTOCONF AUTOHEADER variables for C6
+Subject: [PATCH 10/12] Add AUTOCONF AUTOHEADER variables for C6
 
 PHP 7.3 requires a higher autotools version than currently shipped
 on CentOS6. We'll call this patch for building C6 RPMs.
@@ -10,7 +10,7 @@ on CentOS6. We'll call this patch for building C6 RPMs.
  1 file changed, 3 insertions(+)
 
 diff --git a/scripts/phpize.in b/scripts/phpize.in
-index 22ed77c..e2e8b9c 100644
+index 22ed77c3..e2e8b9c2 100644
 --- a/scripts/phpize.in
 +++ b/scripts/phpize.in
 @@ -1,5 +1,8 @@
@@ -22,6 +22,3 @@ index 22ed77c..e2e8b9c 100644
  # Variable declaration
  prefix='@prefix@'
  datarootdir='@datarootdir@'
--- 
-2.24.1
-
