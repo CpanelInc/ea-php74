@@ -977,6 +977,7 @@ inside them.
 %endif
 
 %patch402 -p1 -b .missedkill
+%patch403 -p1 -b .userini
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
