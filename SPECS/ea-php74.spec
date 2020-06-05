@@ -79,7 +79,10 @@ BuildRequires: devtoolset-7-gcc-c++
 %global with_webp 0
 %endif
 %global with_curl     1
+%if 0%{?rhel} >= 8
+%else
 %global libcurl_prefix /opt/cpanel/libcurl
+%endif
 %if 0%{?fedora}
 %global with_interbase 1
 %else
@@ -140,7 +143,12 @@ BuildRequires: ea-libzip-devel
 %endif
 
 %define ea_openssl_ver 1.1.1d-1
-%define ea_libcurl_ver 7.59.0-2
+
+%if 0%{?rhel} >= 8
+%define libcurl_ver 7.61.0
+%else
+%define ea_libcurl_ver 7.68.0-2
+%endif
 
 Summary:  PHP scripting language for creating dynamic web sites
 %if %{with_httpd}
@@ -195,7 +203,15 @@ Patch402: 0011-0022-PLESK-missed-kill.patch
 Patch403: 0012-Revert-new-.user.ini-search-behavior.patch
 
 BuildRequires: ea-libxml2-devel
-BuildRequires: bzip2-devel, %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel >= %{ea_libcurl_ver}, %{db_devel}
+BuildRequires: bzip2-devel, %{db_devel}
+
+%if 0%{?rhel} >= 8
+BuildRequires: libcurl >= %{libcurl_ver}, libcurl-devel >= %{libcurl_ver}
+BuildRequires: brotli brotli-devel
+%else
+BuildRequires: %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel >= %{ea_libcurl_ver}
+%endif
+
 BuildRequires: pam-devel
 Requires: ea-openssl11 >= %{ea_openssl_ver}
 BuildRequires: libstdc++-devel, ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}, scl-utils-build
@@ -553,10 +569,16 @@ License: PHP
 Provides: %{?scl_prefix}php-imap%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
-Requires: %{?scl_prefix}libc-client%{?_isa}
 Requires: ea-openssl11 >= %{ea_openssl_ver}
 BuildRequires: krb5-devel%{?_isa}, ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
+
+%if 0%{?rhel} >= 8
+Requires: %{?scl_prefix}libc-client
+BuildRequires: %{?scl_prefix}libc-client-devel
+%else
+Requires: %{?scl_prefix}libc-client%{?_isa}
 BuildRequires: %{?scl_prefix}libc-client-devel%{?_isa}
+%endif
 
 %description imap
 The %{?scl_prefix}php-imap module will add IMAP (Internet Message Access Protocol)
@@ -1146,6 +1168,9 @@ EXTENSION_DIR=%{_libdir}/php/modules; export EXTENSION_DIR
 # includes the PEAR directory even though pear is packaged
 # separately.
 PEAR_INSTALLDIR=%{_datadir}/pear; export PEAR_INSTALLDIR
+%if 0%{?rhel} >= 8
+export XLDFLAGS=$LDFLAGS
+%endif
 
 # Shell function to configure and build a PHP tree.
 build() {
@@ -1168,8 +1193,6 @@ export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export LIBXML_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export XSL_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
-export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
-export CURL_LIBS="-L/opt/cpanel/libcurl/%{_lib} -lcurl"
 export JPEG_CFLAGS=-I/usr/include
 export JPEG_LIBS="-L/usr/%{_lib} -ljpeg"
 export KERBEROS_CFLAGS=-I/usr/include
@@ -1187,6 +1210,10 @@ export SYSTEMD_LIBS=-lsystemd
 %if %{with_zip}
 export LIBZIP_CFLAGS=-I/opt/cpanel/ea-libzip/include
 export LIBZIP_LIBS="-L/opt/cpanel/ea-libzip/lib64 -lzip"
+%endif
+
+%if 0%{?rhel} >= 8
+export LDFLAGS="$XLDFLAGS -Wl,-rpath-link,/lib64 -Wl,-rpath,/lib64"
 %endif
 
 ln -sf ../configure
@@ -1277,7 +1304,11 @@ build --libdir=%{_libdir}/php \
       --enable-soap=shared \
       --with-xsl=shared,%{_root_prefix} \
       --enable-xmlreader=shared --enable-xmlwriter=shared \
+%if 0%{?rhel} >= 8
+      --with-curl=shared \
+%else
       --with-curl=shared,%{libcurl_prefix} \
+%endif
       --enable-pdo=shared \
       --with-pdo-odbc=shared,unixODBC,%{_root_prefix} \
       --with-pdo-mysql=shared,mysqlnd \
