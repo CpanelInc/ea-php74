@@ -1193,6 +1193,10 @@ export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export LIBXML_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
 export XSL_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export XSL_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
+%if 0%{?rhel} < 8
+export CURL_CFLAGS=-I/opt/cpanel/libcurl/include
+export CURL_LIBS="-L/opt/cpanel/libcurl/%{_lib} -lcurl"
+%endif
 export JPEG_CFLAGS=-I/usr/include
 export JPEG_LIBS="-L/usr/%{_lib} -ljpeg"
 export KERBEROS_CFLAGS=-I/usr/include
