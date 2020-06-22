@@ -466,7 +466,11 @@ Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
+%if 0%{rhel} < 8
 Requires: %{ns_name}-libcurl >= %{ea_libcurl_ver}
+%else
+Requires: libcurl
+%endif
 BuildRequires: libssh2 libssh2-devel libidn libidn-devel ea-libnghttp2-devel
 Provides: %{?scl_prefix}php-curl = %{version}-%{release}, %{?scl_prefix}php-curl%{?_isa} = %{version}-%{release}
 
