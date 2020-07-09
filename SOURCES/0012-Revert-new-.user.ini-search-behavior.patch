@@ -1,4 +1,4 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From b7829b872e1b152b04097861a987f9f8a3a87374 Mon Sep 17 00:00:00 2001
 From: Tim Mullin <tim@cpanel.net>
 Date: Mon, 18 May 2020 15:36:05 -0500
 Subject: [PATCH 12/12] Revert new .user.ini search behavior
@@ -14,7 +14,7 @@ do not rely on the old behavior.
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/sapi/cgi/cgi_main.c b/sapi/cgi/cgi_main.c
-index cd79475f..a7457bec 100644
+index cd79475..a7457be 100644
 --- a/sapi/cgi/cgi_main.c
 +++ b/sapi/cgi/cgi_main.c
 @@ -781,7 +781,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)
@@ -45,7 +45,7 @@ index cd79475f..a7457bec 100644
  #ifdef PHP_WIN32
  				efree(doc_root);
 diff --git a/sapi/fpm/fpm/fpm_main.c b/sapi/fpm/fpm/fpm_main.c
-index 8d2210db..e5a168fc 100644
+index 8d2210d..e5a168f 100644
 --- a/sapi/fpm/fpm/fpm_main.c
 +++ b/sapi/fpm/fpm/fpm_main.c
 @@ -620,7 +620,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)
@@ -75,3 +75,6 @@ index 8d2210db..e5a168fc 100644
  			}
  		}
  
+-- 
+2.25.1
+
