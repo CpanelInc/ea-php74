@@ -1,4 +1,4 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From fd68ade96e321632844a855fa34846c426099b76 Mon Sep 17 00:00:00 2001
 From: Cory McIntire <cory@cpanel.net>
 Date: Fri, 8 Mar 2019 12:48:38 -0600
 Subject: [PATCH 10/12] Add AUTOCONF AUTOHEADER variables for C6
@@ -10,7 +10,7 @@ on CentOS6. We'll call this patch for building C6 RPMs.
  1 file changed, 3 insertions(+)
 
 diff --git a/scripts/phpize.in b/scripts/phpize.in
-index 22ed77c3..e2e8b9c2 100644
+index 22ed77c..e2e8b9c 100644
 --- a/scripts/phpize.in
 +++ b/scripts/phpize.in
 @@ -1,5 +1,8 @@
@@ -22,3 +22,6 @@ index 22ed77c3..e2e8b9c2 100644
  # Variable declaration
  prefix='@prefix@'
  datarootdir='@datarootdir@'
+-- 
+2.25.1
+

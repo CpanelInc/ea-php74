@@ -1,4 +1,4 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From bc8ecedd969d2704aefd93bb484003d562dd7542 Mon Sep 17 00:00:00 2001
 From: Matt Dees <matt@cpanel.net>
 Date: Fri, 19 Aug 2016 10:10:41 -0500
 Subject: [PATCH 07/12] Chroot FPM users with noshell and jailshell
@@ -11,7 +11,7 @@ if their shells are set to noshell or jailshell no matter what.
  2 files changed, 71 insertions(+), 1 deletion(-)
 
 diff --git a/sapi/fpm/fpm/fpm_conf.c b/sapi/fpm/fpm/fpm_conf.c
-index 7a052863..5e2985dc 100644
+index 7a05286..5e2985d 100644
 --- a/sapi/fpm/fpm/fpm_conf.c
 +++ b/sapi/fpm/fpm/fpm_conf.c
 @@ -1029,7 +1029,8 @@ static int fpm_conf_process_all_pools() /* {{{ */
@@ -25,7 +25,7 @@ index 7a052863..5e2985dc 100644
  					efree(buf);
  					return -1;
 diff --git a/sapi/fpm/fpm/fpm_unix.c b/sapi/fpm/fpm/fpm_unix.c
-index 1c28b1aa..17335da6 100644
+index 1c28b1a..17335da 100644
 --- a/sapi/fpm/fpm/fpm_unix.c
 +++ b/sapi/fpm/fpm/fpm_unix.c
 @@ -10,6 +10,7 @@
@@ -111,3 +111,6 @@ index 1c28b1aa..17335da6 100644
  	if (is_root && wp->config->chroot && *wp->config->chroot) {
  		if (0 > chroot(wp->config->chroot)) {
  			zlog(ZLOG_SYSERROR, "[pool %s] failed to chroot(%s)",  wp->config->name, wp->config->chroot);
+-- 
+2.25.1
+
