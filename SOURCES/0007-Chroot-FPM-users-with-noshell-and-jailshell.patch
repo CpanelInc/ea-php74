@@ -1,4 +1,4 @@
-From bc8ecedd969d2704aefd93bb484003d562dd7542 Mon Sep 17 00:00:00 2001
+From cb8e7298b4f1977a36218f8454a4a3a8219f02b8 Mon Sep 17 00:00:00 2001
 From: Matt Dees <matt@cpanel.net>
 Date: Fri, 19 Aug 2016 10:10:41 -0500
 Subject: [PATCH 07/12] Chroot FPM users with noshell and jailshell
