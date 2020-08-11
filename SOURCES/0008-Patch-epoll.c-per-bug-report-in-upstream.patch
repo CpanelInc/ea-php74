@@ -1,4 +1,4 @@
-From ade37990239b805dd12808775a594bacfe1e0217 Mon Sep 17 00:00:00 2001
+From 24ccc0e7393bbaf1657fd438f9e4d291459becbd Mon Sep 17 00:00:00 2001
 From: Cory McIntire <cory@cpanel.net>
 Date: Fri, 2 Mar 2018 11:12:27 -0600
 Subject: [PATCH 08/12] Patch epoll.c per bug report in upstream.
