@@ -1,4 +1,4 @@
-From 09bf6ffe4c739b3f19b23cc30aa04358dfc4c4ae Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Julian Brown <julian.brown@cpanel.net>
 Date: Tue, 7 May 2019 12:18:27 -0500
 Subject: [PATCH 11/12] 0022-PLESK-missed-kill
@@ -569,6 +569,3 @@ index 0000000..28b59b3
 +	zlog(ZLOG_DEBUG, "[pool %s] got accept without idle child available .... I forked", wp->config->name);
 +}
 +/* }}} */
--- 
-2.25.1
-

@@ -1,4 +1,4 @@
-From 0b58268d4e135a57301e060d8ea3ace4ea0e88b4 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Daniel Muey <dan@cpanel.net>
 Date: Thu, 7 Feb 2019 12:22:33 -0600
 Subject: [PATCH 09/12] Add support for use of the system timezone database,
@@ -660,6 +660,3 @@ index 020da31..9b39c6e 100644
  	} else {
  		*error_code = TIMELIB_ERROR_NO_SUCH_TIMEZONE;
  		tmp = NULL;
--- 
-2.25.1
-
