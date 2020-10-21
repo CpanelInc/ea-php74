@@ -49,8 +49,7 @@
 %global with_lsws     1
 
 # Regression tests take a long time, you can skip 'em with this
-# %{!?runselftest: %{expand: %%global runselftest 1}}
-%global runselftest 0
+%{!?runselftest: %{expand: %%global runselftest 1}}
 
 # Use the arch-specific mysql_config binary to avoid mismatch with the
 # arch detection heuristic used by bindir/mysql_config.
@@ -158,7 +157,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.11
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1904,6 +1903,9 @@ fi
 %endif
 
 %changelog
+* Wed Oct 21 2020 Daniel Muey <dan@cpanel.net> - 7.4.11-2
+- ZC-7497: Reinstate `runselftest`
+
 * Thu Oct 01 2020 Cory McIntire <cory@cpanel.net> - 7.4.11-1
 - EA-9339: Update ea-php74 from v7.4.10 to v7.4.11
 
