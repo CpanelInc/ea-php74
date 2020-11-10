@@ -155,9 +155,9 @@ Summary:  PHP DSO
 %endif
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
-Version:  7.4.11
+Version:  7.4.12
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 4
+%define release_prefix 1
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1905,6 +1905,9 @@ fi
 %endif
 
 %changelog
+* Tue Nov 03 2020 Cory McIntire <cory@cpanel.net> - 7.4.12-1
+- EA-9401: Update ea-php74 from v7.4.11 to v7.4.12
+
 * Thu Oct 29 2020 Daniel Muey <dan@cpanel.net> - 7.4.11-4
 - ZC-7893: Update DSO config to factor in PHP 8
 
