@@ -157,7 +157,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.12
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1158,7 +1158,11 @@ scl enable autotools-latest './buildconf --force'
 ./buildconf --force
 %endif
 
+%if 0%{rhel} < 8
 CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign"
+%else
+CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign -mshstk"
+%endif
 export CFLAGS
 
 export SNMP_SHARED_LIBADD="-Wl,-rpath=/opt/cpanel/ea-openssl11/%{_lib}"
@@ -1905,6 +1909,9 @@ fi
 %endif
 
 %changelog
+* Wed Nov 11 2020 Tim Mullin <tim@cpanel.net> - 7.4.12-2
+- EA-9424: Fix the build on CentOS 8
+
 * Tue Nov 03 2020 Cory McIntire <cory@cpanel.net> - 7.4.12-1
 - EA-9401: Update ea-php74 from v7.4.11 to v7.4.12
 
