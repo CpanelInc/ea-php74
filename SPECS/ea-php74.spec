@@ -157,7 +157,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.13
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -212,8 +212,18 @@ BuildRequires: %{ns_name}-libcurl >= %{ea_libcurl_ver}, %{ns_name}-libcurl-devel
 %endif
 
 BuildRequires: pam-devel
+BuildRequires: scl-utils-build
+BuildRequires: libstdc++-devel
+
+%if 0%{?rhel} > 7
+# In C8 we use system openssl. See DESIGN.md in ea-openssl11 git repo for details
+BuildRequires: openssl, openssl-devel
+Requires: openssl
+%else
+BuildRequires: ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
 Requires: ea-openssl11 >= %{ea_openssl_ver}
-BuildRequires: libstdc++-devel, ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}, scl-utils-build
+%endif
+
 # For Argon2 support
 BuildRequires: ea-libargon2-devel
 Requires: ea-libargon2
@@ -572,8 +582,17 @@ License: PHP
 Provides: %{?scl_prefix}php-imap%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
+
+BuildRequires: krb5-devel%{?_isa}
+
+%if 0%{?rhel} > 7
+# In C8 we use system openssl. See DESIGN.md in ea-openssl11 git repo for details
+BuildRequires: openssl, openssl-devel
+Requires: openssl
+%else
+BuildRequires: ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
 Requires: ea-openssl11 >= %{ea_openssl_ver}
-BuildRequires: krb5-devel%{?_isa}, ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
+%endif
 
 %if 0%{?rhel} >= 8
 Requires: %{?scl_prefix}libc-client
@@ -595,8 +614,17 @@ Group: Development/Languages
 License: PHP
 Requires: %{?scl_prefix}php-common%{?_isa} = %{version}-%{release}
 Requires: %{?scl_prefix}php-cli%{?_isa} = %{version}-%{release}
+
+BuildRequires: cyrus-sasl-devel, openldap-devel
+
+%if 0%{?rhel} > 7
+# In C8 we use system openssl. See DESIGN.md in ea-openssl11 git repo for details
+BuildRequires: openssl, openssl-devel
+Requires: openssl
+%else
+BuildRequires: ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
 Requires: ea-openssl11 >= %{ea_openssl_ver}
-BuildRequires: cyrus-sasl-devel, openldap-devel, ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
+%endif
 
 %description ldap
 The %{?scl_prefix}php-ldap package adds Lightweight Directory Access Protocol (LDAP)
@@ -668,7 +696,17 @@ License: PHP
 Requires: %{?scl_prefix}php-pdo%{?_isa} = %{version}-%{release}
 Provides: %{?scl_prefix}php_database = %{version}-%{release}
 Provides: %{?scl_prefix}php-pdo_pgsql = %{version}-%{release}, %{?scl_prefix}php-pdo_pgsql%{?_isa} = %{version}-%{release}
-BuildRequires: krb5-devel, ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}, postgresql-devel
+
+BuildRequires: krb5-devel, postgresql-devel
+
+%if 0%{?rhel} > 7
+# In C8 we use system openssl. See DESIGN.md in ea-openssl11 git repo for details
+BuildRequires: openssl, openssl-devel
+Requires: openssl
+%else
+BuildRequires: ea-openssl11 >= %{ea_openssl_ver}, ea-openssl11-devel >= %{ea_openssl_ver}
+Requires: ea-openssl11 >= %{ea_openssl_ver}
+%endif
 
 %description pgsql
 The %{?scl_prefix}php-pgsql package add PostgreSQL database support to PHP.
@@ -1165,8 +1203,12 @@ CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign -mshstk"
 %endif
 export CFLAGS
 
+%if 0%{?rhel} < 8
 export SNMP_SHARED_LIBADD="-Wl,-rpath=/opt/cpanel/ea-openssl11/%{_lib}"
 export CURL_SHARED_LIBADD="-Wl,-rpath=/opt/cpanel/ea-openssl11/%{_lib} -Wl,-rpath=/opt/cpanel/ea-brotli/%{_lib}"
+%else
+export CURL_SHARED_LIBADD="-Wl,-rpath=/opt/cpanel/ea-brotli/%{_lib}"
+%endif
 
 # Install extension modules in %{_libdir}/php/modules.
 EXTENSION_DIR=%{_libdir}/php/modules; export EXTENSION_DIR
@@ -1194,7 +1236,11 @@ mkdir Zend && cp ../Zend/zend_{language,ini}_{parser,scanner}.[ch] Zend
 # openssl: for PHAR_SIG_OPENSSL
 # zlib: used by image
 
+%if 0%{rhel} < 8
 export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-openssl11/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-libicu/lib/pkgconfig:/opt/cpanel/ea-oniguruma/%{_lib}/pkgconfig
+%else
+export PKG_CONFIG_PATH=/opt/cpanel/ea-php74/root/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-php74/root/usr/share/pkgconfig:/usr/%{_lib}/pkgconfig:/opt/cpanel/ea-libxml2/%{_lib}/pkgconfig:/opt/cpanel/ea-libicu/lib/pkgconfig:/opt/cpanel/ea-oniguruma/%{_lib}/pkgconfig
+%endif
 
 export LIBXML_CFLAGS=-I/opt/cpanel/ea-libxml2/include/libxml2
 export LIBXML_LIBS="-L/opt/cpanel/ea-libxml2/%{_lib} -lxml2"
@@ -1210,9 +1256,11 @@ export KERBEROS_CFLAGS=-I/usr/include
 export KERBEROS_LIBS=-L/usr/%{_lib}
 export SASL_CFLAGS=-I/usr/include
 export SASL_LIBS=-L/usr/%{_lib}
+
+%if 0%{?rhel} < 8
 export OPENSSL_CFLAGS=-I/opt/cpanel/ea-openssl11/include
 export OPENSSL_LIBS="-L/opt/cpanel/ea-openssl11/lib -lssl -lcrypto -lresolv"
-
+%endif
 
 %if %{with_systemd}
 export SYSTEMD_LIBS=-lsystemd
@@ -1909,6 +1957,9 @@ fi
 %endif
 
 %changelog
+* Tue Dec 01 2020 Julian Brown <julian.brown@cpanel.net> - 7.4.13-2
+- ZC-8005: Replace ea-openssl11 with system openssl on C8
+
 * Sun Nov 29 2020 Cory McIntire <cory@cpanel.net> - 7.4.13-1
 - EA-9448: Update ea-php74 from v7.4.12 to v7.4.13
 
