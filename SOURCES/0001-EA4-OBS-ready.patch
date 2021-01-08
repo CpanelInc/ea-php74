@@ -11,10 +11,10 @@ Subject: [PATCH 01/12] EA4 OBS ready
  2 files changed, 4 deletions(-)
 
 diff --git a/build/php.m4 b/build/php.m4
-index 3e19937..b56b984 100644
+index 86b522a..7bc9ec0 100644
 --- a/build/php.m4
 +++ b/build/php.m4
-@@ -2028,8 +2028,6 @@ dnl
+@@ -2034,8 +2034,6 @@ dnl
  dnl Common setup macro for libxml.
  dnl
  AC_DEFUN([PHP_SETUP_LIBXML], [
