@@ -45,7 +45,7 @@ index cd79475..a7457be 100644
  #ifdef PHP_WIN32
  				efree(doc_root);
 diff --git a/sapi/fpm/fpm/fpm_main.c b/sapi/fpm/fpm/fpm_main.c
-index 8d2210d..e5a168f 100644
+index 4586a3c..26526b9 100644
 --- a/sapi/fpm/fpm/fpm_main.c
 +++ b/sapi/fpm/fpm/fpm_main.c
 @@ -620,7 +620,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)
