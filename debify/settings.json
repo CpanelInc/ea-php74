@@ -1,0 +1,49 @@
+{
+    "vars": {
+        "ea_apr_name": "ea_apr16",
+        "ea_apr_dir": "/opt/cpanel/ea-apr16",
+        "ea_apu_dir": "/opt/cpanel/ea-apr16",
+        "_httpd_mmn": "20120211x8664",
+        "_httpd_dir": "/etc/apache2",
+        "_httpd_bindir": "%{_httpd_dir}/bin",
+        "_httpd_modconfdir": "%{_httpd_dir}/conf.modules.d",
+        "_httpd_confdir": "%{_httpd_dir}/conf.d",
+        "_httpd_contentdir": "/usr/share/apache2",
+        "_httpd_moddir": "/usr/lib64/apache2/modules"
+    },
+    "remove_from_requires": [
+        "devtoolset-7-gcc",
+        "devtoolset-7-gcc-c++",
+        "devtoolset-7-libatomic-devel",
+        "devtoolset-7-toolchain",
+        "autotools-latest-autoconf",
+        "scl-utils-build"
+    ],
+    "remove_from_provides": [
+        "Provides:"
+    ],
+    "override_vars": {
+        "_isa": "",
+        "with_sqlite3": 1,
+        "pkg_php_core_api": "%{apiver}",
+        "pkg_php_zend_api": "%{zendver}",
+        "pkg_php_pdo_api": "%{pdover}",
+        "pkg_php_version": "%{version}",
+        "pkg_php_extdir": "/opt/cpanel/ea-php74/root/usrlib64/php/modules",
+        "pkg_php_inidir": "/opt/cpanel/ea-php74/root/etc/php.d",
+        "pkg_php_incldir": "/opt/cpanel/ea-php74/root/usr/include/php",
+        "pkg___php": "/opt/cpanel/ea-php74/root/usr/bin/php"
+    },
+    "add_to_build_requires": [
+        "libsqlite3-dev",
+        "ea-apache24-mod-mpm-prefork",
+        "libpspell-dev",
+        "libsnmp-dev",
+        "libtidy-dev",
+        "libtidy5deb1"
+    ],
+    "add_to_sources": [
+        "insert_file.pl",
+        "correct_imap_ubuntu.sh"
+    ]
+}
