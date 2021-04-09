@@ -9,10 +9,6 @@ set -x
 export _httpd_mmn=$(cat /usr/include/apache2/.mmn 2>/dev/null || echo missing-ea-apache24-devel)
 export mysql_sock=$(mysql_config --socket  2>/dev/null || echo /var/lib/mysql/mysql.sock) 
 
-echo "SCRIPTS"
-echo "_httpd_mmn :$_httpd_mmn:"
-echo "mysql_sock :$mysql_sock:"
-
 : Building $name-$version-$release with systemd=$with_systemd interbase=$with_interbase sqlite3=$with_sqlite3 tidy=$with_tidy zip=$with_zip
 # Prevent %%doc confusion over LICENSE files
 cp Zend/LICENSE Zend/ZEND_LICENSE
@@ -121,6 +117,14 @@ EXTENSION_DIR=$_libdir/php/modules; export EXTENSION_DIR
 PEAR_INSTALLDIR=$_datadir/pear; export PEAR_INSTALLDIR
 export XLDFLAGS=$LDFLAGS
 # Shell function to configure and build a PHP tree.
+
+# UGMO
+# The configure fails to find the correct version of os_toascii
+# on this Ubuntu.  Here I am forcing the compiler flags
+# to select and find the correct os_toascii data.
+
+export CFLAGS="-D_OSD_POSIX=1 -I/usr/include/openssl $CFLAGS"
+
 build() {
 # Old/recent bison version seems to produce a broken parser;
 # upstream uses GNU Bison 2.3. Workaround:
@@ -144,13 +148,11 @@ export SYSTEMD_LIBS=-lsystemd
 
 # libc-client stuff
 export IMAP_LIB=c-client
-export IMAP_LIBDIR=/opt/cpanel/ea-php74/root/usr/lib64
-export IMAP_INC_DIR=/opt/cpanel/ea-php74/root/usr/include/c-client
+export IMAP_LIBDIR=/usr/lib
+export IMAP_INC_DIR=/usr/include/c-client
 export PHP_IMAP_SHARED=no
-export IMAP_DIR=/opt/cpanel/ea-php74/root/usr
-export PHP_IMAP=/opt/cpanel/ea-php74/root/usr
-
-
+export IMAP_DIR=/usr
+export PHP_IMAP=/usr
 
 #sed -i '2iset -x\n' ../configure
 #sed -i '2336iecho "FLAGS :$CFLAGS: :$LIBS: :$ac_status:"\nls -ld /proc/self/fd/5 && /bin/true\ncat -n config.log' ../configure
@@ -162,17 +164,32 @@ export PHP_IMAP=/opt/cpanel/ea-php74/root/usr
 
 #sed -i '2326iCFLAGS="$IMAP_INC_DIR $CFLAGS"\nLIBS="-L$IMAP_LIBDIR -lc-client $LIBS"\nLIBS=`echo $LIBS | sed -- "s/-limap//g"`' ../configure
 
+# UGMO
+# Configure is totally lost on how to find the c-client stuff even though
+# it was clearly programmed to do so.  Here I am modifying configure to
+# coerce it to find the correct c-client.  It still generates the need for
+# -limap instead of -lc-client.  I correct the -limap problem in the generated
+# Makefile
+
 /usr/bin/perl $SOURCE8001 ../configure $SOURCE8002 2319
 sed -i '2342ipre_imap\n' ../configure
 sed -i '2378ipost_imap\n' ../configure
 sed -i '38557iIN_IMAP="1"\n' ../configure
 sed -i '40077iIN_IMAP=""\n' ../configure
 
-echo "CONFIGURE"
-cat -n ../configure
-echo "CONFIGURE END"
+#echo "CONFIGURE"
+#cat -n ../configure
+#echo "CONFIGURE END"
 
-echo "PWD" `pwd` $_prefix
+#echo "PWD" `pwd` $_prefix
+
+# UGMO
+# Configure fails to find the correct version of the time functions.
+# This forces configure to find the correct versions.
+export ac_cv_time_r_type=POSIX
+
+export EXTRA_LIBS="-lxml2"
+export EXTRA_LDFLAGS="-lxml2"
 
 ln -sf ../configure
 ./configure \
@@ -203,6 +220,7 @@ ln -sf ../configure
     --with-libxml \
     --with-tidy=/usr \
     --with-system-tzdata \
+    --enable-posix=shared \
     --with-mhash \
     $*
 if test $? != 0; then
@@ -210,9 +228,27 @@ if test $? != 0; then
   : configure failed
   exit 1
 fi
+
+# UGMO
+# I do not know how that path is screwed up in the Makefile, so I repair it
+sed -i -- 's:/usr//usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:g' Makefile
+
+echo "MAKEFILE START"
+cat -n Makefile
+echo "MAKEFILE END"
+
+# UGMO
+# Even though I fully corrected the configure for libc-client, it insists
+# on doing -limap instead of -lc-client so I correct it here
+sed -i -- 's:-limap:-L/usr/lib -Wl,-rpath=/usr/lib -lc-client:g' Makefile
+
 make 
 }
 # Build /usr/bin/php-cgi with the CGI SAPI, and most the shared extensions
+
+# UGMO configure misses this include dir
+export CFLAGS="-I/usr/include/libxml2 $CFLAGS"
+
 pushd build-cgi
 build --libdir=$_libdir/php \
       --enable-pcntl \
@@ -263,7 +299,6 @@ build --libdir=$_libdir/php \
       --enable-phar=shared \
       --enable-sysvmsg=shared --enable-sysvshm=shared --enable-sysvsem=shared \
       --enable-shmop=shared \
-      --enable-posix=shared \
       --with-unixODBC=shared,$_root_prefix \
       --enable-intl=shared \
       --with-enchant=shared \
