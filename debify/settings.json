@@ -17,7 +17,8 @@
         "devtoolset-7-libatomic-devel",
         "devtoolset-7-toolchain",
         "autotools-latest-autoconf",
-        "scl-utils-build"
+        "scl-utils-build",
+        "ea-php74-libc-client-devel"
     ],
     "remove_from_provides": [
         "Provides:"
@@ -40,10 +41,16 @@
         "libpspell-dev",
         "libsnmp-dev",
         "libtidy-dev",
-        "libtidy5deb1"
+        "libtidy5deb1",
+        "libc-client2007e-dev"
     ],
     "add_to_sources": [
         "insert_file.pl",
         "correct_imap_ubuntu.sh"
-    ]
+    ],
+    "add_to_requires": {
+        "ea-php74-php-imap": [
+            "libc-client2007e"
+        ]
+    }
 }
