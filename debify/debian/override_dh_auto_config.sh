@@ -123,7 +123,7 @@ export XLDFLAGS=$LDFLAGS
 # on this Ubuntu.  Here I am forcing the compiler flags
 # to select and find the correct os_toascii data.
 
-export CFLAGS="-D_OSD_POSIX=1 -I/usr/include/openssl $CFLAGS"
+#export CFLAGS="-D_OSD_POSIX=1 -I/usr/include/openssl $CFLAGS"
 
 build() {
 # Old/recent bison version seems to produce a broken parser;
@@ -229,9 +229,18 @@ if test $? != 0; then
   exit 1
 fi
 
+echo "_openssl_os_toascii"
+pwd
+ls -ld *
+find . -type d -name ext -print
+grep -R _openssl_os_toascii *
+find / -type f -name ebcdic.h -print
+
 # UGMO
 # I do not know how that path is screwed up in the Makefile, so I repair it
 sed -i -- 's:/usr//usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:g' Makefile
+
+sed -i '1979i\\techo "CFLAGS :$(CFLAGS):"\n\techo "LDFLAGS :$(LDFLAGS):"\n\techo "XDFLAGS :$(XLDFLAGS):"\n\techo "COMMON_FLAGS :$(COMMON_FLAGS):"\n\techo "CLFAGS_CLEAN :$(CFLAGS_CLEAN):"\n\techo "EXTRA_CFLAGS :$(EXTRA_CFLAGS):"' Makefile
 
 echo "MAKEFILE START"
 cat -n Makefile
