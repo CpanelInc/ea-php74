@@ -1277,6 +1277,7 @@ export LDFLAGS="$XLDFLAGS -Wl,-rpath-link,/lib64 -Wl,-rpath,/lib64"
 export LDFLAGS="-Wl,-rpath=/opt/cpanel/ea-brotli/lib"
 %endif
 
+set -x
 ln -sf ../configure
 %configure \
     --cache-file=../config.cache \
@@ -1317,6 +1318,17 @@ if test $? != 0; then
   : configure failed
   exit 1
 fi
+
+echo "XYZZY"
+echo "CFLAGS :$CFLAGS:"
+echo "LDFLAGS :$LDFLAGS:"
+echo "XLDFLAGS :$XLDFLAGS:"
+
+sed -i '1986i\\techo "CFLAGS :$(CFLAGS):"\n\techo "LDFLAGS :$(LDFLAGS):"\n\techo "XDFLAGS :$(XLDFLAGS):"\n\techo "COMMON_FLAGS :$(COMMON_FLAGS):"\n\techo "CLFAGS_CLEAN :$(CFLAGS_CLEAN):"\n\techo "EXTRA_CFLAGS :$(EXTRA_CFLAGS):"' Makefile
+
+echo "MAKEFILE START"
+cat -n Makefile
+echo "MAKEFILE END"
 
 make %{?_smp_mflags}
 }
