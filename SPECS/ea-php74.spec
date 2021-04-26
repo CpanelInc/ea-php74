@@ -1068,6 +1068,8 @@ cp ext/bcmath/libbcmath/LICENSE libbcmath_LICENSE
 # and replace it with the latest version
 cd sapi
 tar -xvf %{SOURCE1} --exclude=Makefile.frag --exclude=config.m4
+echo "SAPI LITESPEED"
+ls -d *
 cd ..
 %endif
 
