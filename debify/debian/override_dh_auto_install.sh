@@ -16,18 +16,15 @@ pushd build
 make INSTALL_ROOT=$DEB_INSTALL_ROOT install-sapi install install-headers install-fpm
 popd
 
-echo "AFTER MAKE"
-echo "DEB_INSTALL_ROOT"
-ls -R $DEB_INSTALL_ROOT
-
-
-echo "SYSCONFDIR :$_sysconfdir:"
-echo "DATADIR :$_datadir:"
-echo "LOCALSTATEDIR :$_localstatedir:"
-
-echo "SAPI LITESPEED"
-ls -R build/sapi
-find . -name "*.ini"
+echo "JULIAN" `pwd`
+find . -name "phar.1.gz"
+find . -name "phar.1"
+find . -name "php-fpm.conf"
+find . -name "man"
+find . -name "man1"
+find . -name "php-fpm.conf.default"
+file ./debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phar.1
+ls -R ./debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/*
 
 # Install the default configuration file and icons
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/
@@ -44,9 +41,6 @@ install -m 755 build/sapi/litespeed/php $DEB_INSTALL_ROOT$_bindir/lsphp
 install -d $DEB_INSTALL_ROOT/opt/cpanel/$ns_name-$pkg/root/usr/var/log/php-fpm
 mkdir -p $DEB_INSTALL_ROOT$_localstatedir/log/php-fpm
 mkdir -p $DEB_INSTALL_ROOT$_localstatedir/run/php-fpm
-echo "PHP_FPM"
-ls -d $DEB_INSTALL_ROOT/opt/cpanel/ea-php74/root/usr/var
-ls -R $DEB_INSTALL_ROOT/opt/cpanel/ea-php74/root/usr/var
 install -d $DEB_INSTALL_ROOT/opt/cpanel/$ns_name-$pkg/root/usr/var/run/php-fpm
 ln -sf /opt/cpanel/$ns_name-$pkg/root/usr/var/log/php-fpm $DEB_INSTALL_ROOT$_localstatedir/log/php-fpm
 ln -sf /opt/cpanel/$ns_name-$pkg/root/usr/var/run/php-fpm $DEB_INSTALL_ROOT$_localstatedir/run/php-fpm
@@ -62,25 +56,26 @@ sed -e 's:/var/lib:$_localstatedir/lib:' \
     -e 's:/var/log:$_localstatedir/log:' \
     -i $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf
 mv $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf.example
-mv $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.conf.default .
+mv ${DEB_INSTALL_ROOT}opt/cpanel/ea-php74/root/etc/php-fpm.conf.default .
 # tmpfiles.d
 # install -m 755 -d $DEB_INSTALL_ROOT$_prefix/lib/tmpfiles.d
 # install -m 644 php-fpm.tmpfiles $DEB_INSTALL_ROOT$_prefix/lib/tmpfiles.d/php-fpm.conf
 # install systemd unit files and scripts for handling server startup
 install -m 755 -d $DEB_INSTALL_ROOT$_unitdir
-install -m 644 $SOURCE6 $DEB_INSTALL_ROOT$_unitdir/$scl_prefixphp-fpm.service
+install -m 644 $SOURCE6 $DEB_INSTALL_ROOT$_unitdir/${scl_prefix}php-fpm.service
 sed -e 's:/run:$_localstatedir/run:' \
     -e 's:/etc:$_sysconfdir:' \
     -e 's:/usr/sbin:$_sbindir:' \
-    -i $DEB_INSTALL_ROOT$_unitdir/$scl_prefixphp-fpm.service
+    -i $DEB_INSTALL_ROOT$_unitdir/${scl_prefix}php-fpm.service
 # LogRotate
 install -m 755 -d $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d
-install -m 644 $SOURCE7 $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/$scl_prefixphp-fpm
+install -m 644 $SOURCE7 $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/${scl_prefix}php-fpm
 sed -e 's:/run:$_localstatedir/run:' \
     -e 's:/var/log:$_localstatedir/log:' \
-    -i $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/$scl_prefixphp-fpm
+    -i $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/${scl_prefix}php-fpm
 # Environment file
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/sysconfig
+echo "SOURCE8 :$SOURCE8:"
 install -m 644 $SOURCE8 $DEB_INSTALL_ROOT$_sysconfdir/sysconfig/php-fpm
 mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d
 
@@ -121,13 +116,10 @@ do
     if [ -f "$buildroot/$ini" ]; then
       cp -p $buildroot/$ini ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d/$ini
     else
-      echo "INI :$ini:"
-      ls -d ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d
       cat > ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d/$ini <<EOF
 ; Enable ${mod} extension module
 extension=${mod}.so
 EOF
-      ls -d ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d/*
     fi
     cat > files.${mod} <<EOF
 EOF
@@ -164,6 +156,64 @@ rm -rf $DEB_INSTALL_ROOT$_libdir/php/modules/*.a \
 # Remove irrelevant docs
 rm -f README.{Zeus,QNX,CVS-RULES}
 
+# The CONFIG/INSTALL script misses these files
+
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phar.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phar.phar.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/php-cgi.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/php.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phpize.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phpdbg.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phpconfig.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/php-config.1
+gzip debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man8/php-fpm.8
+
+cp -f ./debian/tmp/etc/php-fpm.conf ./debian/tmp/opt/cpanel/ea-php74/root/etc/php-fpm.conf
+
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-dbg-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-dbg-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-fpm-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/licenses/ea-php74-php-fpm-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/licenses/ea-php74-php-bcmath-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-mbstring-${pkg_php_version}
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.d
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php.d
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/var/run/php-fpm
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/var/log/php-fpm
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/sysconfig/php-fpm
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/php
+mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/var/lib
+
+cp -R ${DEB_INSTALL_ROOT}/etc/php-fpm.d ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.d
+cp -f ./sapi/phpdbg/CREDITS ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-dbg-${pkg_php_version}
+cp -f ./sapi/phpdbg/README.md ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-dbg-${pkg_php_version}
+cp -f ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.d/php-fpm.d/www.conf.example ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.d
+cp -R ${DEB_INSTALL_ROOT}/etc/sysconfig/php-fpm ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/sysconfig
+cp -R ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.conf.default ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-fpm-${pkg_php_version}
+cp -R ./fpm_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-fpm-${pkg_php_version}
+cp ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/etc/php.d/* ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php.d
+cp ${DEB_INSTALL_ROOT}/etc/php.ini ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc
+cp ./CODING_STANDARDS.md ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./EXTENSIONS ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./NEWS ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./README.REDIST.BINS ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./README.md ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./TSRM_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./Zend/ZEND_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./libmagic_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./php.ini-development ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./php.ini-production ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-common-${pkg_php_version}
+cp ./fpm_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/licenses/ea-php74-php-fpm-${pkg_php_version}
+cp ./libmbfl_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-mbstring-${pkg_php_version}
+cp ./libbcmath_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/licenses/ea-php74-php-bcmath-${pkg_php_version}
+
+echo "PHPFPMXX"
+find ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.d -type f -print
+
 echo "AFTER INSTALL"
-ls -R $DEB_INSTALL_ROOT
+echo "FILELIST START"
+find . -type f -print
+echo "FILELIST END"
 

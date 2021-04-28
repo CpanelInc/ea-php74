@@ -227,6 +227,7 @@ ln -s ../configure
     --with-tidy=shared \
     --with-enchant=shared \
     --enable-litespeed \
+    --enable-phpdbg \
     --with-webp
 if test $? != 0; then
   : configure failed

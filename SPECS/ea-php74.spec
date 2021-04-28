@@ -166,7 +166,7 @@ License:  PHP and Zend and BSD
 Group:    Development/Languages
 URL:      http://www.php.net/
 
-Source0: http://www.php.net/distributions/php-%{version}.tar.bz2
+Source0: http://www.php.net/distributions/php-%{version}.tar.gz
 Source1: https://www.litespeedtech.com/packages/lsapi/php-litespeed-7.9.tgz
 Source2: php.ini
 Source3: macros.php
