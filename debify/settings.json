@@ -57,5 +57,6 @@
         "libphp7.so",
         "ea-php74-php.gif",
         "pdo_odbc.so"
-    ]
+    ],
+    "fix_dh_usrlocal": 1
 }
