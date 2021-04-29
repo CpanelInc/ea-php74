@@ -30,7 +30,7 @@
         "pkg_php_zend_api": "%{zendver}",
         "pkg_php_pdo_api": "%{pdover}",
         "pkg_php_version": "%{version}",
-        "pkg_php_extdir": "/opt/cpanel/ea-php74/root/usrlib64/php/modules",
+        "pkg_php_extdir": "/opt/cpanel/ea-php74/root/usr/lib64/php/modules",
         "pkg_php_inidir": "/opt/cpanel/ea-php74/root/etc/php.d",
         "pkg_php_incldir": "/opt/cpanel/ea-php74/root/usr/include/php",
         "pkg___php": "/opt/cpanel/ea-php74/root/usr/bin/php"
@@ -43,10 +43,6 @@
         "libtidy-dev",
         "libtidy5deb1",
         "libc-client2007e-dev"
-    ],
-    "add_to_sources": [
-        "insert_file.pl",
-        "correct_imap_ubuntu.sh"
     ],
     "add_to_requires": {
         "ea-php74-php-imap": [
