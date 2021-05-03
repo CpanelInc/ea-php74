@@ -16,16 +16,6 @@ pushd build
 make INSTALL_ROOT=$DEB_INSTALL_ROOT install-sapi install install-headers install-fpm
 popd
 
-echo "JULIAN" `pwd`
-find . -name "phar.1.gz"
-find . -name "phar.1"
-find . -name "php-fpm.conf"
-find . -name "man"
-find . -name "man1"
-find . -name "php-fpm.conf.default"
-file ./debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/man1/phar.1
-ls -R ./debian/tmp/opt/cpanel/ea-php74/root/usr/share/man/*
-
 # Install the default configuration file and icons
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/
 install -m 644 $SOURCE2 $DEB_INSTALL_ROOT$_sysconfdir/php.ini
@@ -208,12 +198,4 @@ cp ./php.ini-production ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/d
 cp ./fpm_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/licenses/ea-php74-php-fpm-${pkg_php_version}
 cp ./libmbfl_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/doc/ea-php74-php-mbstring-${pkg_php_version}
 cp ./libbcmath_LICENSE ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/usr/share/licenses/ea-php74-php-bcmath-${pkg_php_version}
-
-echo "PHPFPMXX"
-find ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74/root/etc/php-fpm.d -type f -print
-
-echo "AFTER INSTALL"
-echo "FILELIST START"
-find . -type f -print
-echo "FILELIST END"
 
