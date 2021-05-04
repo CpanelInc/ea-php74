@@ -127,9 +127,6 @@ pushd build
 
 ln -s ../configure
 
-#    --with-db4=/usr \
-#    --with-pdo-odbc=shared,unixODBC \
-
 ./configure \
     --build=x86_64-linux-gnu \
     --host=x86_64-linux-gnu \
