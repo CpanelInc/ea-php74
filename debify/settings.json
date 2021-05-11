@@ -45,9 +45,14 @@
         "libc-client2007e-dev"
     ],
     "add_to_requires": {
-        "ea-php74-php-imap": [
-            "libc-client2007e"
-        ]
+        "ea-php74-php-imap": [ "libc-client2007e" ],
+        "ea-php74-php-dba": [ "libtokyocabinet9" ],
+        "ea-php74-php-enchant": [ "libenchant1c2a" ],
+        "ea-php74-php-odbc": [ "libodbc1" ],
+        "ea-php74-php-pdo": [ "libpq5" ],
+        "ea-php74-php-pgsql": [ "libpq5" ],
+        "ea-php74-php-pspell": [ "libaspell15" ],
+        "ea-php74-php-snmp": [ "libsnmp35" ]
     },
     "remove_from_install": [
         "libphp7.so",
