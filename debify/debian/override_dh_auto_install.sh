@@ -58,11 +58,11 @@ sed -e "s:/run:$_localstatedir/run:" \
     -e "s:/usr/sbin:$_sbindir:" \
     -i $DEB_INSTALL_ROOT$_unitdir/${scl_prefix}php-fpm.service
 # LogRotate
-install -m 755 -d $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d
-install -m 644 $SOURCE7 $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/${scl_prefix}php-fpm
+install -m 755 -d $DEB_INSTALL_ROOT/etc/logrotate.d
+install -m 644 $SOURCE7 $DEB_INSTALL_ROOT/etc/logrotate.d/${scl_prefix}php-fpm
 sed -e "s:/run:$_localstatedir/run:" \
     -e "s:/var/log:$_localstatedir/log:" \
-    -i $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/${scl_prefix}php-fpm
+    -i $DEB_INSTALL_ROOT/etc/logrotate.d/${scl_prefix}php-fpm
 # Environment file
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/sysconfig
 echo "SOURCE8 :$SOURCE8:"
