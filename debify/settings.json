@@ -23,6 +23,9 @@
     "remove_from_provides": [
         "Provides:"
     ],
+    "remove_from_patches": [
+       "0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch"
+    ],
     "override_vars": {
         "_isa": "",
         "with_sqlite3": 1,
