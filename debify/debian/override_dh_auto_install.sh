@@ -37,13 +37,13 @@ ln -sf /opt/cpanel/$ns_name-$pkg/root/usr/var/run/php-fpm $DEB_INSTALL_ROOT$_loc
 # Config
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d
 install -m 644 $SOURCE4 $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.conf
-sed -e 's:/run:$_localstatedir/run:' \
-    -e 's:/var/log:$_localstatedir/log:' \
-    -e 's:/etc:$_sysconfdir:' \
+sed -e "s:/run:$_localstatedir/run:" \
+    -e "s:/var/log:$_localstatedir/log:" \
+    -e "s:/etc:$_sysconfdir:" \
     -i $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.conf
 install -m 644 $SOURCE5 $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf
-sed -e 's:/var/lib:$_localstatedir/lib:' \
-    -e 's:/var/log:$_localstatedir/log:' \
+sed -e "s:/var/lib:$_localstatedir/lib:" \
+    -e "s:/var/log:$_localstatedir/log:" \
     -i $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf
 mv $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf $DEB_INSTALL_ROOT$_sysconfdir/php-fpm.d/www.conf.example
 mv ${DEB_INSTALL_ROOT}opt/cpanel/ea-php74/root/etc/php-fpm.conf.default .
@@ -53,21 +53,21 @@ mv ${DEB_INSTALL_ROOT}opt/cpanel/ea-php74/root/etc/php-fpm.conf.default .
 # install systemd unit files and scripts for handling server startup
 install -m 755 -d $DEB_INSTALL_ROOT$_unitdir
 install -m 644 $SOURCE6 $DEB_INSTALL_ROOT$_unitdir/${scl_prefix}php-fpm.service
-sed -e 's:/run:$_localstatedir/run:' \
-    -e 's:/etc:$_sysconfdir:' \
-    -e 's:/usr/sbin:$_sbindir:' \
+sed -e "s:/run:$_localstatedir/run:" \
+    -e "s:/etc:$_sysconfdir:" \
+    -e "s:/usr/sbin:$_sbindir:" \
     -i $DEB_INSTALL_ROOT$_unitdir/${scl_prefix}php-fpm.service
 # LogRotate
 install -m 755 -d $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d
 install -m 644 $SOURCE7 $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/${scl_prefix}php-fpm
-sed -e 's:/run:$_localstatedir/run:' \
-    -e 's:/var/log:$_localstatedir/log:' \
+sed -e "s:/run:$_localstatedir/run:" \
+    -e "s:/var/log:$_localstatedir/log:" \
     -i $DEB_INSTALL_ROOT$_root_sysconfdir/logrotate.d/${scl_prefix}php-fpm
 # Environment file
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/sysconfig
 echo "SOURCE8 :$SOURCE8:"
 install -m 644 $SOURCE8 $DEB_INSTALL_ROOT$_sysconfdir/sysconfig/php-fpm
-mkdir -p ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d
+mkdir -p ${DEB_INSTALL_ROOT}$_sysconfdir/php.d
 
 # make the cli commands available in standard root for SCL build
 # Generate files lists and stub .ini files for each subpackage
@@ -104,9 +104,9 @@ do
     #       However, our usage acceptable given the transient nature of the ini files.
     #       https://fedoraproject.org/wiki/Packaging:RPM_Source_Dir?rd=PackagingDrafts/RPM_Source_Dir
     if [ -f "$buildroot/$ini" ]; then
-      cp -p $buildroot/$ini ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d/$ini
+      cp -p $buildroot/$ini ${DEB_INSTALL_ROOT}$_sysconfdir/php.d/$ini
     else
-      cat > ${DEB_INSTALL_ROOT}/opt/cpanel/ea-php74$_sysconfdir/php.d/$ini <<EOF
+      cat > ${DEB_INSTALL_ROOT}$_sysconfdir/php.d/$ini <<EOF
 ; Enable ${mod} extension module
 extension=${mod}.so
 EOF
@@ -133,11 +133,11 @@ cat files.json files.phar \
     files.ctype \
     files.tokenizer > files.common
 # The default Zend OPcache blacklist file
-install -m 644 $SOURCE51 $DEB_INSTALL_ROOT/opt/cpanel/ea-php74$_sysconfdir/php.d/opcache-default.blacklist
+install -m 644 $SOURCE51 $DEB_INSTALL_ROOT$_sysconfdir/php.d/opcache-default.blacklist
 # Install the macros file:
-install -d $DEB_INSTALL_ROOT/opt/cpanel/ea-php74$_root_sysconfdir/rpm
+install -d $DEB_INSTALL_ROOT/$_sysconfdir/rpm
 install -m 644 -c macros.php \
-           $DEB_INSTALL_ROOT/opt/cpanel/ea-php74$_root_sysconfdir/rpm/macros.$name
+           $DEB_INSTALL_ROOT$_sysconfdir/rpm/macros.$name
 # Remove unpackaged files
 rm -rf $DEB_INSTALL_ROOT$_libdir/php/modules/*.a \
        $DEB_INSTALL_ROOT$_bindir/{phptar} \
