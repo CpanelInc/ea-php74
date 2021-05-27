@@ -85,7 +85,7 @@ sed -e "s/@PHP_APIVER@/$apiver$isasuffix/" \
     -e "s:@ETCDIR@:$_sysconfdir:" \
     -e "s:@INCDIR@:$_includedir:" \
     -e "s:@BINDIR@:$_bindir:" \
-    -e 's/@SCL@/$ns_name_$pkg_/' \
+    -e "s/@SCL@/${ns_name}_${pkg}_/" \
     $SOURCE3 | tee macros.php
 # php-fpm configuration files for tmpfiles.d
 # TODO echo "d /run/php-fpm 755 root root" >php-fpm.tmpfiles
