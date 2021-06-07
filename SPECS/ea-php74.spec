@@ -1277,6 +1277,7 @@ export LDFLAGS="$XLDFLAGS -Wl,-rpath-link,/lib64 -Wl,-rpath,/lib64"
 export LDFLAGS="-Wl,-rpath=/opt/cpanel/ea-brotli/lib"
 %endif
 
+set -x
 ln -sf ../configure
 %configure \
     --cache-file=../config.cache \
