@@ -18,7 +18,8 @@
         "devtoolset-7-toolchain",
         "autotools-latest-autoconf",
         "scl-utils-build",
-        "ea-php74-libc-client-devel"
+        "ea-php74-libc-client-devel",
+        "ea-php74-libc-client"
     ],
     "remove_from_provides": [
         "Provides:"
