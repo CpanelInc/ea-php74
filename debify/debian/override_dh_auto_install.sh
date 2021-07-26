@@ -21,6 +21,17 @@ install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/
 install -m 644 $SOURCE2 $DEB_INSTALL_ROOT$_sysconfdir/php.ini
 # For third-party packaging:
 install -m 755 -d $DEB_INSTALL_ROOT$_datadir/php
+
+# install the DSO
+install -m 755 -d $RPM_BUILD_ROOT${_httpd_moddir}
+install -m 755 build/libs/libphp7.so $RPM_BUILD_ROOT${_httpd_moddir}
+
+# Apache config fragment
+install -m 755 -d $RPM_BUILD_ROO${_httpd_contentdir}/icons
+install -m 644 ext/gd/tests/php.gif $RPM_BUILD_ROOT${_httpd_contentdir}/icons/${name}.gif
+install -m 755 -d $RPM_BUILD_ROOT${_root_httpd_moddir}
+ln -s ${_httpd_moddir}/libphp7.so $RPM_BUILD_ROOT${_root_httpd_moddir}/libphp7.so
+
 install -m 755 -d $DEB_INSTALL_ROOT$_sysconfdir/php.d
 install -m 755 -d $DEB_INSTALL_ROOT$_localstatedir/lib
 install -m 755 build/sapi/litespeed/php $DEB_INSTALL_ROOT$_bindir/lsphp
