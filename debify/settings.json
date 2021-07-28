@@ -9,7 +9,10 @@
         "_httpd_modconfdir": "%{_httpd_dir}/conf.modules.d",
         "_httpd_confdir": "%{_httpd_dir}/conf.d",
         "_httpd_contentdir": "/usr/share/apache2",
-        "_httpd_moddir": "/usr/lib64/apache2/modules"
+        "_httpd_moddir": "/usr/lib64/apache2/modules",
+        "__perl": "/usr/bin/perl",
+        "vmmn": "",
+        "ea_apr_config": "/opt/cpanel/ea-apr16/bin/apr-1-config"
     },
     "remove_from_requires": [
         "devtoolset-7-gcc",
@@ -28,6 +31,7 @@
        "0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch"
     ],
     "override_vars": {
+        "_httpd_apxs": "/usr/bin/apxs",
         "_isa": "",
         "with_sqlite3": 1,
         "pkg_php_core_api": "%{apiver}",
