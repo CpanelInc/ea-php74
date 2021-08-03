@@ -119,7 +119,18 @@ cat `aclocal --print-ac-dir`/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m
 libtoolize --force --copy
 cat `aclocal --print-ac-dir`/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >build/libtool.m4
 
-# Regenerate configure scripts (patches change config.m4's)
+# pulled from apr-util
+mkdir -p config
+cp $ea_apr_config config/apr-1-config
+cp $ea_apr_config config/apr-config
+cp /usr/share/pkgconfig/ea-apr16-1.pc config/apr-1.pc
+cp /usr/share/pkgconfig/ea-apr16-util-1.pc config/apr-util-1.pc
+cp /usr/share/pkgconfig/ea-apr16-1.pc config
+cp /usr/share/pkgconfig/ea-apr16-util-1.pc config
+
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:`pwd`/config"
+echo "PKG_CONFIG_PATH :$PKG_CONFIG_PATH:"
+
 touch configure.in
 ./buildconf --force
 
@@ -128,6 +139,8 @@ pushd build
 ln -s ../configure
 
 ./configure \
+    --with-apxs2=${_httpd_apxs} \
+    --enable-maintainer-zts \
     --build=x86_64-linux-gnu \
     --host=x86_64-linux-gnu \
     --target=x86_64-pc-linux-gnu \

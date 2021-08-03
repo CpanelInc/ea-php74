@@ -155,7 +155,7 @@ Summary:  PHP DSO
 %endif
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
-Version:  7.4.21
+Version:  7.4.22
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
 %define release_prefix 1
 Release:  %{release_prefix}%{?dist}.cpanel
@@ -1959,6 +1959,9 @@ fi
 %endif
 
 %changelog
+* Thu Jul 29 2021 Cory McIntire <cory@cpanel.net> - 7.4.22-1
+- EA-10009: Update ea-php74 from v7.4.21 to v7.4.22
+
 * Thu Jul 01 2021 Cory McIntire <cory@cpanel.net> - 7.4.21-1
 - EA-9925: Update ea-php74 from v7.4.20 to v7.4.21
 
