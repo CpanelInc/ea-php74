@@ -140,7 +140,6 @@ ln -s ../configure
 
 ./configure \
     --with-apxs2=${_httpd_apxs} \
-    --enable-maintainer-zts \
     --build=x86_64-linux-gnu \
     --host=x86_64-linux-gnu \
     --target=x86_64-pc-linux-gnu \
