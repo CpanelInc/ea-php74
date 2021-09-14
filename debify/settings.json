@@ -62,8 +62,5 @@
         "ea-php74-php-pspell": [ "libaspell15" ],
         "ea-php74-php-snmp": [ "libsnmp35" ]
     },
-    "remove_from_install": [
-        "pdo_odbc.so"
-    ],
     "fix_dh_usrlocal": 1
 }

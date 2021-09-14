@@ -194,6 +194,7 @@ ln -s ../configure
     --with-pdo-pgsql=shared \
     --with-pdo-sqlite=shared \
     --with-sqlite3=shared \
+    --with-pdo-odbc=shared,unixodbc,/usr \
     --enable-pcntl \
     --enable-gd=shared \
     --enable-dba=shared \
