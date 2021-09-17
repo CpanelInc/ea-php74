@@ -60,7 +60,8 @@
         "ea-php74-php-pdo": [ "libpq5" ],
         "ea-php74-php-pgsql": [ "libpq5" ],
         "ea-php74-php-pspell": [ "libaspell15" ],
-        "ea-php74-php-snmp": [ "libsnmp35" ]
+        "ea-php74-php-snmp": [ "libsnmp35" ],
+        "ea-php74-php": [ "ea-apache24-mod-mpm-prefork" ]
     },
     "fix_dh_usrlocal": 1
 }
