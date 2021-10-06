@@ -3,7 +3,6 @@
         "ea_apr_name": "ea_apr16",
         "ea_apr_dir": "/opt/cpanel/ea-apr16",
         "ea_apu_dir": "/opt/cpanel/ea-apr16",
-        "_httpd_mmn": "20120211x8664",
         "_httpd_dir": "/etc/apache2",
         "_httpd_bindir": "%{_httpd_dir}/bin",
         "_httpd_modconfdir": "%{_httpd_dir}/conf.modules.d",
@@ -22,7 +21,10 @@
         "autotools-latest-autoconf",
         "scl-utils-build",
         "ea-php74-libc-client-devel",
-        "ea-php74-libc-client"
+        "ea-php74-libc-client",
+        "brotli-devel",
+        "libidn",
+        "libidn-devel"
     ],
     "remove_from_provides": [
         "Provides:"
@@ -50,7 +52,11 @@
         "libsnmp-dev",
         "libtidy-dev",
         "libtidy5deb1",
-        "libc-client2007e-dev"
+        "libc-client2007e-dev",
+        "libbrotli-dev",
+        "libbrotli1",
+        "libidn11",
+        "libidn11-dev"
     ],
     "add_to_requires": {
         "ea-php74-php-imap": [ "libc-client2007e" ],
