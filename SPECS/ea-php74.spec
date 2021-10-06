@@ -25,7 +25,6 @@
 %global embed_version 7.4
 
 # Ugly hack. Harcoded values to avoid relocation.
-%global _httpd_mmn         %(cat %{_root_includedir}/apache2/.mmn 2>/dev/null || echo missing-ea-apache24-devel)
 %global _httpd_confdir     %{_root_sysconfdir}/apache2/conf.d
 %global _httpd_moddir      %{_libdir}/apache2/modules
 %global _root_httpd_moddir %{_root_libdir}/apache2/modules
@@ -157,7 +156,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.24
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 22
+%define release_prefix 23
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -262,7 +261,7 @@ BuildRequires: ea-apache24-devel
 # the RPM dependency solver know what mpm and cgi module to install.  However,
 # we're using an OBS-centric Project Config called, Prefer: which does this
 # for us.
-Requires: ea-apache24-mmn = %{_httpd_mmn}
+Requires: ea-apache24-mmn
 Provides: %{?scl_prefix}mod_php = %{version}-%{release}
 Provides: ea-mod_php = %{embed_version}
 Conflicts: ea-mod_php > %{embed_version}, ea-mod_php < %{embed_version}
@@ -1959,6 +1958,9 @@ fi
 %endif
 
 %changelog
+* Wed Oct 06 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.24-23
+- ZC-9368: Correct build issues from changes to ea-tools
+
 * Fri Oct 01 2021 Cory McIntire <cory@cpanel.net> - 7.4.24-2
 - EA-10137: disable upstream regression tests in favor of our own
 
