@@ -1,4 +1,8 @@
 {
+    "do_not_build_packages": [
+       "ea-php74-php-interbase",
+       "ea-php74-php-embedded"
+    ],
     "vars": {
         "ea_apr_name": "ea_apr16",
         "ea_apr_dir": "/opt/cpanel/ea-apr16",
