@@ -156,7 +156,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.26
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1957,6 +1957,9 @@ fi
 %endif
 
 %changelog
+* Tue Dec 14 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.26-2
+- ZC-7454: Add php-sodium
+
 * Thu Nov 18 2021 Cory McIntire <cory@cpanel.net> - 7.4.26-1
 - EA-10279: Update ea-php74 from v7.4.25 to v7.4.26
 
