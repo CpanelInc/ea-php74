@@ -28,7 +28,9 @@
         "ea-php74-libc-client",
         "brotli-devel",
         "libidn",
-        "libidn-devel"
+        "libidn-devel",
+        "pkgconfig(libsodium)",
+        "libsodium"
     ],
     "remove_from_provides": [
         "Provides:"
@@ -60,6 +62,8 @@
         "libbrotli-dev",
         "libbrotli1",
         "libidn11",
+        "libsodium-dev",
+        "libsodium23",
         "libidn11-dev"
     ],
     "add_to_requires": {
@@ -71,7 +75,8 @@
         "ea-php74-php-pgsql": [ "libpq5" ],
         "ea-php74-php-pspell": [ "libaspell15" ],
         "ea-php74-php-snmp": [ "libsnmp35" ],
-        "ea-php74-php": [ "ea-apache24-mod-mpm-prefork" ]
+        "ea-php74-php": [ "ea-apache24-mod-mpm-prefork" ],
+        "ea-php74-php-sodium": [ "libsodium23" ]
     },
     "fix_dh_usrlocal": 1
 }
