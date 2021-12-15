@@ -61,6 +61,12 @@
 %global with_embed     1
 %endif
 
+%if 0%{rhel} > 6
+%global with_sodium 1
+%else
+%global with_sodium 0
+%endif
+
 %if 0%{rhel} < 7
 BuildRequires: devtoolset-7-toolchain
 BuildRequires: devtoolset-7-libatomic-devel
@@ -298,6 +304,21 @@ database-enabled webpage with PHP is fairly simple. The most common
 use of PHP coding is probably as a replacement for CGI scripts.
 %endif
 
+%if %{with_sodium}
+%package sodium
+Summary:        Cryptographic Extension Based on Libsodium
+Group:          Development/Libraries/PHP
+Requires:       %{?scl_prefix}php = %{version}
+Provides:       %{?scl_prefix}php-sodium = %{version}
+Obsoletes:      %{?scl_prefix}php-sodium < %{version}
+
+BuildRequires:  pkgconfig(libsodium) >= 1.0.18
+Requires:       libsodium >= 1.0.18
+
+%description sodium
+PHP binding to libsodium software library for encryption, decryption,
+signatures, password hashing and more.
+%endif
 
 %package cli
 Group: Development/Languages
@@ -1306,6 +1327,9 @@ ln -sf ../configure
     --enable-shmop \
     --with-libxml \
     --with-system-tzdata \
+%if %{with_sodium}
+    --with-sodium=shared \
+%endif
     --with-mhash \
 %if %{with_dtrace}
     --enable-dtrace \
@@ -1642,6 +1666,9 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
 %if %{with_zip}
     zip \
 %endif
+%if %{with_sodium}
+    sodium \
+%endif
     pspell curl xml \
     posix shmop sysvshm sysvsem sysvmsg
 do
@@ -1809,6 +1836,13 @@ fi
 %{_root_httpd_moddir}/libphp7.so
 %endif
 %{_httpd_contentdir}/icons/%{name}.gif
+%endif
+
+%if %{with_sodium}
+%files sodium
+%defattr(-, root, root)
+%{_libdir}/php/modules/sodium.so
+%config(noreplace) %{_sysconfdir}/php.d/20-sodium.ini
 %endif
 
 %files common -f files.common

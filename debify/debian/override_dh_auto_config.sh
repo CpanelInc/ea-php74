@@ -169,6 +169,7 @@ ln -s ../configure
     --with-bz2=shared \
     --with-freetype \ \
     --with-xpm \
+    --with-sodium=shared \
     --without-gdbm \
     --with-gettext=shared \
     --with-iconv=shared \
