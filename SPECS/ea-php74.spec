@@ -308,7 +308,7 @@ use of PHP coding is probably as a replacement for CGI scripts.
 %package sodium
 Summary:        Cryptographic Extension Based on Libsodium
 Group:          Development/Libraries/PHP
-Requires:       %{?scl_prefix}php = %{version}
+Requires:       %{?scl_prefix}php-common = %{version}
 Provides:       %{?scl_prefix}php-sodium = %{version}
 Obsoletes:      %{?scl_prefix}php-sodium < %{version}
 
