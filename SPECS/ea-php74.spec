@@ -61,6 +61,12 @@
 %global with_embed     1
 %endif
 
+%if 0%{rhel} > 6
+%global with_sodium 1
+%else
+%global with_sodium 0
+%endif
+
 %if 0%{rhel} < 7
 BuildRequires: devtoolset-7-toolchain
 BuildRequires: devtoolset-7-libatomic-devel
@@ -156,7 +162,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.27
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -298,6 +304,21 @@ database-enabled webpage with PHP is fairly simple. The most common
 use of PHP coding is probably as a replacement for CGI scripts.
 %endif
 
+%if %{with_sodium}
+%package sodium
+Summary:        Cryptographic Extension Based on Libsodium
+Group:          Development/Libraries/PHP
+Requires:       %{?scl_prefix}php-common = %{version}
+Provides:       %{?scl_prefix}php-sodium = %{version}
+Obsoletes:      %{?scl_prefix}php-sodium < %{version}
+
+BuildRequires:  pkgconfig(libsodium) >= 1.0.18
+Requires:       libsodium >= 1.0.18
+
+%description sodium
+PHP binding to libsodium software library for encryption, decryption,
+signatures, password hashing and more.
+%endif
 
 %package cli
 Group: Development/Languages
@@ -1306,6 +1327,9 @@ ln -sf ../configure
     --enable-shmop \
     --with-libxml \
     --with-system-tzdata \
+%if %{with_sodium}
+    --with-sodium=shared \
+%endif
     --with-mhash \
 %if %{with_dtrace}
     --enable-dtrace \
@@ -1642,6 +1666,9 @@ for mod in pgsql odbc ldap snmp xmlrpc imap \
 %if %{with_zip}
     zip \
 %endif
+%if %{with_sodium}
+    sodium \
+%endif
     pspell curl xml \
     posix shmop sysvshm sysvsem sysvmsg
 do
@@ -1811,6 +1838,13 @@ fi
 %{_httpd_contentdir}/icons/%{name}.gif
 %endif
 
+%if %{with_sodium}
+%files sodium
+%defattr(-, root, root)
+%{_libdir}/php/modules/sodium.so
+%config(noreplace) %{_sysconfdir}/php.d/20-sodium.ini
+%endif
+
 %files common -f files.common
 %defattr(-,root,root)
 %doc CODING_STANDARDS.md EXTENSIONS LICENSE NEWS README*
@@ -1957,6 +1991,9 @@ fi
 %endif
 
 %changelog
+* Tue Dec 21 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.27-2
+- ZC-7454: Add php-sodium
+
 * Fri Dec 17 2021 Cory McIntire <cory@cpanel.net> - 7.4.27-1
 - EA-10364: Update ea-php74 from v7.4.26 to v7.4.27
 
