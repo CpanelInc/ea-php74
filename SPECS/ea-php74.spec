@@ -162,7 +162,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.27
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 3
+%define release_prefix 4
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1991,8 +1991,11 @@ fi
 %endif
 
 %changelog
-* Thu Dec 23 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.27-3
+* Thu Dec 23 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.27-4
 - ZC-9611: Dependency issue with php-enchant.
+
+* Wed Dec 22 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.27-3
+- ZC-9598: Fix Ubuntu 21 global regs problem
 
 * Tue Dec 21 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.27-2
 - ZC-7454: Add php-sodium
