@@ -142,6 +142,7 @@ pushd build
 ln -s ../configure
 
 ./configure \
+    --disable-gcc-global-regs \
     --with-apxs2=${_httpd_apxs} \
     --build=x86_64-linux-gnu \
     --host=x86_64-linux-gnu \
