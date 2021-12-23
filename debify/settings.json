@@ -70,7 +70,7 @@
     "add_to_requires": {
         "ea-php74-php-imap": [ "libc-client2007e" ],
         "ea-php74-php-dba": [ "libtokyocabinet9" ],
-        "ea-php74-php-enchant": [ "libenchant-2" ],
+        "ea-php74-php-enchant": [ "libenchant-2-2" ],
         "ea-php74-php-odbc": [ "libodbc1" ],
         "ea-php74-php-pdo": [ "libpq5" ],
         "ea-php74-php-pgsql": [ "libpq5" ],
