@@ -113,6 +113,9 @@ XSL_LIBS="-L/usr/lib/x86_64-linux-gnu -lxml2"
 LIBZIP_CFLAGS="-I/usr/include"
 LIBZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -lzip"
 
+export ENCHANT_LIBS="-L/usr/lib/x86_64-linux-gnu -lenchant-2"
+export ENCHANT_CFLAGS="-I/usr/include -I/usr/include/enchant-2"
+
 cat `aclocal --print-ac-dir`/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >>aclocal.m4
 
 # Force use of system libtool:
@@ -139,6 +142,7 @@ pushd build
 ln -s ../configure
 
 ./configure \
+    --disable-gcc-global-regs \
     --with-apxs2=${_httpd_apxs} \
     --build=x86_64-linux-gnu \
     --host=x86_64-linux-gnu \
@@ -169,6 +173,7 @@ ln -s ../configure
     --with-bz2=shared \
     --with-freetype \ \
     --with-xpm \
+    --with-sodium=shared \
     --without-gdbm \
     --with-gettext=shared \
     --with-iconv=shared \
