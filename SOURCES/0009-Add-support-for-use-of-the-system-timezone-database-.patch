@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Daniel Muey <dan@cpanel.net>
 Date: Thu, 7 Feb 2019 12:22:33 -0600
-Subject: [PATCH 09/12] Add support for use of the system timezone database,
+Subject: [PATCH 09/13] Add support for use of the system timezone database,
  rather than embedding a copy. Discussed upstream but was not desired.
 
 History:
@@ -34,7 +34,7 @@ r1: initial revision
  2 files changed, 545 insertions(+), 3 deletions(-)
 
 diff --git a/ext/date/config0.m4 b/ext/date/config0.m4
-index 20e4164..a612436 100644
+index 20e4164a..a6124364 100644
 --- a/ext/date/config0.m4
 +++ b/ext/date/config0.m4
 @@ -4,6 +4,19 @@ AC_CHECK_HEADERS([io.h])
@@ -58,7 +58,7 @@ index 20e4164..a612436 100644
  timelib_sources="lib/astro.c lib/dow.c lib/parse_date.c lib/parse_tz.c
                   lib/timelib.c lib/tm2unixtime.c lib/unixtime2tm.c lib/parse_iso_intervals.c lib/interval.c"
 diff --git a/ext/date/lib/parse_tz.c b/ext/date/lib/parse_tz.c
-index 020da31..9b39c6e 100644
+index 020da313..9b39c6e2 100644
 --- a/ext/date/lib/parse_tz.c
 +++ b/ext/date/lib/parse_tz.c
 @@ -26,8 +26,21 @@
