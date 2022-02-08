@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Cory McIntire <cory@cpanel.net>
 Date: Fri, 2 Mar 2018 11:12:27 -0600
-Subject: [PATCH 08/12] Patch epoll.c per bug report in upstream.
+Subject: [PATCH 08/13] Patch epoll.c per bug report in upstream.
 
 Case HB-3061-70: Patch epoll.c per bug report in upstream.
 ---
@@ -9,7 +9,7 @@ Case HB-3061-70: Patch epoll.c per bug report in upstream.
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/sapi/fpm/fpm/events/epoll.c b/sapi/fpm/fpm/events/epoll.c
-index 4701339..0ded84b 100644
+index 4701339e..0ded84b2 100644
 --- a/sapi/fpm/fpm/events/epoll.c
 +++ b/sapi/fpm/fpm/events/epoll.c
 @@ -142,7 +142,12 @@ static int fpm_event_epoll_wait(struct fpm_event_queue_s *queue, unsigned long i
