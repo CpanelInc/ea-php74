@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Jacob Perkins <jacob.perkins@cpanel.net>
 Date: Mon, 13 Jun 2016 22:35:54 -0500
-Subject: [PATCH 05/12] Ensure that php.d is not scanned when PHPRC is set
+Subject: [PATCH 05/13] Ensure that php.d is not scanned when PHPRC is set
 
 Since EasyApache 4 is built with the configuration
 option 'with-config-file-scan-dir', this ensured that php.d was
@@ -16,7 +16,7 @@ PHPRC is set. (EA-4422)
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/main/php_ini.c b/main/php_ini.c
-index cc2cf16..c0e241a 100644
+index cc2cf16c..c0e241ad 100644
 --- a/main/php_ini.c
 +++ b/main/php_ini.c
 @@ -652,7 +652,15 @@ int php_init_config(void)

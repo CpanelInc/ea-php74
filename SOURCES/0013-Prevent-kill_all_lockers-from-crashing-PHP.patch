@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Tim Mullin <tim@cpanel.net>
+Date: Tue, 8 Feb 2022 17:21:42 +0000
+Subject: [PATCH 13/13] Prevent kill_all_lockers() from crashing PHP
+
+Log a warning instead of an error when failing to
+kill a process.  Throwing an error is causing PHP
+to crash for all the other sites.
+---
+ ext/opcache/ZendAccelerator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ext/opcache/ZendAccelerator.c b/ext/opcache/ZendAccelerator.c
+index 729478ad..8a1598d9 100644
+--- a/ext/opcache/ZendAccelerator.c
++++ b/ext/opcache/ZendAccelerator.c
+@@ -808,7 +808,7 @@ static inline void kill_all_lockers(struct flock *mem_usage_check)
+ 			/* errno is not ESRCH or we ran out of tries to kill the locker */
+ 			ZCSG(force_restart_time) = time(NULL); /* restore forced restart request */
+ 			/* cannot kill the locker, bail out with error */
+-			zend_accel_error(ACCEL_LOG_ERROR, "Cannot kill process %d: %s!", mem_usage_check->l_pid, strerror(errno));
++			zend_accel_error(ACCEL_LOG_WARNING, "Cannot kill process %d: %s!", mem_usage_check->l_pid, strerror(errno));
+ 		}
+ 
+ 		mem_usage_check->l_type = F_WRLCK;

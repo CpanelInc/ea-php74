@@ -162,7 +162,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.27
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 4
+%define release_prefix 5
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -205,6 +205,7 @@ Patch108: 0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch
 
 Patch402: 0011-0022-PLESK-missed-kill.patch
 Patch403: 0012-Revert-new-.user.ini-search-behavior.patch
+Patch404: 0013-Prevent-kill_all_lockers-from-crashing-PHP.patch
 
 BuildRequires: ea-libxml2-devel
 BuildRequires: bzip2-devel, %{db_devel}
@@ -1060,6 +1061,7 @@ inside them.
 
 %patch402 -p1 -b .missedkill
 %patch403 -p1 -b .userini
+%patch404 -p1 -b .kill_all_lockers
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
@@ -1991,6 +1993,9 @@ fi
 %endif
 
 %changelog
+* Tue Feb 08 2022 Tim Mullin <tim@cpanel.net> - 7.4.27-5
+- EA-10461: Patch PHP-FPM/OpCache for kill_all_lockers bug (74709)
+
 * Thu Dec 23 2021 Julian Brown <julian.brown@cpanel.net> - 7.4.27-4
 - ZC-9611: Dependency issue with php-enchant.
 
