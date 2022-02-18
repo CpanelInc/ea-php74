@@ -16,7 +16,7 @@ PHPRC is set. (EA-4422)
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/main/php_ini.c b/main/php_ini.c
-index cc2cf16c..c0e241ad 100644
+index cc2cf16..c0e241a 100644
 --- a/main/php_ini.c
 +++ b/main/php_ini.c
 @@ -652,7 +652,15 @@ int php_init_config(void)

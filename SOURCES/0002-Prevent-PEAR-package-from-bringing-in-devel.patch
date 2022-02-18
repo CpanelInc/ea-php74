@@ -9,7 +9,7 @@ Source: https://bugzilla.redhat.com/show_bug.cgi?id=657812
  1 file changed, 12 insertions(+)
 
 diff --git a/scripts/phpize.in b/scripts/phpize.in
-index 04864733..22ed77c3 100644
+index 0486473..22ed77c 100644
 --- a/scripts/phpize.in
 +++ b/scripts/phpize.in
 @@ -165,6 +165,15 @@ phpize_autotools()

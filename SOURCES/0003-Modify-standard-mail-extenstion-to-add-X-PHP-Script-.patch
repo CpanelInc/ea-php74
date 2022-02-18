@@ -9,7 +9,7 @@ Subject: [PATCH 03/13] Modify standard mail extenstion to add X-PHP-Script
  1 file changed, 50 insertions(+)
 
 diff --git a/ext/standard/mail.c b/ext/standard/mail.c
-index b27923ac..3cb89b3f 100644
+index b27923a..3cb89b3 100644
 --- a/ext/standard/mail.c
 +++ b/ext/standard/mail.c
 @@ -533,6 +533,52 @@ PHPAPI int php_mail(char *to, char *subject, char *message, char *headers, char
