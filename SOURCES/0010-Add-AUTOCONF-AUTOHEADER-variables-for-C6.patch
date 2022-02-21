@@ -10,7 +10,7 @@ on CentOS6. We'll call this patch for building C6 RPMs.
  1 file changed, 3 insertions(+)
 
 diff --git a/scripts/phpize.in b/scripts/phpize.in
-index 22ed77c3..e2e8b9c2 100644
+index 22ed77c..e2e8b9c 100644
 --- a/scripts/phpize.in
 +++ b/scripts/phpize.in
 @@ -1,5 +1,8 @@

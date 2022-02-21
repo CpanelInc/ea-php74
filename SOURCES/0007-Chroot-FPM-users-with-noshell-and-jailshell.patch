@@ -11,7 +11,7 @@ if their shells are set to noshell or jailshell no matter what.
  2 files changed, 71 insertions(+), 1 deletion(-)
 
 diff --git a/sapi/fpm/fpm/fpm_conf.c b/sapi/fpm/fpm/fpm_conf.c
-index 7a052863..5e2985dc 100644
+index 7a05286..5e2985d 100644
 --- a/sapi/fpm/fpm/fpm_conf.c
 +++ b/sapi/fpm/fpm/fpm_conf.c
 @@ -1029,7 +1029,8 @@ static int fpm_conf_process_all_pools() /* {{{ */
@@ -25,7 +25,7 @@ index 7a052863..5e2985dc 100644
  					efree(buf);
  					return -1;
 diff --git a/sapi/fpm/fpm/fpm_unix.c b/sapi/fpm/fpm/fpm_unix.c
-index d0be0bfe..b98c8d67 100644
+index d0be0bf..b98c8d6 100644
 --- a/sapi/fpm/fpm/fpm_unix.c
 +++ b/sapi/fpm/fpm/fpm_unix.c
 @@ -10,6 +10,7 @@
