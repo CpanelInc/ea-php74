@@ -14,7 +14,7 @@ do not rely on the old behavior.
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/sapi/cgi/cgi_main.c b/sapi/cgi/cgi_main.c
-index a36f426d..28610c80 100644
+index a36f426..28610c8 100644
 --- a/sapi/cgi/cgi_main.c
 +++ b/sapi/cgi/cgi_main.c
 @@ -782,7 +782,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)
@@ -45,7 +45,7 @@ index a36f426d..28610c80 100644
  #ifdef PHP_WIN32
  				efree(doc_root);
 diff --git a/sapi/fpm/fpm/fpm_main.c b/sapi/fpm/fpm/fpm_main.c
-index a17f59c2..b417a72d 100644
+index a17f59c..b417a72 100644
 --- a/sapi/fpm/fpm/fpm_main.c
 +++ b/sapi/fpm/fpm/fpm_main.c
 @@ -621,7 +621,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)

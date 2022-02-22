@@ -160,9 +160,9 @@ Summary:  PHP DSO
 %endif
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
-Version:  7.4.27
+Version:  7.4.28
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 5
+%define release_prefix 1
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1993,6 +1993,9 @@ fi
 %endif
 
 %changelog
+* Fri Feb 18 2022 Cory McIntire <cory@cpanel.net> - 7.4.28-1
+- EA-10504: Update ea-php74 from v7.4.27 to v7.4.28
+
 * Tue Feb 08 2022 Tim Mullin <tim@cpanel.net> - 7.4.27-5
 - EA-10461: Patch PHP-FPM/OpCache for kill_all_lockers bug (74709)
 
