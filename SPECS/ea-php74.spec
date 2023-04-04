@@ -162,7 +162,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 3
+%define release_prefix 4
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1993,6 +1993,9 @@ fi
 %endif
 
 %changelog
+* Tue Apr 04 2023 Julian Brown <julian.brown@cpanel.net> - 7.4.33-4
+- ZC-10873: Do not build on Ubuntu 22
+
 * Wed Jan 18 2023 Tim Mullin <tim@cpanel.net> - 7.4.33-3
 - EA-11075: Correct default value description for log_errors in php.ini
 
