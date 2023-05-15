@@ -1356,11 +1356,6 @@ build --libdir=%{_libdir}/php \
       --enable-pcntl \
       --enable-opcache \
       --enable-phpdbg \
-%if 0%{?rhel} >= 8
-      --with-curl=shared \
-%else
-      --with-curl=shared,%{libcurl_prefix} \
-%endif
       --with-imap=shared,/opt/cpanel/ea-libc-client \
       --with-imap-ssl \
       --enable-mbstring=shared \
@@ -1398,6 +1393,11 @@ build --libdir=%{_libdir}/php \
       --enable-soap=shared \
       --with-xsl=shared,%{_root_prefix} \
       --enable-xmlreader=shared --enable-xmlwriter=shared \
+%if 0%{?rhel} >= 8
+      --with-curl=shared \
+%else
+      --with-curl=shared,%{libcurl_prefix} \
+%endif
       --enable-pdo=shared \
       --with-pdo-odbc=shared,unixODBC,%{_root_prefix} \
       --with-pdo-mysql=shared,mysqlnd \
