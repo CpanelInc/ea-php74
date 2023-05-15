@@ -1398,7 +1398,6 @@ build --libdir=%{_libdir}/php \
       --enable-soap=shared \
       --with-xsl=shared,%{_root_prefix} \
       --enable-xmlreader=shared --enable-xmlwriter=shared \
-      --with-imap=shared,/opt/cpanel/ea-libc-client \
       --enable-pdo=shared \
       --with-pdo-odbc=shared,unixODBC,%{_root_prefix} \
       --with-pdo-mysql=shared,mysqlnd \
