@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Tim Mullin <tim@cpanel.net>
 Date: Mon, 18 May 2020 15:36:05 -0500
-Subject: [PATCH 12/13] Revert new .user.ini search behavior
+Subject: [PATCH 12/14] Revert new .user.ini search behavior
 
 PHP issue #79491 (https://bugs.php.net/bug.php?id=79491)
 introduced new behavior in searching for .user.ini
@@ -14,7 +14,7 @@ do not rely on the old behavior.
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/sapi/cgi/cgi_main.c b/sapi/cgi/cgi_main.c
-index a36f426..28610c8 100644
+index a36f426d..28610c80 100644
 --- a/sapi/cgi/cgi_main.c
 +++ b/sapi/cgi/cgi_main.c
 @@ -782,7 +782,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)
@@ -45,7 +45,7 @@ index a36f426..28610c8 100644
  #ifdef PHP_WIN32
  				efree(doc_root);
 diff --git a/sapi/fpm/fpm/fpm_main.c b/sapi/fpm/fpm/fpm_main.c
-index a17f59c..b417a72 100644
+index a17f59c2..b417a72d 100644
 --- a/sapi/fpm/fpm/fpm_main.c
 +++ b/sapi/fpm/fpm/fpm_main.c
 @@ -621,7 +621,7 @@ static void sapi_cgi_log_message(char *message, int syslog_type_int)
