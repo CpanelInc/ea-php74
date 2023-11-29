@@ -165,7 +165,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 6
+%define release_prefix 7
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1996,6 +1996,9 @@ fi
 %endif
 
 %changelog
+* Mon Nov 27 2023 Dan Muey <dan@cpanel.net> - 7.4.33-7
+- ZC-11419: work around `%doc` and `%license` behavior changes from C7 to c9
+
 * Tue May 30 2023 Travis Holloway <t.holloway@cpanel.net> - 7.4.33-6
 - EA-11447: Increase default php memory_limit for new installs from 32M to 128M
 
