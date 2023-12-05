@@ -165,7 +165,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 7
+%define release_prefix 8
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -209,6 +209,7 @@ Patch108: 0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch
 Patch402: 0011-0022-PLESK-missed-kill.patch
 Patch403: 0012-Revert-new-.user.ini-search-behavior.patch
 Patch404: 0013-Prevent-kill_all_lockers-from-crashing-PHP.patch
+Patch405: 0014-Update-libxml-include-file-references.patch
 
 BuildRequires: ea-libxml2-devel
 BuildRequires: bzip2-devel, %{db_devel}
@@ -1058,6 +1059,7 @@ inside them.
 %patch402 -p1 -b .missedkill
 %patch403 -p1 -b .userini
 %patch404 -p1 -b .kill_all_lockers
+%patch405 -p1 -b .libxml
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
@@ -1996,6 +1998,9 @@ fi
 %endif
 
 %changelog
+* Tue Nov 30 2023 Tim Mullin <tim@cpanel.net> - 7.4.33-8
+- EA-11821: Patch to build with the latest ea-libxml2
+
 * Mon Nov 27 2023 Dan Muey <dan@cpanel.net> - 7.4.33-7
 - ZC-11419: work around `%doc` and `%license` behavior changes from C7 to c9
 
