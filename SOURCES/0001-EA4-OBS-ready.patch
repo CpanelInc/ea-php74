@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Daniel Muey <dan@cpanel.net>
 Date: Tue, 28 Jan 2020 17:45:17 -0600
-Subject: [PATCH 01/13] EA4 OBS ready
+Subject: [PATCH 01/14] EA4 OBS ready
 
 1. Remove faulty libxml2 check
 2. Remove faulty systemd check from fpm sapi config
@@ -11,7 +11,7 @@ Subject: [PATCH 01/13] EA4 OBS ready
  2 files changed, 4 deletions(-)
 
 diff --git a/build/php.m4 b/build/php.m4
-index 86b522a..7bc9ec0 100644
+index 86b522a3..7bc9ec0e 100644
 --- a/build/php.m4
 +++ b/build/php.m4
 @@ -2034,8 +2034,6 @@ dnl
@@ -24,7 +24,7 @@ index 86b522a..7bc9ec0 100644
    PHP_EVAL_LIBLINE($LIBXML_LIBS, $1)
  
 diff --git a/sapi/fpm/config.m4 b/sapi/fpm/config.m4
-index ad89c1b..fc06a05 100644
+index ad89c1bb..fc06a05f 100644
 --- a/sapi/fpm/config.m4
 +++ b/sapi/fpm/config.m4
 @@ -549,8 +549,6 @@ if test "$PHP_FPM" != "no"; then

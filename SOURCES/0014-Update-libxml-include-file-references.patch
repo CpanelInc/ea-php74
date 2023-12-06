@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Tim Mullin <tim@cpanel.net>
+Date: Wed, 22 Nov 2023 02:48:53 +0000
+Subject: [PATCH 14/14] Update libxml include file references
+
+---
+ ext/dom/document.c      | 1 +
+ ext/libxml/php_libxml.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/ext/dom/document.c b/ext/dom/document.c
+index b478e1a1..707a1fbb 100644
+--- a/ext/dom/document.c
++++ b/ext/dom/document.c
+@@ -25,6 +25,7 @@
+ #if HAVE_LIBXML && HAVE_DOM
+ #include "php_dom.h"
+ #include <libxml/SAX.h>
++#include <libxml/xmlsave.h>
+ #ifdef LIBXML_SCHEMAS_ENABLED
+ #include <libxml/relaxng.h>
+ #include <libxml/xmlschemas.h>
+diff --git a/ext/libxml/php_libxml.h b/ext/libxml/php_libxml.h
+index cf936e95..b5ca6f65 100644
+--- a/ext/libxml/php_libxml.h
++++ b/ext/libxml/php_libxml.h
+@@ -36,7 +36,7 @@ extern zend_module_entry libxml_module_entry;
+ #endif
+ 
+ #include "zend_smart_str.h"
+-#include <libxml/tree.h>
++#include <libxml/parser.h>
+ 
+ #define LIBXML_SAVE_NOEMPTYTAG 1<<2
+ 
