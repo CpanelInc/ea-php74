@@ -75,7 +75,7 @@
         "ea-php74-php-pdo": [ "libpq5" ],
         "ea-php74-php-pgsql": [ "libpq5" ],
         "ea-php74-php-pspell": [ "libaspell15" ],
-        "ea-php74-php-snmp": [ "libsnmp35" ],
+        "ea-php74-php-snmp": [ "libsnmp35", "snmp-mibs-downloader" ],
         "ea-php74-php": [ "ea-apache24-mod-mpm-prefork" ],
         "ea-php74-php-sodium": [ "libsodium23" ]
     },
