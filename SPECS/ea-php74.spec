@@ -165,7 +165,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 9
+%define release_prefix 10
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -210,6 +210,8 @@ Patch402: 0011-0022-PLESK-missed-kill.patch
 Patch403: 0012-Revert-new-.user.ini-search-behavior.patch
 Patch404: 0013-Prevent-kill_all_lockers-from-crashing-PHP.patch
 Patch405: 0014-Update-libxml-include-file-references.patch
+
+Patch015: 0015-libxml2-2.13-makes-changes-to-how-the-parsing-state-.patch
 
 BuildRequires: ea-libxml2-devel
 BuildRequires: bzip2-devel, %{db_devel}
@@ -1060,6 +1062,8 @@ inside them.
 %patch403 -p1 -b .userini
 %patch404 -p1 -b .kill_all_lockers
 %patch405 -p1 -b .libxml
+
+%patch015 -p1 -b .libxml2
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
@@ -1998,6 +2002,9 @@ fi
 %endif
 
 %changelog
+* Tue Sep 03 2024 Julian Brown <julian.brown@cpanel.net> - 7.4.33-10
+- ZC-12114: Apply fix for libxml2
+
 * Mon Dec 18 2023 Travis Holloway <t.holloway@cpanel.net> - 7.4.33-9
 - EA-10753: Have snmp module require 'snmp-mibs-downloader' for deb
 
