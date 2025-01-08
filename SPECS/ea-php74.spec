@@ -102,7 +102,7 @@ BuildRequires: devtoolset-8 devtoolset-8-gcc devtoolset-8-gcc-c++ kernel-devel
 %global with_intl   1
 %global with_sqlite3   1
 %else
-%global with_intl   1
+%global with_intl   0
 %global with_sqlite3   0
 %endif
 %if 0%{?fedora} || 0%{?rhel} >= 6
