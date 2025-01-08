@@ -132,7 +132,11 @@ BuildRequires: devtoolset-8 devtoolset-8-gcc devtoolset-8-gcc-c++ kernel-devel
 %global with_systemd 1
 %endif
 
+%if 0%{?fedora} < 16 && 0%{?rhel} < 7
+%global with_zip     0
+%else
 %global with_zip     1
+%endif
 
 %if %{with_zip}
 Requires: ea-libzip
