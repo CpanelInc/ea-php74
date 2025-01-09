@@ -18,10 +18,10 @@
         "ea_apr_config": "/opt/cpanel/ea-apr16/bin/apr-1-config"
     },
     "remove_from_requires": [
-        "devtoolset-7-gcc",
-        "devtoolset-7-gcc-c++",
-        "devtoolset-7-libatomic-devel",
-        "devtoolset-7-toolchain",
+        "devtoolset-8",
+        "devtoolset-8-gcc",
+        "devtoolset-8-gcc-c++",
+        "kernel-devel",
         "autotools-latest-autoconf",
         "scl-utils-build",
         "ea-php74-libc-client-devel",
@@ -32,9 +32,6 @@
         "pkgconfig(libsodium)",
         "libsodium",
         "libenchant1c2a"
-    ],
-    "remove_from_provides": [
-        "Provides:"
     ],
     "remove_from_patches": [
        "0010-Add-AUTOCONF-AUTOHEADER-variables-for-C6.patch"
