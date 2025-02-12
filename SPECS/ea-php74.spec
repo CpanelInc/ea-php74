@@ -166,7 +166,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 13
+%define release_prefix 14
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -2006,6 +2006,9 @@ fi
 %endif
 
 %changelog
+* Wed Feb 12 2025 Dan Muey <daniel.muey@webpros.com> - 7.4.33-14
+- ZC-12614: Build on Alma 9
+
 * Wed Jan 08 2025 Dan Muey <daniel.muey@webpros.com> - 7.4.33-13
 - ZC-12495: Do gcc like newer PHPs so that the libicu update won’t break the build
 
