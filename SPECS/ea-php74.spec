@@ -158,10 +158,12 @@ BuildRequires: ea-libzip-devel
 %define ea_libcurl_ver 7.68.0-2
 %endif
 
-Summary:  PHP scripting language for creating dynamic web sites
 %if %{with_httpd}
 Summary:  PHP DSO
+%else
+Summary:  PHP scripting language for creating dynamic web sites
 %endif
+
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
@@ -1846,8 +1848,6 @@ fi
 %if %{with_httpd}
 %{_httpd_moddir}/libphp7.so
 %if 0%{?scl:1}
-#%dir %{_libdir}/apache2
-#%dir %{_libdir}/apache2/modules
 %{_root_httpd_moddir}/libphp7.so
 %endif
 %{_httpd_contentdir}/icons/%{name}.gif
@@ -1890,9 +1890,6 @@ fi
 %{_mandir}/man1/phar.phar.1*
 %{_mandir}/man1/phpize.1*
 
-#{?scl: %{_root_bindir}/%{?scl_prefix}php}
-#{?scl: %{_root_bindir}/%{?scl_prefix}phar}
-
 %files dbg
 %defattr(-,root,root)
 %{_bindir}/phpdbg
@@ -1913,7 +1910,6 @@ fi
 %config(noreplace) %{_sysconfdir}/php-fpm.d/www.conf.default
 %config(noreplace) %{_root_sysconfdir}/logrotate.d/%{?scl_prefix}php-fpm
 %config(noreplace) %{_sysconfdir}/sysconfig/php-fpm
-# %{_prefix}/lib/tmpfiles.d/php-fpm.conf
 %if %{with_systemd}
 %{_unitdir}/%{?scl_prefix}php-fpm.service
 %else
@@ -2024,7 +2020,7 @@ fi
 * Mon Dec 18 2023 Travis Holloway <t.holloway@cpanel.net> - 7.4.33-9
 - EA-10753: Have snmp module require 'snmp-mibs-downloader' for deb
 
-* Tue Nov 30 2023 Tim Mullin <tim@cpanel.net> - 7.4.33-8
+* Thu Nov 30 2023 Tim Mullin <tim@cpanel.net> - 7.4.33-8
 - EA-11821: Patch to build with the latest ea-libxml2
 
 * Mon Nov 27 2023 Dan Muey <dan@cpanel.net> - 7.4.33-7
