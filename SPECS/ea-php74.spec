@@ -1233,7 +1233,7 @@ CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign -mshstk"
 
 # gcc11 order matters and this needs to be before the .c file
 %if 0%{?rhel} == 9
-CFLAGS="$CFLAGS -Wl,-rpath,/opt/cpanel/ea-libc-client/lib64"
+CFLAGS="$CFLAGS -DNETSNMP_DISABLE_DES -Wl,-rpath,/opt/cpanel/ea-libc-client/lib64"
 %endif
 
 export CFLAGS
