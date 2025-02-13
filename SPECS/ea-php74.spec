@@ -1230,6 +1230,12 @@ CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign"
 %else
 CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign -mshstk"
 %endif
+
+# gcc11 order matters and this needs to be before the .c file
+%if 0%{?rhel} == 9
+CFLAGS="$CFLAGS -Wl,-rpath,/opt/cpanel/ea-libc-client/lib64"
+%endif
+
 export CFLAGS
 
 %if 0%{?rhel} < 8
