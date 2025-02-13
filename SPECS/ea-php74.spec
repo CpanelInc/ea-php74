@@ -1345,12 +1345,7 @@ ln -sf ../configure
 %if %{with_dtrace}
     --enable-dtrace \
 %endif
-    $*
-if test $? != 0; then
-  tail -500 config.log
-  : configure failed
-  exit 1
-fi
+    $* || ( cat config.log; /bin/false )
 
 # ZC-10931 - we are building libc-client in, but statically.  This allows us to deprecate and remove
 # scl-libc-client, instead we have a build require for ea-libc-client
