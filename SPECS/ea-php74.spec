@@ -158,17 +158,15 @@ BuildRequires: ea-libzip-devel
 %define ea_libcurl_ver 7.68.0-2
 %endif
 
+Summary:  PHP scripting language for creating dynamic web sites
 %if %{with_httpd}
 Summary:  PHP DSO
-%else
-Summary:  PHP scripting language for creating dynamic web sites
 %endif
-
 Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 14
+%define release_prefix 15
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1230,12 +1228,6 @@ CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign"
 %else
 CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign -mshstk"
 %endif
-
-# gcc11 order matters and this needs to be before the .c file
-%if 0%{?rhel} == 9
-CFLAGS="$CFLAGS -DNETSNMP_DISABLE_DES -Wl,-rpath,/opt/cpanel/ea-libc-client/lib64"
-%endif
-
 export CFLAGS
 
 %if 0%{?rhel} < 8
@@ -1351,7 +1343,12 @@ ln -sf ../configure
 %if %{with_dtrace}
     --enable-dtrace \
 %endif
-    $* || ( cat config.log; /bin/false )
+    $*
+if test $? != 0; then
+  tail -500 config.log
+  : configure failed
+  exit 1
+fi
 
 # ZC-10931 - we are building libc-client in, but statically.  This allows us to deprecate and remove
 # scl-libc-client, instead we have a build require for ea-libc-client
@@ -1849,6 +1846,8 @@ fi
 %if %{with_httpd}
 %{_httpd_moddir}/libphp7.so
 %if 0%{?scl:1}
+#%dir %{_libdir}/apache2
+#%dir %{_libdir}/apache2/modules
 %{_root_httpd_moddir}/libphp7.so
 %endif
 %{_httpd_contentdir}/icons/%{name}.gif
@@ -1891,6 +1890,9 @@ fi
 %{_mandir}/man1/phar.phar.1*
 %{_mandir}/man1/phpize.1*
 
+#{?scl: %{_root_bindir}/%{?scl_prefix}php}
+#{?scl: %{_root_bindir}/%{?scl_prefix}phar}
+
 %files dbg
 %defattr(-,root,root)
 %{_bindir}/phpdbg
@@ -1911,6 +1913,7 @@ fi
 %config(noreplace) %{_sysconfdir}/php-fpm.d/www.conf.default
 %config(noreplace) %{_root_sysconfdir}/logrotate.d/%{?scl_prefix}php-fpm
 %config(noreplace) %{_sysconfdir}/sysconfig/php-fpm
+# %{_prefix}/lib/tmpfiles.d/php-fpm.conf
 %if %{with_systemd}
 %{_unitdir}/%{?scl_prefix}php-fpm.service
 %else
@@ -2003,6 +2006,9 @@ fi
 %endif
 
 %changelog
+* Tue Feb 18 2025 Cory McIntire <cory.mcintire@webpros.com> - 7.4.33-15
+- ZC-12614: Rolling “ea-php74” back to “2ae8a0c01d69dbc710734ff516c17a19a479fa13”: was not meant to be merged
+
 * Wed Feb 12 2025 Dan Muey <daniel.muey@webpros.com> - 7.4.33-14
 - ZC-12614: Build on Alma 9
 
@@ -2021,7 +2027,7 @@ fi
 * Mon Dec 18 2023 Travis Holloway <t.holloway@cpanel.net> - 7.4.33-9
 - EA-10753: Have snmp module require 'snmp-mibs-downloader' for deb
 
-* Thu Nov 30 2023 Tim Mullin <tim@cpanel.net> - 7.4.33-8
+* Tue Nov 30 2023 Tim Mullin <tim@cpanel.net> - 7.4.33-8
 - EA-11821: Patch to build with the latest ea-libxml2
 
 * Mon Nov 27 2023 Dan Muey <dan@cpanel.net> - 7.4.33-7
