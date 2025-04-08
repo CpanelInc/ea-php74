@@ -166,7 +166,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 16
+%define release_prefix 15
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -2006,9 +2006,6 @@ fi
 %endif
 
 %changelog
-* Wed Apr 02 2025 Julian Brown <julian.brown@webpros.com> - 7.4.33-16
-- ZC-12156: Automate creation of *.conffiles
-
 * Tue Feb 18 2025 Cory McIntire <cory.mcintire@webpros.com> - 7.4.33-15
 - ZC-12614: Rolling “ea-php74” back to “2ae8a0c01d69dbc710734ff516c17a19a479fa13”: was not meant to be merged
 
