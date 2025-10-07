@@ -166,7 +166,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 15
+%define release_prefix 16
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -215,6 +215,7 @@ Patch405: 0014-Update-libxml-include-file-references.patch
 Patch015: 0015-libxml2-2.13-makes-changes-to-how-the-parsing-state-.patch
 
 Patch016: 0016-ZC-12495-Force-c-17-for-latest-libicu-support.patch
+Patch017: 0017-Fix-compatibility-with-libxml2-v2.15.0.patch
 
 BuildRequires: ea-libxml2-devel
 BuildRequires: bzip2-devel, %{db_devel}
@@ -1068,6 +1069,7 @@ inside them.
 
 %patch015 -p1 -b .libxml2
 %patch016 -p1 -b .cxx17libicu
+%patch017 -p1 -b .libxml2
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
@@ -2006,6 +2008,9 @@ fi
 %endif
 
 %changelog
+* Tue Oct 07 2025 Chris Castillo <chris.castillo@webpros.com> - 7.4.33-16
+- EA4-136: Fix libxml2 v2.15.0 compatibility
+
 * Tue Feb 18 2025 Cory McIntire <cory.mcintire@webpros.com> - 7.4.33-15
 - ZC-12614: Rolling “ea-php74” back to “2ae8a0c01d69dbc710734ff516c17a19a479fa13”: was not meant to be merged
 
