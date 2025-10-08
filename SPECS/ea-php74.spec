@@ -215,7 +215,7 @@ Patch405: 0014-Update-libxml-include-file-references.patch
 Patch015: 0015-libxml2-2.13-makes-changes-to-how-the-parsing-state-.patch
 
 Patch016: 0016-ZC-12495-Force-c-17-for-latest-libicu-support.patch
-Patch017: 0017-Fix-compatibility-with-libxml2-v2.15.0.patch
+Patch017: 0017-Fix-libxml2-v2.15.0-compatibility.patch
 
 BuildRequires: ea-libxml2-devel
 BuildRequires: bzip2-devel, %{db_devel}
