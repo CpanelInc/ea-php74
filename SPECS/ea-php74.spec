@@ -181,7 +181,7 @@ Vendor:   cPanel, Inc.
 Name:     %{?scl_prefix}php
 Version:  7.4.33
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 18
+%define release_prefix 19
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -231,6 +231,7 @@ Patch015: 0015-libxml2-2.13-makes-changes-to-how-the-parsing-state-.patch
 
 Patch016: 0016-ZC-12495-Force-c-17-for-latest-libicu-support.patch
 Patch017: 0017-Fix-libxml2-v2.15.0-compatibility.patch
+Patch018: 0018-Avoid-state-corruption-via-bailout.patch
 
 BuildRequires: %{libxml2_devel_pkg}
 BuildRequires: bzip2-devel, %{db_devel}
@@ -1169,6 +1170,7 @@ inside them.
 %patch015 -p1 -b .libxml2
 %patch016 -p1 -b .cxx17libicu
 %patch017 -p1 -b .libxml2
+%patch018 -p1 -b .bailout
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
@@ -2124,6 +2126,9 @@ fi
 %endif
 
 %changelog
+* Tue Oct 20 2026 Cory McIntire <cory.mcintire@webpros.com> - 7.4.33-19
+- EA-13613: Backport fix for CVE-2026-109618 and CVE-2026-109619
+
 * Wed Apr 08 2026 Brian Mendoza <brian.mendoza@webpros.com> - 7.4.33-18
 - EA4-173: Mark ea-php74 as EOL
 
