@@ -1,0 +1,328 @@
+Adapt regression tests to PHP 7.4 and its bundled test harness.
+
+diff --git a/sapi/fpm/tests/unread-body-keep-conn.phpt b/sapi/fpm/tests/unread-body-keep-conn.phpt
+--- a/sapi/fpm/tests/unread-body-keep-conn.phpt
++++ b/sapi/fpm/tests/unread-body-keep-conn.phpt
+@@ -4,6 +4,7 @@
+ <?php include "skipif.inc"; ?>
+ --FILE--
+ <?php
++function str_contains($haystack, $needle) { return $needle === '' || strpos($haystack, $needle) !== false; }
+ 
+ require_once "tester.inc";
+ 
+diff --git a/sapi/fpm/tests/unread-body-partial-record.phpt b/sapi/fpm/tests/unread-body-partial-record.phpt
+--- a/sapi/fpm/tests/unread-body-partial-record.phpt
++++ b/sapi/fpm/tests/unread-body-partial-record.phpt
+@@ -4,6 +4,7 @@
+ <?php include "skipif.inc"; ?>
+ --FILE--
+ <?php
++function str_contains($haystack, $needle) { return $needle === '' || strpos($haystack, $needle) !== false; }
+ 
+ require_once "tester.inc";
+ 
+diff --git a/sapi/fpm/tests/tester.inc b/sapi/fpm/tests/tester.inc
+--- a/sapi/fpm/tests/tester.inc
++++ b/sapi/fpm/tests/tester.inc
+@@ -646,6 +646,9 @@
+ 
+         try {
+             $connections = array_map(function ($requestData) use ($address, $connKeepAlive) {
++                if (!empty($requestData['delay'])) {
++                    usleep($requestData['delay']);
++                }
+                 $client = $this->getClient($address, $connKeepAlive);
+                 $params = $this->getRequestParams(
+                     $requestData['query'] ?? '',
+@@ -912,7 +915,11 @@
+             $mainTemplate = $this->configTemplate;
+         }
+ 
+-        return $this->makeFile($extension, $this->processTemplate($mainTemplate));
++        $config = $this->processTemplate($mainTemplate);
++        if (getenv('TEST_FPM_RUN_AS_ROOT') && !preg_match('/^\s*user\s*=/m', $config)) {
++            $config = preg_replace('/^(\[(?!global\])[^\]]+\])$/m', "$1\nuser = root", $config);
++        }
++        return $this->makeFile($extension, $config);
+     }
+ 
+     /**
+@@ -1429,6 +1436,17 @@
+         return true;
+     }
+ 
++    public function expectNoLogPattern(string $pattern)
++    {
++        $lines = $this->getLogLines(-1, true);
++        foreach ($lines as $line) {
++            if (preg_match($pattern, $line)) {
++                return $this->error("Unexpected log line: " . $line);
++            }
++        }
++        return true;
++    }
++
+     /**
+      * Print content of access log.
+      */
+diff --git a/ext/soap/tests/GHSA-q23r-hr55-xmpg.phpt b/ext/soap/tests/GHSA-q23r-hr55-xmpg.phpt
+--- a/ext/soap/tests/GHSA-q23r-hr55-xmpg.phpt
++++ b/ext/soap/tests/GHSA-q23r-hr55-xmpg.phpt
+@@ -4,6 +4,7 @@
+ soap
+ --FILE--
+ <?php
++function str_contains($haystack, $needle) { return $needle === '' || strpos($haystack, $needle) !== false; }
+ 
+ function echo_back($data) { $GLOBALS['decoded'][] = $data; return null; }
+ 
+diff --git a/ext/soap/tests/GHSA-q23r-hr55-xmpg-wsdl.phpt b/ext/soap/tests/GHSA-q23r-hr55-xmpg-wsdl.phpt
+--- a/ext/soap/tests/GHSA-q23r-hr55-xmpg-wsdl.phpt
++++ b/ext/soap/tests/GHSA-q23r-hr55-xmpg-wsdl.phpt
+@@ -28,7 +28,9 @@
+ 
+ class ReplayClient extends SoapClient
+ {
+-    public function __construct(public string $arrayType) {
++    public string $arrayType;
++    public function __construct(string $arrayType) {
++        $this->arrayType = $arrayType;
+         parent::__construct(WSDL);
+     }
+ 
+diff --git a/ext/phar/tests/ghsa-68fq-fh7h-f8gr.phpt b/ext/phar/tests/ghsa-68fq-fh7h-f8gr.phpt
+--- a/ext/phar/tests/ghsa-68fq-fh7h-f8gr.phpt
++++ b/ext/phar/tests/ghsa-68fq-fh7h-f8gr.phpt
+@@ -1,7 +1,7 @@
+ --TEST--
+ GHSA-68fq-fh7h-f8gr (OpenSSL signature bypass by downgrading the algorithm to a keyless one)
+ --EXTENSIONS--
+-phar
++Phar
+ openssl
+ --SKIPIF--
+ <?php
+diff --git a/ext/date/tests/GHSA-gr4f-wgx5-jpfv.phpt b/ext/date/tests/GHSA-gr4f-wgx5-jpfv.phpt
+--- a/ext/date/tests/GHSA-gr4f-wgx5-jpfv.phpt
++++ b/ext/date/tests/GHSA-gr4f-wgx5-jpfv.phpt
+@@ -5,9 +5,8 @@
+ --CGI--
+ --ENV--
+ QUERY_STRING=a=1&b=2
+---EXTENSIONS--
+-session
+-zend_test
++--SKIPIF--
++<?php if (!extension_loaded('session') || !extension_loaded('zend-test')) die('skip required extensions unavailable'); ?>
+ --INI--
+ error_log="{TMP}/GHSA-gr4f-wgx5-jpfv.log"
+ log_errors=1
+@@ -18,5 +17,5 @@
+ echo "Hello world\n";
+ ?>
+ --EXPECTF--
+-Warning: PHP Request Startup: Input variables exceeded 1. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
++Warning: Unknown: Input variables exceeded 1. To increase the limit change max_input_vars in php.ini. in Unknown on line 0
+ Hello world%r(?:\n\nWarning: Test startup warning from zend_test in Unknown on line 0)?%r
+diff --git a/ext/soap/tests/GHSA-4646-p932-gw34.phpt b/ext/soap/tests/GHSA-4646-p932-gw34.phpt
+--- a/ext/soap/tests/GHSA-4646-p932-gw34.phpt
++++ b/ext/soap/tests/GHSA-4646-p932-gw34.phpt
+@@ -14,8 +14,8 @@
+     <ns1:echo_><param0 xsi:type="xsd:string">x</param0></ns1:echo_>
+   </SOAP-ENV:Body>
+ </SOAP-ENV:Envelope>
+---EXTENSIONS--
+-soap
++--SKIPIF--
++<?php if (!extension_loaded('soap')) die('skip SOAP unavailable'); ?>
+ --FILE--
+ <?php
+ function echo_($x) {
+diff --git a/sapi/fpm/tests/gh24046-stdio-pipe-double-close.phpt b/sapi/fpm/tests/gh24046-stdio-pipe-double-close.phpt
+--- a/sapi/fpm/tests/gh24046-stdio-pipe-double-close.phpt
++++ b/sapi/fpm/tests/gh24046-stdio-pipe-double-close.phpt
+@@ -45,6 +45,9 @@
+ $tester->terminate();
+ $tester->expectNoLogPattern('/unable to (remove|read)/');
+ $tester->close();
++// The background child retains the listener until its three-second sleep ends.
++// Release it before another test binds the same port.
++usleep(2000000);
+ 
+ ?>
+ Done
+diff --git a/sapi/fpm/tests/ghsa-3mg3-cr28-46gc-status-xss.phpt b/sapi/fpm/tests/ghsa-3mg3-cr28-46gc-status-xss.phpt
+--- a/sapi/fpm/tests/ghsa-3mg3-cr28-46gc-status-xss.phpt
++++ b/sapi/fpm/tests/ghsa-3mg3-cr28-46gc-status-xss.phpt
+@@ -35,7 +35,7 @@
+                     'uri' => '/ghsa-3mg3-cr28-46gc-<svg>.php',
+                     'headers' => [
+                         'REQUEST_METHOD' => '<svg>',
+-                        'HTTP_AUTHORIZATION' => 'Basic ' . base64_encode('"<svg onload=x>:x'),
++                        'HTTP_AUTHORIZATION' => 'Basic ' . base64_encode('<svg onload=x>:x'),
+                         'SCRIPT_FILENAME' => $scriptFilename,
+                     ],
+                 ],
+@@ -59,7 +59,7 @@
+ --EXPECT--
+ bool(false)
+ int(4)
+-string(15) ""<svg onload=x>"
++string(14) "<svg onload=x>"
+ bool(true)
+ Done
+ --CLEAN--
+diff --git a/ext/standard/tests/http/ghsa-f6gg-rchx-xw8j.phpt b/ext/standard/tests/http/ghsa-f6gg-rchx-xw8j.phpt
+--- a/ext/standard/tests/http/ghsa-f6gg-rchx-xw8j.phpt
++++ b/ext/standard/tests/http/ghsa-f6gg-rchx-xw8j.phpt
+@@ -8,54 +8,8 @@
+ ?>
+ --FILE--
+ <?php
+-$serverCode = <<<'CODE'
+-    $server = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+-    phpt_notify_server_start($server);
+-
+-    $conn = stream_socket_accept($server);
+-    $request = fread($conn, 1);
+-
+-    if ($request === "\x16") {
+-        $result = 'TLS';
+-    } else {
+-        while (($line = stream_get_line($conn, 8192, "\r\n")) !== false) {
+-            $request .= $line . "\r\n";
+-            if ($line === '') {
+-                break;
+-            }
+-        }
+-        $request .= stream_get_contents($conn, strlen('opensec-sensitive-body'));
+-        $result = str_contains($request, 'Authorization: Basic ')
+-            && str_contains($request, 'X-Opensec-Request: validation')
+-            && str_contains($request, 'opensec-sensitive-body')
+-                ? 'plaintext credentials and body'
+-                : 'unexpected plaintext request';
+-    }
+-
+-    fclose($conn);
+-    fclose($server);
+-    phpt_notify(message: $result);
+-CODE;
+-
+-$clientCode = <<<'CODE'
+-    $context = stream_context_create([
+-        'http' => [
+-            'method' => 'POST',
+-            'content' => 'opensec-sensitive-body',
+-            'header' => "X-Opensec-Request: validation\r\n",
+-        ],
+-        'ssl' => [
+-            'verify_peer' => false,
+-            'verify_peer_name' => false,
+-        ],
+-    ]);
+-    var_dump(@file_get_contents('HTTPS://alice:secret@{{ ADDR }}/secret', false, $context));
+-    echo phpt_wait();
+-CODE;
+-
+-include sprintf('%s/../../../openssl/tests/ServerClientTestCase.inc', __DIR__);
+-ServerClientTestCase::getInstance()->run($clientCode, $serverCode);
++require dirname(__DIR__) . '/wrapper-security.inc';
++check_wrapper_transport('HTTPS');
+ ?>
+ --EXPECT--
+-bool(false)
+-TLS
++HTTPS: TLS
+diff --git a/ext/standard/tests/streams/ghsa-f6gg-rchx-xw8j.phpt b/ext/standard/tests/streams/ghsa-f6gg-rchx-xw8j.phpt
+--- a/ext/standard/tests/streams/ghsa-f6gg-rchx-xw8j.phpt
++++ b/ext/standard/tests/streams/ghsa-f6gg-rchx-xw8j.phpt
+@@ -8,27 +8,8 @@
+ ?>
+ --FILE--
+ <?php
+-$serverCode = <<<'CODE'
+-    $server = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+-    phpt_notify_server_start($server);
+-
+-    $conn = stream_socket_accept($server);
+-    fwrite($conn, "220 Ready\r\n");
+-    $command = stream_get_line($conn, 8192, "\r\n");
+-
+-    fclose($conn);
+-    fclose($server);
+-    phpt_notify(message: $command);
+-CODE;
+-
+-$clientCode = <<<'CODE'
+-    var_dump(@fopen('FTPS://{{ ADDR }}/secret', 'r'));
+-    echo phpt_wait();
+-CODE;
+-
+-include sprintf('%s/../../../openssl/tests/ServerClientTestCase.inc', __DIR__);
+-ServerClientTestCase::getInstance()->run($clientCode, $serverCode);
++require dirname(__DIR__) . '/wrapper-security.inc';
++check_wrapper_transport('FTPS');
+ ?>
+ --EXPECT--
+-bool(false)
+-AUTH TLS
++FTPS: AUTH TLS
+diff --git a/ext/standard/tests/wrapper-security.inc b/ext/standard/tests/wrapper-security.inc
+--- /dev/null
++++ b/ext/standard/tests/wrapper-security.inc
+@@ -0,0 +1,32 @@
++<?php
++function check_wrapper_transport($scheme) {
++    $server = <<<'PHP'
++$server = stream_socket_server('tcp://127.0.0.1:0');
++echo stream_socket_get_name($server, false), "\n";
++flush();
++$connection = stream_socket_accept($server, 5);
++stream_set_timeout($connection, 3);
++if ($argv[1] === 'ftp') {
++    fwrite($connection, "220 Ready\r\n");
++    echo stream_get_line($connection, 8192, "\r\n"), "\n";
++} else {
++    echo fread($connection, 1) === "\x16" ? "TLS\n" : "plaintext\n";
++}
++fclose($connection);
++fclose($server);
++PHP;
++    $process = proc_open([PHP_BINARY, '-n', '-r', $server, stripos($scheme, 'ftp') === 0 ? 'ftp' : 'http'],
++        [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
++    $address = trim(fgets($pipes[1]));
++    $context = stream_context_create(['http' => ['timeout' => 2],
++        'ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
++    $stream = @fopen($scheme . '://' . $address . '/test', 'r', false, $context);
++    if (is_resource($stream)) {
++        fclose($stream);
++    }
++    echo $scheme, ': ', stream_get_contents($pipes[1]);
++    foreach ($pipes as $pipe) {
++        fclose($pipe);
++    }
++    proc_close($process);
++}
+diff --git a/ext/standard/tests/wrapper-security-php74.phpt b/ext/standard/tests/wrapper-security-php74.phpt
+--- /dev/null
++++ b/ext/standard/tests/wrapper-security-php74.phpt
+@@ -0,0 +1,18 @@
++--TEST--
++HTTPS and FTPS select TLS independently of URL scheme case
++--EXTENSIONS--
++openssl
++--SKIPIF--
++<?php if (!function_exists('proc_open')) die('skip proc_open unavailable'); ?>
++--FILE--
++<?php
++require __DIR__ . '/wrapper-security.inc';
++foreach (['https', 'HTTPS', 'ftps', 'FTPS'] as $scheme) {
++    check_wrapper_transport($scheme);
++}
++?>
++--EXPECT--
++https: TLS
++HTTPS: TLS
++ftps: AUTH TLS
++FTPS: AUTH TLS
