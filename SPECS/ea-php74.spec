@@ -182,7 +182,7 @@ Name:     %{?scl_prefix}php
 %global upstream_version 7.4.33
 Version:  7.4.34
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4588 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release:  %{release_prefix}%{?dist}.cpanel
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -235,6 +235,19 @@ Patch017: 0017-Fix-libxml2-v2.15.0-compatibility.patch
 Patch018: 0018-Avoid-state-corruption-via-bailout.patch
 Patch044: 0044-Report-PHP-version-7.4.34.patch
 Patch045: 0045-Fix-CVE-2026-91765-and-CVE-2025-14181-in-ext-soap.patch
+Patch046: 0046-FPM-status-escaping-prerequisite.patch
+Patch047: 0047-GHSA-q23r-hr55-xmpg.patch
+Patch048: 0048-GHSA-68fq-fh7h-f8gr.patch
+Patch049: 0049-GHSA-5j3f-64r7-f564.patch
+Patch051: 0051-GHSA-3mg3-cr28-46gc.patch
+Patch052: 0052-GHSA-qc49-hpvq-g2w6.patch
+Patch053: 0053-GHSA-4646-p932-gw34.patch
+Patch054: 0054-GHSA-gr4f-wgx5-jpfv.patch
+Patch055: 0055-GHSA-fm2m-fjf5-v3cp.patch
+Patch056: 0056-GHSA-658j-r8rw-q6mx.patch
+Patch057: 0057-GHSA-f6gg-rchx-xw8j.patch
+Patch058: 0058-GHSA-jm4m-qfqx-967m.patch
+Patch059: 0059-PHP74-regression-test-compatibility.patch
 
 BuildRequires: %{libxml2_devel_pkg}
 BuildRequires: bzip2-devel, %{db_devel}
@@ -1176,6 +1189,19 @@ inside them.
 %patch018 -p1 -b .bailout
 %patch044 -p1 -b .version
 %patch045 -p1 -b .soapcve
+%patch047 -p1
+%patch048 -p1
+%patch049 -p1
+%patch046 -p1
+%patch051 -p1
+%patch052 -p1
+%patch053 -p1
+%patch054 -p1
+%patch055 -p1
+%patch056 -p1
+%patch057 -p1
+%patch058 -p1
+%patch059 -p1
 
 # 7.4 does not need this for tidy even thought the instructions say to do it, weird ...
 # sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c
@@ -2131,6 +2157,11 @@ fi
 %endif
 
 %changelog
+* Thu Nov 19 2026 Cory McIntire <cory.mcintire@webpros.com> - 7.4.34-3
+- EA-13670: Backport fixes for CVE-2026-129538, CVE-2026-129496, CVE-2026-129289,
+  CVE-2026-129292, CVE-2026-129291, CVE-2026-128090, CVE-2026-126714,
+  CVE-2026-15353, CVE-2026-129506, CVE-2026-128064 and CVE-2026-6735
+
 * Mon Nov 02 2026 Cory McIntire <cory.mcintire@webpros.com> - 7.4.34-2
 - EA-13630: Backport fix for CVE-2026-91765 and CVE-2025-14181
 
